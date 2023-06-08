@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "996279470444",
+    "project_id": "kidneyhealth-ecf1f",
+    "storage_bucket": "kidneyhealth-ecf1f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:996279470444:android:bc70946cc9f7e638b68b49",
+        "android_client_info": {
+          "package_name": "com.flutterflow.kidney247"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "996279470444-7kvhv5og96evtqjgs26b63vac3fvod9j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.flutterflow.kidney247",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "996279470444-0pfis1fvnlt6kjq4lgequnmkd055p4s3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7S6YY7Lz_yMZhk8g5J0IX6gBoRrIIl-A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "996279470444-0pfis1fvnlt6kjq4lgequnmkd055p4s3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "996279470444-6lvvkd2q4jqg9aovunp9jrd5hj69kn7n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.flutterflow.healthai"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
