@@ -1,11 +1,11 @@
 import '/auth/base_auth_user_provider.dart';
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/empty_list_home_page/empty_list_home_page_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/home_page/components/empty_list_home_page/empty_list_home_page_widget.dart';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
@@ -413,7 +413,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
         final homePageUsersRecord = snapshot.data!;
         return Title(
             title: 'Kidney247',
-            color: FlutterFlowTheme.of(context).primary,
+            color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
             child: Scaffold(
               key: scaffoldKey,
               backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -2515,6 +2515,10 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 List<LabtestResultsRecord>
                                     containerLabtestResultsRecordList =
                                     snapshot.data!;
+                                // Return an empty Container when the item does not exist.
+                                if (snapshot.data!.isEmpty) {
+                                  return Container();
+                                }
                                 final containerLabtestResultsRecord =
                                     containerLabtestResultsRecordList.isNotEmpty
                                         ? containerLabtestResultsRecordList
@@ -2522,780 +2526,871 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         : null;
                                 return Container(
                                   decoration: BoxDecoration(),
-                                  child:
-                                      StreamBuilder<List<LabtestResultsRecord>>(
-                                    stream: queryLabtestResultsRecord(
-                                      queryBuilder: (labtestResultsRecord) =>
-                                          labtestResultsRecord
-                                              .where('user_ref',
-                                                  isEqualTo:
-                                                      currentUserReference)
-                                              .where('gfr', isNotEqualTo: 0.0)
-                                              .orderBy('gfr', descending: true)
-                                              .orderBy('GFRTime',
-                                                  descending: true),
-                                      singleRecord: true,
-                                    ),
-                                    builder: (context, snapshot) {
-                                      // Customize what your widget looks like when it's loading.
-                                      if (!snapshot.hasData) {
-                                        return Center(
-                                          child: SizedBox(
-                                            width: 40.0,
-                                            height: 40.0,
-                                            child: SpinKitCircle(
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .teal,
-                                              size: 40.0,
+                                  child: InkWell(
+                                    splashColor: Colors.transparent,
+                                    focusColor: Colors.transparent,
+                                    hoverColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onTap: () async {
+                                      logFirebaseEvent(
+                                          'HOME_PAGE_PAGE_Card_4qmts8w3_ON_TAP');
+                                      logFirebaseEvent('Card_navigate_to');
+
+                                      context.pushNamed(
+                                        'trackBloodGlucoseA1CPage',
+                                        queryParameters: {
+                                          'pageTitle': serializeParam(
+                                            FFLocalizations.of(context).getText(
+                                              'tsscx8ef' /* Blood Glucose A1C */,
                                             ),
+                                            ParamType.String,
                                           ),
-                                        );
-                                      }
-                                      List<LabtestResultsRecord>
-                                          containerLabtestResultsRecordList =
-                                          snapshot.data!;
-                                      final containerLabtestResultsRecord =
-                                          containerLabtestResultsRecordList
-                                                  .isNotEmpty
-                                              ? containerLabtestResultsRecordList
-                                                  .first
-                                              : null;
-                                      return Container(
-                                        decoration: BoxDecoration(),
-                                        child: StreamBuilder<
-                                            List<LabtestResultsRecord>>(
-                                          stream: queryLabtestResultsRecord(
-                                            queryBuilder: (labtestResultsRecord) =>
-                                                labtestResultsRecord
-                                                    .where('user_ref',
-                                                        isEqualTo:
-                                                            currentUserReference)
-                                                    .where('albumin',
-                                                        isNotEqualTo: 0.0)
-                                                    .orderBy('albumin',
-                                                        descending: true)
-                                                    .orderBy('albuminTime',
-                                                        descending: true),
-                                            singleRecord: true,
-                                          ),
-                                          builder: (context, snapshot) {
-                                            // Customize what your widget looks like when it's loading.
-                                            if (!snapshot.hasData) {
-                                              return Center(
-                                                child: SizedBox(
-                                                  width: 40.0,
-                                                  height: 40.0,
-                                                  child: SpinKitCircle(
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .teal,
-                                                    size: 40.0,
-                                                  ),
-                                                ),
-                                              );
-                                            }
-                                            List<LabtestResultsRecord>
-                                                containerLabtestResultsRecordList =
-                                                snapshot.data!;
-                                            final containerLabtestResultsRecord =
-                                                containerLabtestResultsRecordList
-                                                        .isNotEmpty
-                                                    ? containerLabtestResultsRecordList
-                                                        .first
-                                                    : null;
-                                            return Container(
-                                              decoration: BoxDecoration(),
-                                              child: StreamBuilder<
-                                                  List<LabtestResultsRecord>>(
-                                                stream:
-                                                    queryLabtestResultsRecord(
-                                                  queryBuilder:
-                                                      (labtestResultsRecord) =>
-                                                          labtestResultsRecord
-                                                              .where('user_ref',
-                                                                  isEqualTo:
-                                                                      currentUserReference)
-                                                              .where('bun',
-                                                                  isNotEqualTo:
-                                                                      0.0)
-                                                              .orderBy('bun',
-                                                                  descending:
-                                                                      true)
-                                                              .orderBy(
-                                                                  'BUNTime',
-                                                                  descending:
-                                                                      true),
-                                                  singleRecord: true,
-                                                ),
-                                                builder: (context, snapshot) {
-                                                  // Customize what your widget looks like when it's loading.
-                                                  if (!snapshot.hasData) {
-                                                    return Center(
-                                                      child: SizedBox(
-                                                        width: 40.0,
-                                                        height: 40.0,
-                                                        child: SpinKitCircle(
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .teal,
-                                                          size: 40.0,
-                                                        ),
-                                                      ),
-                                                    );
-                                                  }
-                                                  List<LabtestResultsRecord>
-                                                      containerLabtestResultsRecordList =
-                                                      snapshot.data!;
-                                                  final containerLabtestResultsRecord =
-                                                      containerLabtestResultsRecordList
-                                                              .isNotEmpty
-                                                          ? containerLabtestResultsRecordList
-                                                              .first
-                                                          : null;
-                                                  return Container(
-                                                    decoration: BoxDecoration(),
-                                                    child: Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.max,
-                                                      children: [
-                                                        if (containerLabtestResultsRecord !=
-                                                            null)
-                                                          InkWell(
-                                                            splashColor: Colors
-                                                                .transparent,
-                                                            focusColor: Colors
-                                                                .transparent,
-                                                            hoverColor: Colors
-                                                                .transparent,
-                                                            highlightColor:
-                                                                Colors
-                                                                    .transparent,
-                                                            onTap: () async {
-                                                              logFirebaseEvent(
-                                                                  'HOME_PAGE_PAGE_Card_4qmts8w3_ON_TAP');
-                                                              logFirebaseEvent(
-                                                                  'Card_navigate_to');
-
-                                                              context.pushNamed(
-                                                                'trackBloodGlucoseA1CPage',
-                                                                queryParameters:
-                                                                    {
-                                                                  'pageTitle':
-                                                                      serializeParam(
-                                                                    FFLocalizations.of(
-                                                                            context)
-                                                                        .getText(
-                                                                      'tsscx8ef' /* Blood Glucose A1C */,
-                                                                    ),
-                                                                    ParamType
-                                                                        .String,
-                                                                  ),
-                                                                }.withoutNulls,
-                                                              );
-                                                            },
-                                                            child: Card(
-                                                              clipBehavior: Clip
-                                                                  .antiAliasWithSaveLayer,
-                                                              color: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .secondaryBackground,
-                                                              elevation: 2.0,
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10.0),
-                                                              ),
-                                                              child: Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0,
-                                                                            10.0),
-                                                                child:
-                                                                    Container(
-                                                                  width: double
-                                                                      .infinity,
-                                                                  height: 80.0,
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .secondaryBackground,
-                                                                  ),
-                                                                  child:
-                                                                      Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            10.0,
-                                                                            0.0,
-                                                                            10.0,
-                                                                            0.0),
-                                                                    child: Row(
-                                                                      mainAxisSize:
-                                                                          MainAxisSize
-                                                                              .max,
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .spaceBetween,
-                                                                      children: [
-                                                                        Column(
-                                                                          mainAxisSize:
-                                                                              MainAxisSize.max,
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.spaceEvenly,
-                                                                          crossAxisAlignment:
-                                                                              CrossAxisAlignment.start,
-                                                                          children: [
-                                                                            Text(
-                                                                              FFLocalizations.of(context).getText(
-                                                                                'pya9nkjz' /* Blood Glucose */,
-                                                                              ),
-                                                                              style: FlutterFlowTheme.of(context).headlineSmall.override(
-                                                                                    fontFamily: 'Be Vietnam Pro',
-                                                                                    color: FlutterFlowTheme.of(context).primaryText,
-                                                                                    useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).headlineSmallFamily),
-                                                                                  ),
-                                                                            ),
-                                                                            Text(
-                                                                              dateTimeFormat(
-                                                                                'yMMMd',
-                                                                                containerLabtestResultsRecord!.bloodGlucoseTime!,
-                                                                                locale: FFLocalizations.of(context).languageCode,
-                                                                              ),
-                                                                              style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                    fontFamily: 'Be Vietnam Pro',
-                                                                                    color: FlutterFlowTheme.of(context).grayLight,
-                                                                                    useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
-                                                                                  ),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                        Column(
-                                                                          mainAxisSize:
-                                                                              MainAxisSize.max,
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.spaceEvenly,
-                                                                          crossAxisAlignment:
-                                                                              CrossAxisAlignment.end,
-                                                                          children: [
-                                                                            Text(
-                                                                              containerLabtestResultsRecord!.bloodGlucose.toString(),
-                                                                              style: FlutterFlowTheme.of(context).headlineSmall.override(
-                                                                                    fontFamily: 'Be Vietnam Pro',
-                                                                                    color: FlutterFlowTheme.of(context).primaryText,
-                                                                                    useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).headlineSmallFamily),
-                                                                                  ),
-                                                                            ),
-                                                                            Text(
-                                                                              FFLocalizations.of(context).getText(
-                                                                                'njnjqyrp' /* % */,
-                                                                              ),
-                                                                              style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                    fontFamily: 'Be Vietnam Pro',
-                                                                                    color: FlutterFlowTheme.of(context).secondaryText,
-                                                                                    useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
-                                                                                  ),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        if (containerLabtestResultsRecord !=
-                                                            null)
-                                                          InkWell(
-                                                            splashColor: Colors
-                                                                .transparent,
-                                                            focusColor: Colors
-                                                                .transparent,
-                                                            hoverColor: Colors
-                                                                .transparent,
-                                                            highlightColor:
-                                                                Colors
-                                                                    .transparent,
-                                                            onTap: () async {
-                                                              logFirebaseEvent(
-                                                                  'HOME_PAGE_PAGE_Card_ipcqxlfy_ON_TAP');
-                                                              logFirebaseEvent(
-                                                                  'Card_navigate_to');
-
-                                                              context.pushNamed(
-                                                                'trackGRFPage',
-                                                                queryParameters:
-                                                                    {
-                                                                  'pageTitle':
-                                                                      serializeParam(
-                                                                    FFLocalizations.of(
-                                                                            context)
-                                                                        .getText(
-                                                                      't35jajkf' /* GFR */,
-                                                                    ),
-                                                                    ParamType
-                                                                        .String,
-                                                                  ),
-                                                                }.withoutNulls,
-                                                              );
-                                                            },
-                                                            child: Card(
-                                                              clipBehavior: Clip
-                                                                  .antiAliasWithSaveLayer,
-                                                              color: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .secondaryBackground,
-                                                              elevation: 2.0,
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10.0),
-                                                              ),
-                                                              child: Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0,
-                                                                            10.0),
-                                                                child:
-                                                                    Container(
-                                                                  width: double
-                                                                      .infinity,
-                                                                  height: 80.0,
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .secondaryBackground,
-                                                                  ),
-                                                                  child:
-                                                                      Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            10.0,
-                                                                            0.0,
-                                                                            10.0,
-                                                                            0.0),
-                                                                    child: Row(
-                                                                      mainAxisSize:
-                                                                          MainAxisSize
-                                                                              .max,
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .spaceBetween,
-                                                                      children: [
-                                                                        Column(
-                                                                          mainAxisSize:
-                                                                              MainAxisSize.max,
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.spaceEvenly,
-                                                                          crossAxisAlignment:
-                                                                              CrossAxisAlignment.start,
-                                                                          children: [
-                                                                            Text(
-                                                                              FFLocalizations.of(context).getText(
-                                                                                'zdyv2k6b' /* eGFR */,
-                                                                              ),
-                                                                              style: FlutterFlowTheme.of(context).headlineSmall.override(
-                                                                                    fontFamily: 'Be Vietnam Pro',
-                                                                                    color: FlutterFlowTheme.of(context).primaryText,
-                                                                                    useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).headlineSmallFamily),
-                                                                                  ),
-                                                                            ),
-                                                                            Text(
-                                                                              dateTimeFormat(
-                                                                                'yMMMd',
-                                                                                containerLabtestResultsRecord!.gFRTime!,
-                                                                                locale: FFLocalizations.of(context).languageCode,
-                                                                              ),
-                                                                              style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                    fontFamily: 'Be Vietnam Pro',
-                                                                                    color: FlutterFlowTheme.of(context).grayLight,
-                                                                                    useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
-                                                                                  ),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                        Column(
-                                                                          mainAxisSize:
-                                                                              MainAxisSize.max,
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.spaceEvenly,
-                                                                          crossAxisAlignment:
-                                                                              CrossAxisAlignment.end,
-                                                                          children: [
-                                                                            Text(
-                                                                              containerLabtestResultsRecord!.gfr.toString(),
-                                                                              style: FlutterFlowTheme.of(context).headlineSmall.override(
-                                                                                    fontFamily: 'Be Vietnam Pro',
-                                                                                    color: FlutterFlowTheme.of(context).primaryText,
-                                                                                    useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).headlineSmallFamily),
-                                                                                  ),
-                                                                            ),
-                                                                            Text(
-                                                                              FFLocalizations.of(context).getText(
-                                                                                '2cglgp06' /* mL/min */,
-                                                                              ),
-                                                                              style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                    fontFamily: 'Be Vietnam Pro',
-                                                                                    color: FlutterFlowTheme.of(context).secondaryText,
-                                                                                    useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
-                                                                                  ),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        if (containerLabtestResultsRecord !=
-                                                            null)
-                                                          InkWell(
-                                                            splashColor: Colors
-                                                                .transparent,
-                                                            focusColor: Colors
-                                                                .transparent,
-                                                            hoverColor: Colors
-                                                                .transparent,
-                                                            highlightColor:
-                                                                Colors
-                                                                    .transparent,
-                                                            onTap: () async {
-                                                              logFirebaseEvent(
-                                                                  'HOME_PAGE_PAGE_Card_lbbmyg5g_ON_TAP');
-                                                              logFirebaseEvent(
-                                                                  'Card_navigate_to');
-
-                                                              context.pushNamed(
-                                                                'trackAlbuminLabPage',
-                                                                queryParameters:
-                                                                    {
-                                                                  'pageTitle':
-                                                                      serializeParam(
-                                                                    FFLocalizations.of(
-                                                                            context)
-                                                                        .getText(
-                                                                      'qh6bqrxf' /* Albumin */,
-                                                                    ),
-                                                                    ParamType
-                                                                        .String,
-                                                                  ),
-                                                                }.withoutNulls,
-                                                              );
-                                                            },
-                                                            child: Card(
-                                                              clipBehavior: Clip
-                                                                  .antiAliasWithSaveLayer,
-                                                              color: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .secondaryBackground,
-                                                              elevation: 2.0,
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10.0),
-                                                              ),
-                                                              child: Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0,
-                                                                            10.0),
-                                                                child:
-                                                                    Container(
-                                                                  width: double
-                                                                      .infinity,
-                                                                  height: 80.0,
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .secondaryBackground,
-                                                                  ),
-                                                                  child:
-                                                                      Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            10.0,
-                                                                            0.0,
-                                                                            10.0,
-                                                                            0.0),
-                                                                    child: Row(
-                                                                      mainAxisSize:
-                                                                          MainAxisSize
-                                                                              .max,
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .spaceBetween,
-                                                                      children: [
-                                                                        Column(
-                                                                          mainAxisSize:
-                                                                              MainAxisSize.max,
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.spaceEvenly,
-                                                                          crossAxisAlignment:
-                                                                              CrossAxisAlignment.start,
-                                                                          children: [
-                                                                            Text(
-                                                                              FFLocalizations.of(context).getText(
-                                                                                '1zfb1ke4' /* Albumin */,
-                                                                              ),
-                                                                              style: FlutterFlowTheme.of(context).headlineSmall.override(
-                                                                                    fontFamily: 'Be Vietnam Pro',
-                                                                                    color: FlutterFlowTheme.of(context).primaryText,
-                                                                                    useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).headlineSmallFamily),
-                                                                                  ),
-                                                                            ),
-                                                                            Text(
-                                                                              dateTimeFormat(
-                                                                                'yMMMd',
-                                                                                containerLabtestResultsRecord!.albuminTime!,
-                                                                                locale: FFLocalizations.of(context).languageCode,
-                                                                              ),
-                                                                              style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                    fontFamily: 'Be Vietnam Pro',
-                                                                                    color: FlutterFlowTheme.of(context).grayLight,
-                                                                                    useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
-                                                                                  ),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                        Column(
-                                                                          mainAxisSize:
-                                                                              MainAxisSize.max,
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.spaceEvenly,
-                                                                          crossAxisAlignment:
-                                                                              CrossAxisAlignment.end,
-                                                                          children: [
-                                                                            Text(
-                                                                              containerLabtestResultsRecord!.albumin.toString(),
-                                                                              style: FlutterFlowTheme.of(context).headlineSmall.override(
-                                                                                    fontFamily: 'Be Vietnam Pro',
-                                                                                    color: FlutterFlowTheme.of(context).primaryText,
-                                                                                    useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).headlineSmallFamily),
-                                                                                  ),
-                                                                            ),
-                                                                            Text(
-                                                                              FFLocalizations.of(context).getText(
-                                                                                '3arub610' /* g/dL */,
-                                                                              ),
-                                                                              style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                    fontFamily: 'Be Vietnam Pro',
-                                                                                    color: FlutterFlowTheme.of(context).secondaryText,
-                                                                                    useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
-                                                                                  ),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        if (containerLabtestResultsRecord !=
-                                                            null)
-                                                          InkWell(
-                                                            splashColor: Colors
-                                                                .transparent,
-                                                            focusColor: Colors
-                                                                .transparent,
-                                                            hoverColor: Colors
-                                                                .transparent,
-                                                            highlightColor:
-                                                                Colors
-                                                                    .transparent,
-                                                            onTap: () async {
-                                                              logFirebaseEvent(
-                                                                  'HOME_PAGE_PAGE_Card_sk9d1ps5_ON_TAP');
-                                                              logFirebaseEvent(
-                                                                  'Card_navigate_to');
-
-                                                              context.pushNamed(
-                                                                'trackBUNPage',
-                                                                queryParameters:
-                                                                    {
-                                                                  'pageTitle':
-                                                                      serializeParam(
-                                                                    FFLocalizations.of(
-                                                                            context)
-                                                                        .getText(
-                                                                      '3vc4j5kf' /* Blood Urea Nitrogen */,
-                                                                    ),
-                                                                    ParamType
-                                                                        .String,
-                                                                  ),
-                                                                }.withoutNulls,
-                                                              );
-                                                            },
-                                                            child: Card(
-                                                              clipBehavior: Clip
-                                                                  .antiAliasWithSaveLayer,
-                                                              color: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .secondaryBackground,
-                                                              elevation: 2.0,
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10.0),
-                                                              ),
-                                                              child: Container(
-                                                                width: double
-                                                                    .infinity,
-                                                                height: 80.0,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .secondaryBackground,
-                                                                ),
-                                                                child: Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          10.0,
-                                                                          0.0,
-                                                                          10.0,
-                                                                          0.0),
-                                                                  child: Row(
-                                                                    mainAxisSize:
-                                                                        MainAxisSize
-                                                                            .max,
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceBetween,
-                                                                    children: [
-                                                                      Column(
-                                                                        mainAxisSize:
-                                                                            MainAxisSize.max,
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceEvenly,
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.start,
-                                                                        children: [
-                                                                          Text(
-                                                                            FFLocalizations.of(context).getText(
-                                                                              'xn2tkucy' /* Blood Urea Nitrogen */,
-                                                                            ),
-                                                                            style: FlutterFlowTheme.of(context).headlineSmall.override(
-                                                                                  fontFamily: 'Be Vietnam Pro',
-                                                                                  color: FlutterFlowTheme.of(context).primaryText,
-                                                                                  useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).headlineSmallFamily),
-                                                                                ),
-                                                                          ),
-                                                                          Text(
-                                                                            dateTimeFormat(
-                                                                              'yMMMd',
-                                                                              containerLabtestResultsRecord!.bUNTime!,
-                                                                              locale: FFLocalizations.of(context).languageCode,
-                                                                            ),
-                                                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                  fontFamily: 'Be Vietnam Pro',
-                                                                                  color: FlutterFlowTheme.of(context).grayLight,
-                                                                                  useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
-                                                                                ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                      Column(
-                                                                        mainAxisSize:
-                                                                            MainAxisSize.max,
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceEvenly,
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.end,
-                                                                        children: [
-                                                                          Text(
-                                                                            containerLabtestResultsRecord!.bun.toString(),
-                                                                            style: FlutterFlowTheme.of(context).headlineSmall.override(
-                                                                                  fontFamily: 'Be Vietnam Pro',
-                                                                                  color: FlutterFlowTheme.of(context).primaryText,
-                                                                                  useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).headlineSmallFamily),
-                                                                                ),
-                                                                          ),
-                                                                          Text(
-                                                                            FFLocalizations.of(context).getText(
-                                                                              'e2olchym' /* mg/dL */,
-                                                                            ),
-                                                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                  fontFamily: 'Be Vietnam Pro',
-                                                                                  color: FlutterFlowTheme.of(context).secondaryText,
-                                                                                  useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
-                                                                                ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        if (!(containerLabtestResultsRecord != null) &&
-                                                            !(containerLabtestResultsRecord !=
-                                                                null) &&
-                                                            !(containerLabtestResultsRecord !=
-                                                                null) &&
-                                                            !(containerLabtestResultsRecord !=
-                                                                null))
-                                                          Container(
-                                                            decoration:
-                                                                BoxDecoration(),
-                                                            child:
-                                                                wrapWithModel(
-                                                              model: _model
-                                                                  .emptyListHomePageModel,
-                                                              updateCallback:
-                                                                  () => setState(
-                                                                      () {}),
-                                                              child:
-                                                                  EmptyListHomePageWidget(
-                                                                name: FFLocalizations.of(
-                                                                        context)
-                                                                    .getText(
-                                                                  '4yoil16t' /* Seem like you don't have any l... */,
-                                                                ),
-                                                                buttonTitle:
-                                                                    FFLocalizations.of(
-                                                                            context)
-                                                                        .getText(
-                                                                  'hvi82ccd' /* Add lab test results */,
-                                                                ),
-                                                                goTo: 'labtest',
-                                                              ),
-                                                            ),
-                                                          ),
-                                                      ],
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            );
-                                          },
-                                        ),
+                                        }.withoutNulls,
                                       );
                                     },
+                                    child: Card(
+                                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryBackground,
+                                      elevation: 2.0,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
+                                        child: Container(
+                                          width: double.infinity,
+                                          height: 80.0,
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                          ),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    10.0, 0.0, 10.0, 0.0),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      FFLocalizations.of(
+                                                              context)
+                                                          .getText(
+                                                        'pya9nkjz' /* Blood Glucose */,
+                                                      ),
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .headlineSmall
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Be Vietnam Pro',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
+                                                                useGoogleFonts: GoogleFonts
+                                                                        .asMap()
+                                                                    .containsKey(
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .headlineSmallFamily),
+                                                              ),
+                                                    ),
+                                                    Text(
+                                                      dateTimeFormat(
+                                                        'yMMMd',
+                                                        containerLabtestResultsRecord!
+                                                            .bloodGlucoseTime!,
+                                                        locale:
+                                                            FFLocalizations.of(
+                                                                    context)
+                                                                .languageCode,
+                                                      ),
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .bodyMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Be Vietnam Pro',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .grayLight,
+                                                                useGoogleFonts: GoogleFonts
+                                                                        .asMap()
+                                                                    .containsKey(
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .bodyMediumFamily),
+                                                              ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                  children: [
+                                                    Text(
+                                                      containerLabtestResultsRecord!
+                                                          .bloodGlucose
+                                                          .toString(),
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .headlineSmall
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Be Vietnam Pro',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
+                                                                useGoogleFonts: GoogleFonts
+                                                                        .asMap()
+                                                                    .containsKey(
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .headlineSmallFamily),
+                                                              ),
+                                                    ),
+                                                    Text(
+                                                      FFLocalizations.of(
+                                                              context)
+                                                          .getText(
+                                                        'njnjqyrp' /* % */,
+                                                      ),
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .bodyMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Be Vietnam Pro',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .secondaryText,
+                                                                useGoogleFonts: GoogleFonts
+                                                                        .asMap()
+                                                                    .containsKey(
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .bodyMediumFamily),
+                                                              ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                            StreamBuilder<List<LabtestResultsRecord>>(
+                              stream: queryLabtestResultsRecord(
+                                queryBuilder: (labtestResultsRecord) =>
+                                    labtestResultsRecord
+                                        .where('user_ref',
+                                            isEqualTo: currentUserReference)
+                                        .where('gfr', isNotEqualTo: 0.0)
+                                        .orderBy('gfr', descending: true)
+                                        .orderBy('GFRTime', descending: true),
+                                singleRecord: true,
+                              ),
+                              builder: (context, snapshot) {
+                                // Customize what your widget looks like when it's loading.
+                                if (!snapshot.hasData) {
+                                  return Center(
+                                    child: SizedBox(
+                                      width: 40.0,
+                                      height: 40.0,
+                                      child: SpinKitCircle(
+                                        color:
+                                            FlutterFlowTheme.of(context).teal,
+                                        size: 40.0,
+                                      ),
+                                    ),
+                                  );
+                                }
+                                List<LabtestResultsRecord>
+                                    containerLabtestResultsRecordList =
+                                    snapshot.data!;
+                                // Return an empty Container when the item does not exist.
+                                if (snapshot.data!.isEmpty) {
+                                  return Container();
+                                }
+                                final containerLabtestResultsRecord =
+                                    containerLabtestResultsRecordList.isNotEmpty
+                                        ? containerLabtestResultsRecordList
+                                            .first
+                                        : null;
+                                return Container(
+                                  decoration: BoxDecoration(),
+                                  child: InkWell(
+                                    splashColor: Colors.transparent,
+                                    focusColor: Colors.transparent,
+                                    hoverColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onTap: () async {
+                                      logFirebaseEvent(
+                                          'HOME_PAGE_PAGE_Card_ipcqxlfy_ON_TAP');
+                                      logFirebaseEvent('Card_navigate_to');
+
+                                      context.pushNamed(
+                                        'trackGRFPage',
+                                        queryParameters: {
+                                          'pageTitle': serializeParam(
+                                            FFLocalizations.of(context).getText(
+                                              't35jajkf' /* GFR */,
+                                            ),
+                                            ParamType.String,
+                                          ),
+                                        }.withoutNulls,
+                                      );
+                                    },
+                                    child: Card(
+                                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryBackground,
+                                      elevation: 2.0,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
+                                        child: Container(
+                                          width: double.infinity,
+                                          height: 80.0,
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                          ),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    10.0, 0.0, 10.0, 0.0),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      FFLocalizations.of(
+                                                              context)
+                                                          .getText(
+                                                        'zdyv2k6b' /* eGFR */,
+                                                      ),
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .headlineSmall
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Be Vietnam Pro',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
+                                                                useGoogleFonts: GoogleFonts
+                                                                        .asMap()
+                                                                    .containsKey(
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .headlineSmallFamily),
+                                                              ),
+                                                    ),
+                                                    Text(
+                                                      dateTimeFormat(
+                                                        'yMMMd',
+                                                        containerLabtestResultsRecord!
+                                                            .gFRTime!,
+                                                        locale:
+                                                            FFLocalizations.of(
+                                                                    context)
+                                                                .languageCode,
+                                                      ),
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .bodyMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Be Vietnam Pro',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .grayLight,
+                                                                useGoogleFonts: GoogleFonts
+                                                                        .asMap()
+                                                                    .containsKey(
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .bodyMediumFamily),
+                                                              ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                  children: [
+                                                    Text(
+                                                      containerLabtestResultsRecord!
+                                                          .gfr
+                                                          .toString(),
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .headlineSmall
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Be Vietnam Pro',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
+                                                                useGoogleFonts: GoogleFonts
+                                                                        .asMap()
+                                                                    .containsKey(
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .headlineSmallFamily),
+                                                              ),
+                                                    ),
+                                                    Text(
+                                                      FFLocalizations.of(
+                                                              context)
+                                                          .getText(
+                                                        '2cglgp06' /* mL/min */,
+                                                      ),
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .bodyMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Be Vietnam Pro',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .secondaryText,
+                                                                useGoogleFonts: GoogleFonts
+                                                                        .asMap()
+                                                                    .containsKey(
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .bodyMediumFamily),
+                                                              ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                            StreamBuilder<List<LabtestResultsRecord>>(
+                              stream: queryLabtestResultsRecord(
+                                queryBuilder: (labtestResultsRecord) =>
+                                    labtestResultsRecord
+                                        .where('user_ref',
+                                            isEqualTo: currentUserReference)
+                                        .where('albumin', isNotEqualTo: 0.0)
+                                        .orderBy('albumin', descending: true)
+                                        .orderBy('albuminTime',
+                                            descending: true),
+                                singleRecord: true,
+                              ),
+                              builder: (context, snapshot) {
+                                // Customize what your widget looks like when it's loading.
+                                if (!snapshot.hasData) {
+                                  return Center(
+                                    child: SizedBox(
+                                      width: 40.0,
+                                      height: 40.0,
+                                      child: SpinKitCircle(
+                                        color:
+                                            FlutterFlowTheme.of(context).teal,
+                                        size: 40.0,
+                                      ),
+                                    ),
+                                  );
+                                }
+                                List<LabtestResultsRecord>
+                                    containerLabtestResultsRecordList =
+                                    snapshot.data!;
+                                // Return an empty Container when the item does not exist.
+                                if (snapshot.data!.isEmpty) {
+                                  return Container();
+                                }
+                                final containerLabtestResultsRecord =
+                                    containerLabtestResultsRecordList.isNotEmpty
+                                        ? containerLabtestResultsRecordList
+                                            .first
+                                        : null;
+                                return Container(
+                                  decoration: BoxDecoration(),
+                                  child: InkWell(
+                                    splashColor: Colors.transparent,
+                                    focusColor: Colors.transparent,
+                                    hoverColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onTap: () async {
+                                      logFirebaseEvent(
+                                          'HOME_PAGE_PAGE_Card_lbbmyg5g_ON_TAP');
+                                      logFirebaseEvent('Card_navigate_to');
+
+                                      context.pushNamed(
+                                        'trackAlbuminLabPage',
+                                        queryParameters: {
+                                          'pageTitle': serializeParam(
+                                            FFLocalizations.of(context).getText(
+                                              'qh6bqrxf' /* Albumin */,
+                                            ),
+                                            ParamType.String,
+                                          ),
+                                        }.withoutNulls,
+                                      );
+                                    },
+                                    child: Card(
+                                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryBackground,
+                                      elevation: 2.0,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
+                                        child: Container(
+                                          width: double.infinity,
+                                          height: 80.0,
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                          ),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    10.0, 0.0, 10.0, 0.0),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      FFLocalizations.of(
+                                                              context)
+                                                          .getText(
+                                                        '1zfb1ke4' /* Albumin */,
+                                                      ),
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .headlineSmall
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Be Vietnam Pro',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
+                                                                useGoogleFonts: GoogleFonts
+                                                                        .asMap()
+                                                                    .containsKey(
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .headlineSmallFamily),
+                                                              ),
+                                                    ),
+                                                    Text(
+                                                      dateTimeFormat(
+                                                        'yMMMd',
+                                                        containerLabtestResultsRecord!
+                                                            .albuminTime!,
+                                                        locale:
+                                                            FFLocalizations.of(
+                                                                    context)
+                                                                .languageCode,
+                                                      ),
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .bodyMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Be Vietnam Pro',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .grayLight,
+                                                                useGoogleFonts: GoogleFonts
+                                                                        .asMap()
+                                                                    .containsKey(
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .bodyMediumFamily),
+                                                              ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                  children: [
+                                                    Text(
+                                                      containerLabtestResultsRecord!
+                                                          .albumin
+                                                          .toString(),
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .headlineSmall
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Be Vietnam Pro',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
+                                                                useGoogleFonts: GoogleFonts
+                                                                        .asMap()
+                                                                    .containsKey(
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .headlineSmallFamily),
+                                                              ),
+                                                    ),
+                                                    Text(
+                                                      FFLocalizations.of(
+                                                              context)
+                                                          .getText(
+                                                        '3arub610' /* g/dL */,
+                                                      ),
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .bodyMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Be Vietnam Pro',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .secondaryText,
+                                                                useGoogleFonts: GoogleFonts
+                                                                        .asMap()
+                                                                    .containsKey(
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .bodyMediumFamily),
+                                                              ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                            StreamBuilder<List<LabtestResultsRecord>>(
+                              stream: queryLabtestResultsRecord(
+                                queryBuilder: (labtestResultsRecord) =>
+                                    labtestResultsRecord
+                                        .where('user_ref',
+                                            isEqualTo: currentUserReference)
+                                        .where('bun', isNotEqualTo: 0.0)
+                                        .orderBy('bun', descending: true)
+                                        .orderBy('BUNTime', descending: true),
+                                singleRecord: true,
+                              ),
+                              builder: (context, snapshot) {
+                                // Customize what your widget looks like when it's loading.
+                                if (!snapshot.hasData) {
+                                  return Center(
+                                    child: SizedBox(
+                                      width: 40.0,
+                                      height: 40.0,
+                                      child: SpinKitCircle(
+                                        color:
+                                            FlutterFlowTheme.of(context).teal,
+                                        size: 40.0,
+                                      ),
+                                    ),
+                                  );
+                                }
+                                List<LabtestResultsRecord>
+                                    containerLabtestResultsRecordList =
+                                    snapshot.data!;
+                                // Return an empty Container when the item does not exist.
+                                if (snapshot.data!.isEmpty) {
+                                  return Container();
+                                }
+                                final containerLabtestResultsRecord =
+                                    containerLabtestResultsRecordList.isNotEmpty
+                                        ? containerLabtestResultsRecordList
+                                            .first
+                                        : null;
+                                return Container(
+                                  decoration: BoxDecoration(),
+                                  child: InkWell(
+                                    splashColor: Colors.transparent,
+                                    focusColor: Colors.transparent,
+                                    hoverColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onTap: () async {
+                                      logFirebaseEvent(
+                                          'HOME_PAGE_PAGE_Card_bcnfms79_ON_TAP');
+                                      logFirebaseEvent('Card_navigate_to');
+
+                                      context.pushNamed(
+                                        'trackBUNPage',
+                                        queryParameters: {
+                                          'pageTitle': serializeParam(
+                                            FFLocalizations.of(context).getText(
+                                              '71b89udf' /* Blood Urea Nitrogen */,
+                                            ),
+                                            ParamType.String,
+                                          ),
+                                        }.withoutNulls,
+                                      );
+                                    },
+                                    child: Card(
+                                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryBackground,
+                                      elevation: 2.0,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: 80.0,
+                                        decoration: BoxDecoration(
+                                          color: FlutterFlowTheme.of(context)
+                                              .secondaryBackground,
+                                        ),
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  10.0, 0.0, 10.0, 0.0),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    FFLocalizations.of(context)
+                                                        .getText(
+                                                      'n6hwazdo' /* Blood Urea Nitrogen */,
+                                                    ),
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .headlineSmall
+                                                        .override(
+                                                          fontFamily:
+                                                              'Be Vietnam Pro',
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryText,
+                                                          useGoogleFonts: GoogleFonts
+                                                                  .asMap()
+                                                              .containsKey(
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .headlineSmallFamily),
+                                                        ),
+                                                  ),
+                                                  Text(
+                                                    dateTimeFormat(
+                                                      'yMMMd',
+                                                      containerLabtestResultsRecord!
+                                                          .bUNTime!,
+                                                      locale:
+                                                          FFLocalizations.of(
+                                                                  context)
+                                                              .languageCode,
+                                                    ),
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodyMedium
+                                                        .override(
+                                                          fontFamily:
+                                                              'Be Vietnam Pro',
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .grayLight,
+                                                          useGoogleFonts: GoogleFonts
+                                                                  .asMap()
+                                                              .containsKey(
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMediumFamily),
+                                                        ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Column(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  Text(
+                                                    containerLabtestResultsRecord!
+                                                        .bun
+                                                        .toString(),
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .headlineSmall
+                                                        .override(
+                                                          fontFamily:
+                                                              'Be Vietnam Pro',
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryText,
+                                                          useGoogleFonts: GoogleFonts
+                                                                  .asMap()
+                                                              .containsKey(
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .headlineSmallFamily),
+                                                        ),
+                                                  ),
+                                                  Text(
+                                                    FFLocalizations.of(context)
+                                                        .getText(
+                                                      '6f3bgvnd' /* mg/dL */,
+                                                    ),
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodyMedium
+                                                        .override(
+                                                          fontFamily:
+                                                              'Be Vietnam Pro',
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .secondaryText,
+                                                          useGoogleFonts: GoogleFonts
+                                                                  .asMap()
+                                                              .containsKey(
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMediumFamily),
+                                                        ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                            FutureBuilder<List<LabtestResultsRecord>>(
+                              future: queryLabtestResultsRecordOnce(
+                                queryBuilder: (labtestResultsRecord) =>
+                                    labtestResultsRecord.where('user_ref',
+                                        isEqualTo: currentUserReference),
+                              ),
+                              builder: (context, snapshot) {
+                                // Customize what your widget looks like when it's loading.
+                                if (!snapshot.hasData) {
+                                  return Center(
+                                    child: SizedBox(
+                                      width: 40.0,
+                                      height: 40.0,
+                                      child: SpinKitCircle(
+                                        color:
+                                            FlutterFlowTheme.of(context).teal,
+                                        size: 40.0,
+                                      ),
+                                    ),
+                                  );
+                                }
+                                List<LabtestResultsRecord>
+                                    containerLabtestResultsRecordList =
+                                    snapshot.data!;
+                                return Container(
+                                  decoration: BoxDecoration(),
+                                  child: Visibility(
+                                    visible: containerLabtestResultsRecordList
+                                            .length ==
+                                        0,
+                                    child: wrapWithModel(
+                                      model: _model.emptyListHomePageModel,
+                                      updateCallback: () => setState(() {}),
+                                      child: EmptyListHomePageWidget(
+                                        name:
+                                            FFLocalizations.of(context).getText(
+                                          '4yoil16t' /* Seem like you don't have any l... */,
+                                        ),
+                                        buttonTitle:
+                                            FFLocalizations.of(context).getText(
+                                          'hvi82ccd' /* Add lab test results */,
+                                        ),
+                                        goTo: 'labtest',
+                                      ),
+                                    ),
                                   ),
                                 );
                               },
@@ -3372,16 +3467,16 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                               logFirebaseEvent(
                                                   'Button_backend_call');
 
-                                              final chatGPTHistoryCreateData =
-                                                  createChatGPTHistoryRecordData(
-                                                userRef: currentUserReference,
-                                                createdAt: getCurrentTimestamp,
-                                              );
                                               await ChatGPTHistoryRecord
                                                   .collection
                                                   .doc()
                                                   .set(
-                                                      chatGPTHistoryCreateData);
+                                                      createChatGPTHistoryRecordData(
+                                                    userRef:
+                                                        currentUserReference,
+                                                    createdAt:
+                                                        getCurrentTimestamp,
+                                                  ));
                                               logFirebaseEvent(
                                                   'Button_navigate_to');
 

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
 
@@ -59,6 +61,14 @@ class ChatGPTHistoryRecord extends FirestoreRecord {
   @override
   String toString() =>
       'ChatGPTHistoryRecord(reference: ${reference.path}, data: $snapshotData)';
+
+  @override
+  int get hashCode => reference.path.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is ChatGPTHistoryRecord &&
+      reference.path.hashCode == other.reference.path.hashCode;
 }
 
 Map<String, dynamic> createChatGPTHistoryRecordData({
@@ -73,4 +83,24 @@ Map<String, dynamic> createChatGPTHistoryRecordData({
   );
 
   return firestoreData;
+}
+
+class ChatGPTHistoryRecordDocumentEquality
+    implements Equality<ChatGPTHistoryRecord> {
+  const ChatGPTHistoryRecordDocumentEquality();
+
+  @override
+  bool equals(ChatGPTHistoryRecord? e1, ChatGPTHistoryRecord? e2) {
+    const listEquality = ListEquality();
+    return e1?.userRef == e2?.userRef &&
+        listEquality.equals(e1?.history, e2?.history) &&
+        e1?.createdAt == e2?.createdAt;
+  }
+
+  @override
+  int hash(ChatGPTHistoryRecord? e) =>
+      const ListEquality().hash([e?.userRef, e?.history, e?.createdAt]);
+
+  @override
+  bool isValidKey(Object? o) => o is ChatGPTHistoryRecord;
 }

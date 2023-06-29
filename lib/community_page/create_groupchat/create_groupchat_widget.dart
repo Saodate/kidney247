@@ -120,7 +120,7 @@ class _CreateGroupchatWidgetState extends State<CreateGroupchatWidget>
 
     return Title(
         title: 'createGroupchat',
-        color: FlutterFlowTheme.of(context).primary,
+        color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
         child: Scaffold(
           key: scaffoldKey,
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -195,6 +195,7 @@ class _CreateGroupchatWidgetState extends State<CreateGroupchatWidget>
                                     m.storagePath, context))) {
                               setState(() => _model.isDataUploading = true);
                               var selectedUploadedFiles = <FFUploadedFile>[];
+
                               var downloadUrls = <String>[];
                               try {
                                 selectedUploadedFiles = selectedMedia
@@ -420,7 +421,9 @@ class _CreateGroupchatWidgetState extends State<CreateGroupchatWidget>
                         controller: _model.stateValueController ??=
                             FormFieldController<String>(
                           _model.stateValue ??=
-                              FFLocalizations.of(context).languageCode,
+                              FFLocalizations.of(context).languageCode == 'en'
+                                  ? 'English'
+                                  : 'Tiếng Việt',
                         ),
                         options: [
                           FFLocalizations.of(context).getText(
@@ -474,21 +477,34 @@ class _CreateGroupchatWidgetState extends State<CreateGroupchatWidget>
                             }
                             logFirebaseEvent('Button_backend_call');
 
-                            final chatsCreateData = {
+                            var chatsRecordReference =
+                                ChatsRecord.collection.doc();
+                            await chatsRecordReference.set({
                               ...createChatsRecordData(
                                 isSystemGroup: false,
                                 groupChatName: _model.nameController.text,
                                 groupChatDescription:
                                     _model.descriptionController.text,
                                 groupChatImage: _model.uploadedFileUrl,
+                                language: _model.stateValue,
+                                lastMessageTime: getCurrentTimestamp,
                               ),
                               'users': [currentUserReference],
-                            };
-                            var chatsRecordReference =
-                                ChatsRecord.collection.doc();
-                            await chatsRecordReference.set(chatsCreateData);
-                            _model.groupChat = ChatsRecord.getDocumentFromData(
-                                chatsCreateData, chatsRecordReference);
+                              'last_message_seen_by': [currentUserReference],
+                            });
+                            _model.groupChat = ChatsRecord.getDocumentFromData({
+                              ...createChatsRecordData(
+                                isSystemGroup: false,
+                                groupChatName: _model.nameController.text,
+                                groupChatDescription:
+                                    _model.descriptionController.text,
+                                groupChatImage: _model.uploadedFileUrl,
+                                language: _model.stateValue,
+                                lastMessageTime: getCurrentTimestamp,
+                              ),
+                              'users': [currentUserReference],
+                              'last_message_seen_by': [currentUserReference],
+                            }, chatsRecordReference);
                             logFirebaseEvent('Button_navigate_to');
                             if (Navigator.of(context).canPop()) {
                               context.pop();
@@ -499,6 +515,10 @@ class _CreateGroupchatWidgetState extends State<CreateGroupchatWidget>
                                 'chatRef': serializeParam(
                                   _model.groupChat!.reference,
                                   ParamType.DocumentReference,
+                                ),
+                                'isGroupChat': serializeParam(
+                                  true,
+                                  ParamType.bool,
                                 ),
                               }.withoutNulls,
                             );

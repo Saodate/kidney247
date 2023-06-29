@@ -113,7 +113,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget>
         final profilePageUsersRecord = snapshot.data!;
         return Title(
             title: 'Kidney247',
-            color: FlutterFlowTheme.of(context).primary,
+            color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
             child: Scaffold(
               key: scaffoldKey,
               backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -145,7 +145,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget>
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width * 1.0,
+                      width: MediaQuery.sizeOf(context).width * 1.0,
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).primaryBackground,
                       ),
@@ -197,19 +197,28 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget>
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
-                                  profilePageUsersRecord.displayName,
-                                  style: FlutterFlowTheme.of(context)
-                                      .headlineSmall
-                                      .override(
-                                        fontFamily: 'Be Vietnam Pro',
-                                        fontSize: 25.0,
-                                        fontWeight: FontWeight.w600,
-                                        useGoogleFonts: GoogleFonts.asMap()
-                                            .containsKey(
-                                                FlutterFlowTheme.of(context)
-                                                    .headlineSmallFamily),
-                                      ),
+                                AuthUserStreamWidget(
+                                  builder: (context) => Text(
+                                    currentUserDisplayName != null &&
+                                            currentUserDisplayName != ''
+                                        ? currentUserDisplayName
+                                        : (FFLocalizations.of(context)
+                                                    .languageCode ==
+                                                'en'
+                                            ? 'Anonymous'
+                                            : 'Ẩn danh'),
+                                    style: FlutterFlowTheme.of(context)
+                                        .headlineSmall
+                                        .override(
+                                          fontFamily: 'Be Vietnam Pro',
+                                          fontSize: 25.0,
+                                          fontWeight: FontWeight.w600,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .headlineSmallFamily),
+                                        ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -218,46 +227,19 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget>
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 8.0, 0.0, 0.0),
-                                child: Text(
-                                  profilePageUsersRecord.email,
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        fontFamily: 'Be Vietnam Pro',
-                                        color: FlutterFlowTheme.of(context)
-                                            .grayLight,
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.w500,
-                                        useGoogleFonts: GoogleFonts.asMap()
-                                            .containsKey(
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyMediumFamily),
-                                      ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 0.0, 20.0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
+                              if (currentUserEmail != null &&
+                                  currentUserEmail != '')
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 8.0, 0.0, 0.0),
                                   child: Text(
-                                    '${profilePageUsersRecord.age.toString()} ${profilePageUsersRecord.ageUnit}, ',
+                                    profilePageUsersRecord.email,
                                     style: FlutterFlowTheme.of(context)
                                         .bodyMedium
                                         .override(
                                           fontFamily: 'Be Vietnam Pro',
                                           color: FlutterFlowTheme.of(context)
-                                              .primaryText,
+                                              .grayLight,
                                           fontSize: 16.0,
                                           fontWeight: FontWeight.w500,
                                           useGoogleFonts: GoogleFonts.asMap()
@@ -267,48 +249,40 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget>
                                         ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 8.0, 0.0, 0.0),
-                                  child: AuthUserStreamWidget(
-                                    builder: (context) => Text(
-                                      '${valueOrDefault(currentUserDocument?.stage, '')}, ',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Be Vietnam Pro',
-                                            color: FlutterFlowTheme.of(context)
-                                                .primaryText,
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.w500,
-                                            useGoogleFonts: GoogleFonts.asMap()
-                                                .containsKey(
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMediumFamily),
-                                          ),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 8.0, 0.0, 0.0),
-                                  child: AuthUserStreamWidget(
-                                    builder: (context) => Text(
-                                      valueOrDefault(
-                                          currentUserDocument?.status, ''),
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Be Vietnam Pro',
-                                            color: FlutterFlowTheme.of(context)
-                                                .primaryText,
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.w500,
-                                            useGoogleFonts: GoogleFonts.asMap()
-                                                .containsKey(
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMediumFamily),
-                                          ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 20.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 8.0, 0.0, 0.0),
+                                    child: AuthUserStreamWidget(
+                                      builder: (context) => Text(
+                                        '${profilePageUsersRecord.age.toString()} ${valueOrDefault(currentUserDocument?.ageUnit, '') == 'Năm' ? 'tuổi' : 'tháng tuổi'}, ${valueOrDefault(currentUserDocument?.stage, '')}, ${valueOrDefault(currentUserDocument?.status, '')}',
+                                        textAlign: TextAlign.center,
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: 'Be Vietnam Pro',
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.w500,
+                                              useGoogleFonts: GoogleFonts
+                                                      .asMap()
+                                                  .containsKey(
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodyMediumFamily),
+                                            ),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -358,7 +332,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget>
                                       }
                                     },
                                     child: Container(
-                                      width: MediaQuery.of(context).size.width *
+                                      width: MediaQuery.sizeOf(context).width *
                                           1.0,
                                       decoration: BoxDecoration(),
                                       child: Padding(
@@ -492,7 +466,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget>
                                       }
                                     },
                                     child: Container(
-                                      width: MediaQuery.of(context).size.width *
+                                      width: MediaQuery.sizeOf(context).width *
                                           1.0,
                                       decoration: BoxDecoration(),
                                       child: Padding(

@@ -1,11 +1,11 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/empty_list/empty_list_widget.dart';
 import '/flutter_flow/chat/index.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/home_page/components/empty_list/empty_list_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
@@ -82,7 +82,7 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
 
     return Title(
         title: 'ChatPage',
-        color: FlutterFlowTheme.of(context).primary,
+        color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
         child: Scaffold(
           key: scaffoldKey,
           endDrawer: Drawer(
@@ -442,47 +442,95 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                               ),
                             ),
                           ),
-                        FFButtonWidget(
-                          onPressed: () async {
-                            logFirebaseEvent(
-                                'CHAT_PAGE_PAGE_LEAVE_GROUP_BTN_ON_TAP');
-                            logFirebaseEvent('Button_group_chat_action');
-                            await FFChatManager.instance.removeGroupMembers(
-                              containerChatsRecord,
-                              [currentUserReference!],
-                            );
-                            logFirebaseEvent('Button_navigate_back');
-                            context.safePop();
-                          },
-                          text: FFLocalizations.of(context).getText(
-                            'f5u1bnr3' /* Leave group */,
-                          ),
-                          options: FFButtonOptions(
-                            width: double.infinity,
-                            height: 40.0,
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 0.0, 0.0),
-                            iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 0.0, 0.0),
-                            color: FlutterFlowTheme.of(context).primary,
-                            textStyle: FlutterFlowTheme.of(context)
-                                .titleSmall
-                                .override(
-                                  fontFamily: 'Be Vietnam Pro',
-                                  color: Colors.white,
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w300,
-                                  useGoogleFonts: GoogleFonts.asMap()
-                                      .containsKey(FlutterFlowTheme.of(context)
-                                          .titleSmallFamily),
-                                ),
-                            borderSide: BorderSide(
-                              color: Colors.transparent,
-                              width: 1.0,
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 20.0),
+                          child: FFButtonWidget(
+                            onPressed: () async {
+                              logFirebaseEvent(
+                                  'CHAT_PAGE_PAGE_LEAVE_GROUP_BTN_ON_TAP');
+                              logFirebaseEvent('Button_group_chat_action');
+                              await FFChatManager.instance.removeGroupMembers(
+                                containerChatsRecord,
+                                [currentUserReference!],
+                              );
+                              logFirebaseEvent('Button_navigate_back');
+                              context.safePop();
+                            },
+                            text: FFLocalizations.of(context).getText(
+                              'f5u1bnr3' /* Leave group */,
                             ),
-                            borderRadius: BorderRadius.circular(8.0),
+                            options: FFButtonOptions(
+                              width: double.infinity,
+                              height: 40.0,
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 0.0, 0.0),
+                              iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 0.0, 0.0),
+                              color: FlutterFlowTheme.of(context).primary,
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .titleSmall
+                                  .override(
+                                    fontFamily: 'Be Vietnam Pro',
+                                    color: Colors.white,
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w300,
+                                    useGoogleFonts: GoogleFonts.asMap()
+                                        .containsKey(
+                                            FlutterFlowTheme.of(context)
+                                                .titleSmallFamily),
+                                  ),
+                              borderSide: BorderSide(
+                                color: Colors.transparent,
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
                           ),
                         ),
+                        if (containerChatsRecord.users.first ==
+                            currentUserReference)
+                          FFButtonWidget(
+                            onPressed: () async {
+                              logFirebaseEvent(
+                                  'CHAT_PAGE_PAGE_DELETE_GROUP_BTN_ON_TAP');
+                              logFirebaseEvent('Button_backend_call');
+                              await containerChatsRecord.reference.delete();
+                              logFirebaseEvent('Button_navigate_back');
+                              context.safePop();
+                              logFirebaseEvent('Button_navigate_back');
+                              context.safePop();
+                            },
+                            text: FFLocalizations.of(context).getText(
+                              '4r2nqzvl' /* Delete group */,
+                            ),
+                            options: FFButtonOptions(
+                              width: double.infinity,
+                              height: 40.0,
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 0.0, 0.0),
+                              iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 0.0, 0.0),
+                              color: FlutterFlowTheme.of(context).error,
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .titleSmall
+                                  .override(
+                                    fontFamily: 'Be Vietnam Pro',
+                                    color: Colors.white,
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w300,
+                                    useGoogleFonts: GoogleFonts.asMap()
+                                        .containsKey(
+                                            FlutterFlowTheme.of(context)
+                                                .titleSmallFamily),
+                                  ),
+                              borderSide: BorderSide(
+                                color: Colors.transparent,
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
                       ],
                     ),
                   ),
@@ -525,7 +573,28 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                   ),
                 if (widget.isGroupChat)
                   Text(
-                    _chatInfo!.chatRecord.groupChatName,
+                    FFLocalizations.of(context).languageCode == 'en'
+                        ? () {
+                            if (widget.chatRef ==
+                                FFAppState().groupChatEnRef1) {
+                              return 'Kidney desease group';
+                            } else if (widget.chatRef ==
+                                FFAppState().groupChatEnRef2) {
+                              return 'Hemodialysis group';
+                            } else {
+                              return _chatInfo!.chatRecord.groupChatName;
+                            }
+                          }()
+                        : () {
+                            if (widget.chatRef == FFAppState().groupChatRef) {
+                              return 'Nhóm bệnh thận';
+                            } else if (widget.chatRef ==
+                                FFAppState().groupChat2Ref) {
+                              return 'Nhóm chạy thận nhân tạo';
+                            } else {
+                              return _chatInfo!.chatRecord.groupChatName;
+                            }
+                          }(),
                     style: FlutterFlowTheme.of(context).bodyMedium.override(
                           fontFamily: 'Lexend Deca',
                           color: FlutterFlowTheme.of(context).primaryText,

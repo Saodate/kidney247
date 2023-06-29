@@ -1,10 +1,10 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/book_appointment/book_appointment_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/home_page/components/book_appointment/book_appointment_widget.dart';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +33,6 @@ class _AddCareTeamWidgetState extends State<AddCareTeamWidget> {
   late AddCareTeamModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
@@ -51,7 +50,6 @@ class _AddCareTeamWidgetState extends State<AddCareTeamWidget> {
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -61,9 +59,9 @@ class _AddCareTeamWidgetState extends State<AddCareTeamWidget> {
 
     return Title(
         title: 'Kidney247',
-        color: FlutterFlowTheme.of(context).primary,
+        color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+          onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -344,16 +342,15 @@ class _AddCareTeamWidgetState extends State<AddCareTeamWidget> {
                         if (widget.isCompleteProfile!) {
                           logFirebaseEvent('Button_backend_call');
 
-                          final doctorsCreateData1 = createDoctorsRecordData(
-                            name: _model.textController1.text,
-                            phoneNumber: _model.textController2.text,
-                            address: _model.textController3.text,
-                            createdAt: getCurrentTimestamp,
-                            userRef: currentUserReference,
-                          );
                           await DoctorsRecord.collection
                               .doc()
-                              .set(doctorsCreateData1);
+                              .set(createDoctorsRecordData(
+                                name: _model.textController1.text,
+                                phoneNumber: _model.textController2.text,
+                                address: _model.textController3.text,
+                                createdAt: getCurrentTimestamp,
+                                userRef: currentUserReference,
+                              ));
                           logFirebaseEvent('Button_bottom_sheet');
                           await showModalBottomSheet(
                             isScrollControlled: true,
@@ -364,9 +361,9 @@ class _AddCareTeamWidgetState extends State<AddCareTeamWidget> {
                             builder: (context) {
                               return GestureDetector(
                                 onTap: () => FocusScope.of(context)
-                                    .requestFocus(_unfocusNode),
+                                    .requestFocus(_model.unfocusNode),
                                 child: Padding(
-                                  padding: MediaQuery.of(context).viewInsets,
+                                  padding: MediaQuery.viewInsetsOf(context),
                                   child: Container(
                                     height: 710.0,
                                     child: BookAppointmentWidget(
@@ -385,16 +382,15 @@ class _AddCareTeamWidgetState extends State<AddCareTeamWidget> {
                           }
                           logFirebaseEvent('Button_backend_call');
 
-                          final doctorsCreateData2 = createDoctorsRecordData(
-                            name: _model.textController1.text,
-                            phoneNumber: _model.textController2.text,
-                            address: _model.textController3.text,
-                            createdAt: getCurrentTimestamp,
-                            userRef: currentUserReference,
-                          );
                           await DoctorsRecord.collection
                               .doc()
-                              .set(doctorsCreateData2);
+                              .set(createDoctorsRecordData(
+                                name: _model.textController1.text,
+                                phoneNumber: _model.textController2.text,
+                                address: _model.textController3.text,
+                                createdAt: getCurrentTimestamp,
+                                userRef: currentUserReference,
+                              ));
                           logFirebaseEvent('Button_show_snack_bar');
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
@@ -423,9 +419,9 @@ class _AddCareTeamWidgetState extends State<AddCareTeamWidget> {
                               builder: (context) {
                                 return GestureDetector(
                                   onTap: () => FocusScope.of(context)
-                                      .requestFocus(_unfocusNode),
+                                      .requestFocus(_model.unfocusNode),
                                   child: Padding(
-                                    padding: MediaQuery.of(context).viewInsets,
+                                    padding: MediaQuery.viewInsetsOf(context),
                                     child: Container(
                                       height: 710.0,
                                       child: BookAppointmentWidget(

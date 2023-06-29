@@ -31,7 +31,6 @@ class _SetTargetPageWidgetState extends State<SetTargetPageWidget> {
   late SetTargetPageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
@@ -272,7 +271,6 @@ class _SetTargetPageWidgetState extends State<SetTargetPageWidget> {
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -282,9 +280,9 @@ class _SetTargetPageWidgetState extends State<SetTargetPageWidget> {
 
     return Title(
         title: 'Kidney247',
-        color: FlutterFlowTheme.of(context).primary,
+        color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+          onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -665,7 +663,7 @@ class _SetTargetPageWidgetState extends State<SetTargetPageWidget> {
                                                                                       useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
                                                                                     ),
                                                                                 hintText: FFLocalizations.of(context).getText(
-                                                                                  'qsti0aew' /* ... */,
+                                                                                  'qsti0aew' /*  */,
                                                                                 ),
                                                                                 hintStyle: FlutterFlowTheme.of(context).bodySmall,
                                                                                 enabledBorder: OutlineInputBorder(
@@ -1390,7 +1388,7 @@ class _SetTargetPageWidgetState extends State<SetTargetPageWidget> {
                                                                                       useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
                                                                                     ),
                                                                                 hintText: FFLocalizations.of(context).getText(
-                                                                                  'cua4o0bf' /* ... */,
+                                                                                  'cua4o0bf' /*  */,
                                                                                 ),
                                                                                 hintStyle: FlutterFlowTheme.of(context).bodySmall,
                                                                                 enabledBorder: OutlineInputBorder(
@@ -1631,7 +1629,7 @@ class _SetTargetPageWidgetState extends State<SetTargetPageWidget> {
                                                                                       useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
                                                                                     ),
                                                                                 hintText: FFLocalizations.of(context).getText(
-                                                                                  'jisuntx6' /* ... */,
+                                                                                  'jisuntx6' /*  */,
                                                                                 ),
                                                                                 hintStyle: FlutterFlowTheme.of(context).bodySmall,
                                                                                 enabledBorder: OutlineInputBorder(
@@ -2171,7 +2169,7 @@ class _SetTargetPageWidgetState extends State<SetTargetPageWidget> {
                                                                                             useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
                                                                                           ),
                                                                                       hintText: FFLocalizations.of(context).getText(
-                                                                                        '18tdua4d' /* ... */,
+                                                                                        '18tdua4d' /*  */,
                                                                                       ),
                                                                                       hintStyle: FlutterFlowTheme.of(context).bodySmall,
                                                                                       enabledBorder: OutlineInputBorder(
@@ -2352,7 +2350,7 @@ class _SetTargetPageWidgetState extends State<SetTargetPageWidget> {
                                                                                             useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
                                                                                           ),
                                                                                       hintText: FFLocalizations.of(context).getText(
-                                                                                        'miywlur5' /* ... */,
+                                                                                        'miywlur5' /*  */,
                                                                                       ),
                                                                                       hintStyle: FlutterFlowTheme.of(context).bodySmall,
                                                                                       enabledBorder: OutlineInputBorder(
@@ -2585,7 +2583,7 @@ class _SetTargetPageWidgetState extends State<SetTargetPageWidget> {
                                                                                       useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
                                                                                     ),
                                                                                 hintText: FFLocalizations.of(context).getText(
-                                                                                  'z2onwto5' /* ... */,
+                                                                                  'z2onwto5' /*  */,
                                                                                 ),
                                                                                 hintStyle: FlutterFlowTheme.of(context).bodySmall,
                                                                                 enabledBorder: OutlineInputBorder(
@@ -4028,22 +4026,22 @@ class _SetTargetPageWidgetState extends State<SetTargetPageWidget> {
                                                           logFirebaseEvent(
                                                               'Button-Save_backend_call');
 
-                                                          final targetsUpdateData =
-                                                              createTargetsRecordData(
+                                                          await containerTargetsRecord!
+                                                              .reference
+                                                              .update(
+                                                                  createTargetsRecordData(
                                                             createdAt:
                                                                 getCurrentTimestamp,
                                                             userRef:
                                                                 currentUserReference,
-                                                          );
-                                                          await containerTargetsRecord!
-                                                              .reference
-                                                              .update(
-                                                                  targetsUpdateData);
+                                                          ));
                                                           logFirebaseEvent(
                                                               'Button-Save_backend_call');
 
-                                                          final nutrientUpdateData =
-                                                              createNutrientRecordData(
+                                                          await queryNutrientNutrientRecord!
+                                                              .reference
+                                                              .update(
+                                                                  createNutrientRecordData(
                                                             phosphorus: _model
                                                                             .phosphorusTextController
                                                                             .text !=
@@ -4131,16 +4129,14 @@ class _SetTargetPageWidgetState extends State<SetTargetPageWidget> {
                                                                     _model
                                                                         .caloriesRecomController
                                                                         .text),
-                                                          );
-                                                          await queryNutrientNutrientRecord!
-                                                              .reference
-                                                              .update(
-                                                                  nutrientUpdateData);
+                                                          ));
                                                           logFirebaseEvent(
                                                               'Button-Save_backend_call');
 
-                                                          final vitalUpdateData =
-                                                              createVitalRecordData(
+                                                          await queryVitalVitalRecord!
+                                                              .reference
+                                                              .update(
+                                                                  createVitalRecordData(
                                                             bloodPressureFrom: _model
                                                                             .bloodPressureFromTextController
                                                                             .text !=
@@ -4156,10 +4152,21 @@ class _SetTargetPageWidgetState extends State<SetTargetPageWidget> {
                                                                     _model
                                                                         .bloodPressureFromRecomController
                                                                         .text),
-                                                            bloodPressureTo: int
-                                                                .tryParse(_model
-                                                                    .bloodPressureToTextController
-                                                                    .text),
+                                                            bloodPressureTo: _model
+                                                                            .bloodPressureToTextController
+                                                                            .text !=
+                                                                        null &&
+                                                                    _model.bloodPressureToTextController
+                                                                            .text !=
+                                                                        ''
+                                                                ? int.tryParse(
+                                                                    _model
+                                                                        .bloodPressureToTextController
+                                                                        .text)
+                                                                : int.tryParse(
+                                                                    _model
+                                                                        .bloodPressureToRecomController
+                                                                        .text),
                                                             bloodGlucose: (_model.bloodPressureToTextController.text !=
                                                                             null &&
                                                                         _model.bloodPressureToTextController.text !=
@@ -4186,16 +4193,14 @@ class _SetTargetPageWidgetState extends State<SetTargetPageWidget> {
                                                                     _model
                                                                         .fluidOutputRecomController
                                                                         .text),
-                                                          );
-                                                          await queryVitalVitalRecord!
-                                                              .reference
-                                                              .update(
-                                                                  vitalUpdateData);
+                                                          ));
                                                           logFirebaseEvent(
                                                               'Button-Save_backend_call');
 
-                                                          final labtestUpdateData =
-                                                              createLabtestRecordData(
+                                                          await queryLabtestLabtestRecord!
+                                                              .reference
+                                                              .update(
+                                                                  createLabtestRecordData(
                                                             eGFR: _model.eGFRTextController
                                                                             .text !=
                                                                         null &&
@@ -4253,11 +4258,7 @@ class _SetTargetPageWidgetState extends State<SetTargetPageWidget> {
                                                                     _model
                                                                         .bloodGlucoseA1CRecomController
                                                                         .text),
-                                                          );
-                                                          await queryLabtestLabtestRecord!
-                                                              .reference
-                                                              .update(
-                                                                  labtestUpdateData);
+                                                          ));
                                                           if (widget.isEdited) {
                                                             logFirebaseEvent(
                                                                 'Button-Save_navigate_back');

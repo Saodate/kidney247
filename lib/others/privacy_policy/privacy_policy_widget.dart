@@ -22,7 +22,6 @@ class _PrivacyPolicyWidgetState extends State<PrivacyPolicyWidget>
   late PrivacyPolicyModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   final animationsMap = {
     'textOnPageLoadAnimation1': AnimationInfo(
@@ -100,7 +99,6 @@ class _PrivacyPolicyWidgetState extends State<PrivacyPolicyWidget>
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -110,9 +108,9 @@ class _PrivacyPolicyWidgetState extends State<PrivacyPolicyWidget>
 
     return Title(
         title: 'Kidney247',
-        color: FlutterFlowTheme.of(context).primary,
+        color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+          onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,

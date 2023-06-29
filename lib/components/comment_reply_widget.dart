@@ -90,11 +90,9 @@ class _CommentReplyWidgetState extends State<CommentReplyWidget> {
                                     .contains(likeByElement)
                                 ? FieldValue.arrayRemove([likeByElement])
                                 : FieldValue.arrayUnion([likeByElement]);
-                            final postCommentsUpdateData = {
+                            await containerPostCommentsRecord.reference.update({
                               'likeBy': likeByUpdate,
-                            };
-                            await containerPostCommentsRecord.reference
-                                .update(postCommentsUpdateData);
+                            });
                           },
                           value: containerPostCommentsRecord.likeBy
                               .contains(currentUserReference),
@@ -479,15 +477,12 @@ class _CommentReplyWidgetState extends State<CommentReplyWidget> {
                                                                     .arrayUnion([
                                                                     likeByElement
                                                                   ]);
-                                                        final postCommentReplyUpdateData =
-                                                            {
-                                                          'likeBy':
-                                                              likeByUpdate,
-                                                        };
                                                         await listViewPostCommentReplyRecord
                                                             .reference
-                                                            .update(
-                                                                postCommentReplyUpdateData);
+                                                            .update({
+                                                          'likeBy':
+                                                              likeByUpdate,
+                                                        });
                                                       },
                                                       value: listViewPostCommentReplyRecord
                                                           .likeBy
@@ -587,11 +582,10 @@ class _CommentReplyWidgetState extends State<CommentReplyWidget> {
                                     .contains(likedByElement)
                                 ? FieldValue.arrayRemove([likedByElement])
                                 : FieldValue.arrayUnion([likedByElement]);
-                            final videoCommentsUpdateData = {
-                              'likedBy': likedByUpdate,
-                            };
                             await containerVideoCommentsRecord.reference
-                                .update(videoCommentsUpdateData);
+                                .update({
+                              'likedBy': likedByUpdate,
+                            });
                           },
                           value: containerVideoCommentsRecord.likedBy
                               .contains(currentUserReference),
@@ -806,8 +800,16 @@ class _CommentReplyWidgetState extends State<CommentReplyWidget> {
                                                                     .start,
                                                             children: [
                                                               Text(
-                                                                containerUsersRecord
-                                                                    .displayName,
+                                                                containerUsersRecord.displayName !=
+                                                                            null &&
+                                                                        containerUsersRecord.displayName !=
+                                                                            ''
+                                                                    ? containerUsersRecord
+                                                                        .displayName
+                                                                    : (FFLocalizations.of(context).languageCode ==
+                                                                            'en'
+                                                                        ? 'Anonymous'
+                                                                        : 'Ẩn danh'),
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
                                                                     .bodyMedium
@@ -978,15 +980,12 @@ class _CommentReplyWidgetState extends State<CommentReplyWidget> {
                                                                     .arrayUnion([
                                                                     likeByElement
                                                                   ]);
-                                                        final videoCommentReplyUpdateData =
-                                                            {
-                                                          'likeBy':
-                                                              likeByUpdate,
-                                                        };
                                                         await listViewVideoCommentReplyRecord
                                                             .reference
-                                                            .update(
-                                                                videoCommentReplyUpdateData);
+                                                            .update({
+                                                          'likeBy':
+                                                              likeByUpdate,
+                                                        });
                                                       },
                                                       value: listViewVideoCommentReplyRecord
                                                           .likeBy

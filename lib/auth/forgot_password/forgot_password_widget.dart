@@ -46,7 +46,7 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget> {
 
     return Title(
         title: 'Kidney247',
-        color: FlutterFlowTheme.of(context).primary,
+        color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
         child: Scaffold(
           key: scaffoldKey,
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,

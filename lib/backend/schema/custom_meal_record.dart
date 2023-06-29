@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
 
@@ -167,6 +169,14 @@ class CustomMealRecord extends FirestoreRecord {
   @override
   String toString() =>
       'CustomMealRecord(reference: ${reference.path}, data: $snapshotData)';
+
+  @override
+  int get hashCode => reference.path.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is CustomMealRecord &&
+      reference.path.hashCode == other.reference.path.hashCode;
 }
 
 Map<String, dynamic> createCustomMealRecordData({
@@ -219,4 +229,61 @@ Map<String, dynamic> createCustomMealRecordData({
   );
 
   return firestoreData;
+}
+
+class CustomMealRecordDocumentEquality implements Equality<CustomMealRecord> {
+  const CustomMealRecordDocumentEquality();
+
+  @override
+  bool equals(CustomMealRecord? e1, CustomMealRecord? e2) {
+    return e1?.name == e2?.name &&
+        e1?.qty == e2?.qty &&
+        e1?.unit == e2?.unit &&
+        e1?.phosphorus == e2?.phosphorus &&
+        e1?.potassium == e2?.potassium &&
+        e1?.sodium == e2?.sodium &&
+        e1?.fluid == e2?.fluid &&
+        e1?.photo == e2?.photo &&
+        e1?.protein == e2?.protein &&
+        e1?.wasted == e2?.wasted &&
+        e1?.fat == e2?.fat &&
+        e1?.carbohydrate == e2?.carbohydrate &&
+        e1?.fiber == e2?.fiber &&
+        e1?.iron == e2?.iron &&
+        e1?.vitaminA == e2?.vitaminA &&
+        e1?.vitaminB1 == e2?.vitaminB1 &&
+        e1?.vitaminC == e2?.vitaminC &&
+        e1?.betacaroteen == e2?.betacaroteen &&
+        e1?.canxi == e2?.canxi &&
+        e1?.cholesterone == e2?.cholesterone &&
+        e1?.calories == e2?.calories;
+  }
+
+  @override
+  int hash(CustomMealRecord? e) => const ListEquality().hash([
+        e?.name,
+        e?.qty,
+        e?.unit,
+        e?.phosphorus,
+        e?.potassium,
+        e?.sodium,
+        e?.fluid,
+        e?.photo,
+        e?.protein,
+        e?.wasted,
+        e?.fat,
+        e?.carbohydrate,
+        e?.fiber,
+        e?.iron,
+        e?.vitaminA,
+        e?.vitaminB1,
+        e?.vitaminC,
+        e?.betacaroteen,
+        e?.canxi,
+        e?.cholesterone,
+        e?.calories
+      ]);
+
+  @override
+  bool isValidKey(Object? o) => o is CustomMealRecord;
 }

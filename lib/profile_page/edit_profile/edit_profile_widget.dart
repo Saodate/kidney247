@@ -259,7 +259,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
         final editProfileUsersRecord = snapshot.data!;
         return Title(
             title: 'Kidney247',
-            color: FlutterFlowTheme.of(context).primary,
+            color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
             child: Scaffold(
               key: scaffoldKey,
               backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -345,6 +345,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                                     m.storagePath, context))) {
                               setState(() => _model.isDataUploading = true);
                               var selectedUploadedFiles = <FFUploadedFile>[];
+
                               var downloadUrls = <String>[];
                               try {
                                 showUploadMessage(
@@ -395,10 +396,10 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
 
                             logFirebaseEvent('Button-Login_backend_call');
 
-                            final usersUpdateData = createUsersRecordData(
+                            await currentUserReference!
+                                .update(createUsersRecordData(
                               photoUrl: _model.uploadedFileUrl,
-                            );
-                            await currentUserReference!.update(usersUpdateData);
+                            ));
                           },
                           text: FFLocalizations.of(context).getText(
                             '9jn971lw' /* Change Photo */,
@@ -429,154 +430,163 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            20.0, 20.0, 20.0, 0.0),
-                        child: TextFormField(
-                          controller: _model.yourNameController ??=
-                              TextEditingController(
-                            text: editProfileUsersRecord.displayName,
-                          ),
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            labelText: FFLocalizations.of(context).getText(
-                              'bst6xw7t' /* Your Name */,
-                            ),
-                            labelStyle: FlutterFlowTheme.of(context)
-                                .bodySmall
-                                .override(
-                                  fontFamily: 'Be Vietnam Pro',
-                                  useGoogleFonts: GoogleFonts.asMap()
-                                      .containsKey(FlutterFlowTheme.of(context)
-                                          .bodySmallFamily),
+                      if (currentUserDisplayName != null &&
+                          currentUserDisplayName != '')
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              20.0, 20.0, 20.0, 0.0),
+                          child: AuthUserStreamWidget(
+                            builder: (context) => TextFormField(
+                              controller: _model.yourNameController ??=
+                                  TextEditingController(
+                                text: editProfileUsersRecord.displayName,
+                              ),
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                labelText: FFLocalizations.of(context).getText(
+                                  'bst6xw7t' /* Your Name */,
                                 ),
-                            hintText: FFLocalizations.of(context).getText(
-                              'a8esj9gk' /*  */,
-                            ),
-                            hintStyle: FlutterFlowTheme.of(context)
-                                .bodySmall
-                                .override(
-                                  fontFamily: 'Be Vietnam Pro',
-                                  useGoogleFonts: GoogleFonts.asMap()
-                                      .containsKey(FlutterFlowTheme.of(context)
-                                          .bodySmallFamily),
+                                labelStyle: FlutterFlowTheme.of(context)
+                                    .bodySmall
+                                    .override(
+                                      fontFamily: 'Be Vietnam Pro',
+                                      useGoogleFonts: GoogleFonts.asMap()
+                                          .containsKey(
+                                              FlutterFlowTheme.of(context)
+                                                  .bodySmallFamily),
+                                    ),
+                                hintText: FFLocalizations.of(context).getText(
+                                  'a8esj9gk' /*  */,
                                 ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0x00000000),
-                                width: 1.0,
+                                hintStyle: FlutterFlowTheme.of(context)
+                                    .bodySmall
+                                    .override(
+                                      fontFamily: 'Be Vietnam Pro',
+                                      useGoogleFonts: GoogleFonts.asMap()
+                                          .containsKey(
+                                              FlutterFlowTheme.of(context)
+                                                  .bodySmallFamily),
+                                    ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 1.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 1.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 1.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 1.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                filled: true,
+                                fillColor: FlutterFlowTheme.of(context)
+                                    .secondaryBackground,
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                    20.0, 24.0, 20.0, 24.0),
                               ),
-                              borderRadius: BorderRadius.circular(8.0),
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Be Vietnam Pro',
+                                    useGoogleFonts: GoogleFonts.asMap()
+                                        .containsKey(
+                                            FlutterFlowTheme.of(context)
+                                                .bodyMediumFamily),
+                                  ),
+                              validator: _model.yourNameControllerValidator
+                                  .asValidator(context),
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0x00000000),
-                                width: 1.0,
-                              ),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0x00000000),
-                                width: 1.0,
-                              ),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0x00000000),
-                                width: 1.0,
-                              ),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            filled: true,
-                            fillColor: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            contentPadding: EdgeInsetsDirectional.fromSTEB(
-                                20.0, 24.0, 20.0, 24.0),
                           ),
-                          style: FlutterFlowTheme.of(context)
-                              .bodyMedium
-                              .override(
-                                fontFamily: 'Be Vietnam Pro',
-                                useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                    FlutterFlowTheme.of(context)
-                                        .bodyMediumFamily),
-                              ),
-                          validator: _model.yourNameControllerValidator
-                              .asValidator(context),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            20.0, 20.0, 20.0, 0.0),
-                        child: TextFormField(
-                          controller: _model.yourEmailController,
-                          readOnly: true,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            labelText: FFLocalizations.of(context).getText(
-                              '46farw0v' /* Email Address */,
+                      if (currentUserEmail != null && currentUserEmail != '')
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              20.0, 20.0, 20.0, 0.0),
+                          child: TextFormField(
+                            controller: _model.yourEmailController,
+                            readOnly: true,
+                            obscureText: false,
+                            decoration: InputDecoration(
+                              labelText: FFLocalizations.of(context).getText(
+                                '46farw0v' /* Email Address */,
+                              ),
+                              labelStyle: FlutterFlowTheme.of(context)
+                                  .bodySmall
+                                  .override(
+                                    fontFamily: 'Be Vietnam Pro',
+                                    useGoogleFonts: GoogleFonts.asMap()
+                                        .containsKey(
+                                            FlutterFlowTheme.of(context)
+                                                .bodySmallFamily),
+                                  ),
+                              hintText: FFLocalizations.of(context).getText(
+                                '1xq971jb' /* Your email */,
+                              ),
+                              hintStyle: FlutterFlowTheme.of(context).bodySmall,
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0x00000000),
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0x00000000),
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0x00000000),
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0x00000000),
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              filled: true,
+                              fillColor: FlutterFlowTheme.of(context)
+                                  .secondaryBackground,
+                              contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                  20.0, 24.0, 20.0, 24.0),
                             ),
-                            labelStyle: FlutterFlowTheme.of(context)
-                                .bodySmall
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium
                                 .override(
                                   fontFamily: 'Be Vietnam Pro',
                                   useGoogleFonts: GoogleFonts.asMap()
                                       .containsKey(FlutterFlowTheme.of(context)
-                                          .bodySmallFamily),
+                                          .bodyMediumFamily),
                                 ),
-                            hintText: FFLocalizations.of(context).getText(
-                              '1xq971jb' /* Your email */,
-                            ),
-                            hintStyle: FlutterFlowTheme.of(context).bodySmall,
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0x00000000),
-                                width: 1.0,
-                              ),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0x00000000),
-                                width: 1.0,
-                              ),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0x00000000),
-                                width: 1.0,
-                              ),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0x00000000),
-                                width: 1.0,
-                              ),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            filled: true,
-                            fillColor: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            contentPadding: EdgeInsetsDirectional.fromSTEB(
-                                20.0, 24.0, 20.0, 24.0),
+                            keyboardType: TextInputType.emailAddress,
+                            validator: _model.yourEmailControllerValidator
+                                .asValidator(context),
                           ),
-                          style: FlutterFlowTheme.of(context)
-                              .bodyMedium
-                              .override(
-                                fontFamily: 'Be Vietnam Pro',
-                                useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                    FlutterFlowTheme.of(context)
-                                        .bodyMediumFamily),
-                              ),
-                          keyboardType: TextInputType.emailAddress,
-                          validator: _model.yourEmailControllerValidator
-                              .asValidator(context),
                         ),
-                      ),
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(
                             20.0, 20.0, 20.0, 0.0),
@@ -863,9 +873,6 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                                         () => _model.dropDownAgeValue = val),
                                     width: 300.0,
                                     height: 50.0,
-                                    searchHintTextStyle:
-                                        FlutterFlowTheme.of(context)
-                                            .labelMedium,
                                     textStyle: FlutterFlowTheme.of(context)
                                         .bodyMedium
                                         .override(
@@ -878,10 +885,6 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                                     hintText:
                                         FFLocalizations.of(context).getText(
                                       'a54zlbt5' /* Please select... */,
-                                    ),
-                                    searchHintText:
-                                        FFLocalizations.of(context).getText(
-                                      'emv71lkd' /* Search for an item... */,
                                     ),
                                     icon: Icon(
                                       Icons.keyboard_arrow_down_rounded,
@@ -1132,14 +1135,6 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                                 () => _model.dropDownStatusValue = val),
                             width: double.infinity,
                             height: 50.0,
-                            searchHintTextStyle: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .override(
-                                  fontFamily: 'Be Vietnam Pro',
-                                  useGoogleFonts: GoogleFonts.asMap()
-                                      .containsKey(FlutterFlowTheme.of(context)
-                                          .bodyMediumFamily),
-                                ),
                             textStyle: FlutterFlowTheme.of(context)
                                 .bodyMedium
                                 .override(
@@ -1150,9 +1145,6 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                                 ),
                             hintText: FFLocalizations.of(context).getText(
                               '5wcccm74' /* Please select... */,
-                            ),
-                            searchHintText: FFLocalizations.of(context).getText(
-                              'i8ir7h2j' /* Search for an item... */,
                             ),
                             fillColor:
                                 FlutterFlowTheme.of(context).primaryBackground,
@@ -1237,14 +1229,6 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                                 setState(() => _model.dropDownStageValue = val),
                             width: double.infinity,
                             height: 50.0,
-                            searchHintTextStyle: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .override(
-                                  fontFamily: 'Be Vietnam Pro',
-                                  useGoogleFonts: GoogleFonts.asMap()
-                                      .containsKey(FlutterFlowTheme.of(context)
-                                          .bodyMediumFamily),
-                                ),
                             textStyle: FlutterFlowTheme.of(context)
                                 .bodyMedium
                                 .override(
@@ -1255,9 +1239,6 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                                 ),
                             hintText: FFLocalizations.of(context).getText(
                               'wjct92dz' /* Please select... */,
-                            ),
-                            searchHintText: FFLocalizations.of(context).getText(
-                              'lld5zidb' /* Search for an item... */,
                             ),
                             fillColor:
                                 FlutterFlowTheme.of(context).primaryBackground,
@@ -1360,7 +1341,8 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                                 'EDIT_PROFILE_PAGE_Button-Login_ON_TAP');
                             logFirebaseEvent('Button-Login_backend_call');
 
-                            final usersUpdateData = createUsersRecordData(
+                            await editProfileUsersRecord.reference
+                                .update(createUsersRecordData(
                               displayName: _model.yourNameController.text,
                               email: _model.yourEmailController.text,
                               age: double.tryParse(
@@ -1377,9 +1359,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                               creatinine: double.tryParse(
                                   _model.creatinineController.text),
                               ageUnit: _model.dropDownAgeValue,
-                            );
-                            await editProfileUsersRecord.reference
-                                .update(usersUpdateData);
+                            ));
                             logFirebaseEvent('Button-Login_navigate_back');
                             context.pop();
                           },

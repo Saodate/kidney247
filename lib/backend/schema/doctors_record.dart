@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
 
@@ -71,6 +73,14 @@ class DoctorsRecord extends FirestoreRecord {
   @override
   String toString() =>
       'DoctorsRecord(reference: ${reference.path}, data: $snapshotData)';
+
+  @override
+  int get hashCode => reference.path.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is DoctorsRecord &&
+      reference.path.hashCode == other.reference.path.hashCode;
 }
 
 Map<String, dynamic> createDoctorsRecordData({
@@ -91,4 +101,24 @@ Map<String, dynamic> createDoctorsRecordData({
   );
 
   return firestoreData;
+}
+
+class DoctorsRecordDocumentEquality implements Equality<DoctorsRecord> {
+  const DoctorsRecordDocumentEquality();
+
+  @override
+  bool equals(DoctorsRecord? e1, DoctorsRecord? e2) {
+    return e1?.name == e2?.name &&
+        e1?.phoneNumber == e2?.phoneNumber &&
+        e1?.address == e2?.address &&
+        e1?.createdAt == e2?.createdAt &&
+        e1?.userRef == e2?.userRef;
+  }
+
+  @override
+  int hash(DoctorsRecord? e) => const ListEquality()
+      .hash([e?.name, e?.phoneNumber, e?.address, e?.createdAt, e?.userRef]);
+
+  @override
+  bool isValidKey(Object? o) => o is DoctorsRecord;
 }

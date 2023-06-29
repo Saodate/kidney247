@@ -16,6 +16,6 @@ Future uxCam() async {
   FlutterUxcam
       .optIntoSchematicRecordings(); // Confirm that you have user permission for screen recording
   FlutterUxConfig config = FlutterUxConfig(
-      userAppKey: "hxol5p0d9xiy5yi", enableAutomaticScreenNameTagging: false);
+      userAppKey: "hxol5p0d9xiy5yi", enableAutomaticScreenNameTagging: true);
   FlutterUxcam.startWithConfiguration(config);
 }

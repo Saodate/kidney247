@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
 
@@ -75,6 +77,11 @@ class ChatsRecord extends FirestoreRecord {
   String get groupChatImage => _groupChatImage ?? '';
   bool hasGroupChatImage() => _groupChatImage != null;
 
+  // "language" field.
+  String? _language;
+  String get language => _language ?? '';
+  bool hasLanguage() => _language != null;
+
   void _initializeFields() {
     _users = getDataList(snapshotData['users']);
     _userA = snapshotData['user_a'] as DocumentReference?;
@@ -89,6 +96,7 @@ class ChatsRecord extends FirestoreRecord {
     _groupChatName = snapshotData['groupChatName'] as String?;
     _groupChatDescription = snapshotData['groupChatDescription'] as String?;
     _groupChatImage = snapshotData['groupChatImage'] as String?;
+    _language = snapshotData['language'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -114,6 +122,14 @@ class ChatsRecord extends FirestoreRecord {
   @override
   String toString() =>
       'ChatsRecord(reference: ${reference.path}, data: $snapshotData)';
+
+  @override
+  int get hashCode => reference.path.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is ChatsRecord &&
+      reference.path.hashCode == other.reference.path.hashCode;
 }
 
 Map<String, dynamic> createChatsRecordData({
@@ -127,6 +143,7 @@ Map<String, dynamic> createChatsRecordData({
   String? groupChatName,
   String? groupChatDescription,
   String? groupChatImage,
+  String? language,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -140,8 +157,51 @@ Map<String, dynamic> createChatsRecordData({
       'groupChatName': groupChatName,
       'groupChatDescription': groupChatDescription,
       'groupChatImage': groupChatImage,
+      'language': language,
     }.withoutNulls,
   );
 
   return firestoreData;
+}
+
+class ChatsRecordDocumentEquality implements Equality<ChatsRecord> {
+  const ChatsRecordDocumentEquality();
+
+  @override
+  bool equals(ChatsRecord? e1, ChatsRecord? e2) {
+    const listEquality = ListEquality();
+    return listEquality.equals(e1?.users, e2?.users) &&
+        e1?.userA == e2?.userA &&
+        e1?.userB == e2?.userB &&
+        e1?.lastMessage == e2?.lastMessage &&
+        e1?.lastMessageTime == e2?.lastMessageTime &&
+        e1?.lastMessageSentBy == e2?.lastMessageSentBy &&
+        listEquality.equals(e1?.lastMessageSeenBy, e2?.lastMessageSeenBy) &&
+        e1?.isPrivate == e2?.isPrivate &&
+        e1?.isSystemGroup == e2?.isSystemGroup &&
+        e1?.groupChatName == e2?.groupChatName &&
+        e1?.groupChatDescription == e2?.groupChatDescription &&
+        e1?.groupChatImage == e2?.groupChatImage &&
+        e1?.language == e2?.language;
+  }
+
+  @override
+  int hash(ChatsRecord? e) => const ListEquality().hash([
+        e?.users,
+        e?.userA,
+        e?.userB,
+        e?.lastMessage,
+        e?.lastMessageTime,
+        e?.lastMessageSentBy,
+        e?.lastMessageSeenBy,
+        e?.isPrivate,
+        e?.isSystemGroup,
+        e?.groupChatName,
+        e?.groupChatDescription,
+        e?.groupChatImage,
+        e?.language
+      ]);
+
+  @override
+  bool isValidKey(Object? o) => o is ChatsRecord;
 }

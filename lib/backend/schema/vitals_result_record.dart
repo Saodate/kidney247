@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
 
@@ -96,6 +98,14 @@ class VitalsResultRecord extends FirestoreRecord {
   @override
   String toString() =>
       'VitalsResultRecord(reference: ${reference.path}, data: $snapshotData)';
+
+  @override
+  int get hashCode => reference.path.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is VitalsResultRecord &&
+      reference.path.hashCode == other.reference.path.hashCode;
 }
 
 Map<String, dynamic> createVitalsResultRecordData({
@@ -124,4 +134,38 @@ Map<String, dynamic> createVitalsResultRecordData({
   );
 
   return firestoreData;
+}
+
+class VitalsResultRecordDocumentEquality
+    implements Equality<VitalsResultRecord> {
+  const VitalsResultRecordDocumentEquality();
+
+  @override
+  bool equals(VitalsResultRecord? e1, VitalsResultRecord? e2) {
+    return e1?.bloodPressureFrom == e2?.bloodPressureFrom &&
+        e1?.bloodPressureTo == e2?.bloodPressureTo &&
+        e1?.fluidOutput == e2?.fluidOutput &&
+        e1?.bloodGlucose == e2?.bloodGlucose &&
+        e1?.userRef == e2?.userRef &&
+        e1?.createdTime == e2?.createdTime &&
+        e1?.bloodPressureTime == e2?.bloodPressureTime &&
+        e1?.fluidOutputTime == e2?.fluidOutputTime &&
+        e1?.bloodGlucoseTime == e2?.bloodGlucoseTime;
+  }
+
+  @override
+  int hash(VitalsResultRecord? e) => const ListEquality().hash([
+        e?.bloodPressureFrom,
+        e?.bloodPressureTo,
+        e?.fluidOutput,
+        e?.bloodGlucose,
+        e?.userRef,
+        e?.createdTime,
+        e?.bloodPressureTime,
+        e?.fluidOutputTime,
+        e?.bloodGlucoseTime
+      ]);
+
+  @override
+  bool isValidKey(Object? o) => o is VitalsResultRecord;
 }

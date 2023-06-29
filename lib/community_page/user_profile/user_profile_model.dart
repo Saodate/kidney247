@@ -1,14 +1,14 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/comment_component/comment_component_widget.dart';
+import '/components/empty_list/empty_list_widget.dart';
+import '/components/post_option_popup/post_option_popup_widget.dart';
 import '/flutter_flow/chat/index.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_toggle_icon.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/home_page/components/comment_component/comment_component_widget.dart';
-import '/home_page/components/empty_list/empty_list_widget.dart';
-import '/home_page/components/post_option_popup/post_option_popup_widget.dart';
 import '/flutter_flow/request_manager.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -26,9 +26,12 @@ class UserProfileModel extends FlutterFlowModel {
   void addToListUser(DocumentReference item) => listUser.add(item);
   void removeFromListUser(DocumentReference item) => listUser.remove(item);
   void removeAtIndexFromListUser(int index) => listUser.removeAt(index);
+  void updateListUserAtIndex(int index, Function(DocumentReference) updateFn) =>
+      listUser[index] = updateFn(listUser[index]);
 
   ///  State fields for stateful widgets in this page.
 
+  final unfocusNode = FocusNode();
   // Stores action output result for [Backend Call - Create Document] action in Button widget.
   ChatsRecord? chat;
   // Stores action output result for [Group Chat Action] action in Button widget.
@@ -56,11 +59,14 @@ class UserProfileModel extends FlutterFlowModel {
   void initState(BuildContext context) {}
 
   void dispose() {
+    unfocusNode.dispose();
+
     /// Dispose query cache managers for this widget.
 
     clearUserPostProfileCache();
   }
 
-  /// Additional helper methods are added here.
+  /// Action blocks are added here.
 
+  /// Additional helper methods are added here.
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:from_css_color/from_css_color.dart';
 import '/backend/algolia/algolia_manager.dart';
+import 'package:collection/collection.dart';
 
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
@@ -110,6 +111,14 @@ class PostsRecord extends FirestoreRecord {
   @override
   String toString() =>
       'PostsRecord(reference: ${reference.path}, data: $snapshotData)';
+
+  @override
+  int get hashCode => reference.path.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is PostsRecord &&
+      reference.path.hashCode == other.reference.path.hashCode;
 }
 
 Map<String, dynamic> createPostsRecordData({
@@ -128,4 +137,25 @@ Map<String, dynamic> createPostsRecordData({
   );
 
   return firestoreData;
+}
+
+class PostsRecordDocumentEquality implements Equality<PostsRecord> {
+  const PostsRecordDocumentEquality();
+
+  @override
+  bool equals(PostsRecord? e1, PostsRecord? e2) {
+    const listEquality = ListEquality();
+    return e1?.userRef == e2?.userRef &&
+        e1?.createdAt == e2?.createdAt &&
+        e1?.content == e2?.content &&
+        e1?.image == e2?.image &&
+        listEquality.equals(e1?.likedBy, e2?.likedBy);
+  }
+
+  @override
+  int hash(PostsRecord? e) => const ListEquality()
+      .hash([e?.userRef, e?.createdAt, e?.content, e?.image, e?.likedBy]);
+
+  @override
+  bool isValidKey(Object? o) => o is PostsRecord;
 }

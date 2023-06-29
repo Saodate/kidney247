@@ -25,6 +25,7 @@ import 'package:provider/provider.dart';
 class CompleteProfileModel extends FlutterFlowModel {
   ///  State fields for stateful widgets in this page.
 
+  final unfocusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
   bool isDataUploading1 = false;
   FFUploadedFile uploadedLocalFile1 =
@@ -130,6 +131,7 @@ class CompleteProfileModel extends FlutterFlowModel {
   }
 
   void dispose() {
+    unfocusNode.dispose();
     yourNameController?.dispose();
     heightController?.dispose();
     weightController?.dispose();
@@ -137,6 +139,8 @@ class CompleteProfileModel extends FlutterFlowModel {
     creatinineController?.dispose();
     fluidOutput24hController?.dispose();
   }
+
+  /// Action blocks are added here.
 
   /// Additional helper methods are added here.
 

@@ -2,6 +2,9 @@ import '/auth/firebase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/backend/backend.dart';
 import '/backend/firebase_storage/storage.dart';
+import '/components/blank_meal/blank_meal_widget.dart';
+import '/components/empty_list/empty_list_widget.dart';
+import '/components/meal_unit_slider/meal_unit_slider_widget.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -9,9 +12,6 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import '/flutter_flow/upload_data.dart';
-import '/home_page/components/blank_meal/blank_meal_widget.dart';
-import '/home_page/components/empty_list/empty_list_widget.dart';
-import '/home_page/components/meal_unit_slider/meal_unit_slider_widget.dart';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -33,6 +33,7 @@ class LogMealPageModel extends FlutterFlowModel {
 
   ///  State fields for stateful widgets in this page.
 
+  final unfocusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
   // State field(s) for TextField widget.
   TextEditingController? textController1;
@@ -102,6 +103,7 @@ class LogMealPageModel extends FlutterFlowModel {
   }
 
   void dispose() {
+    unfocusNode.dispose();
     textController1?.dispose();
     blankMealModel.dispose();
     nameController?.dispose();
@@ -114,6 +116,7 @@ class LogMealPageModel extends FlutterFlowModel {
     fluidController?.dispose();
   }
 
-  /// Additional helper methods are added here.
+  /// Action blocks are added here.
 
+  /// Additional helper methods are added here.
 }

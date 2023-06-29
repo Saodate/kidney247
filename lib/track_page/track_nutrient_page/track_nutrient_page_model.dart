@@ -1,9 +1,9 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/empty_tracking/empty_tracking_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/home_page/components/empty_tracking/empty_tracking_widget.dart';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 class TrackNutrientPageModel extends FlutterFlowModel {
   ///  State fields for stateful widgets in this page.
 
+  final unfocusNode = FocusNode();
   // Model for emptyTracking component.
   late EmptyTrackingModel emptyTrackingModel;
 
@@ -23,9 +24,11 @@ class TrackNutrientPageModel extends FlutterFlowModel {
   }
 
   void dispose() {
+    unfocusNode.dispose();
     emptyTrackingModel.dispose();
   }
 
-  /// Additional helper methods are added here.
+  /// Action blocks are added here.
 
+  /// Additional helper methods are added here.
 }

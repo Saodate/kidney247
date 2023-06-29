@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
 
@@ -82,6 +84,14 @@ class VideosRecord extends FirestoreRecord {
   @override
   String toString() =>
       'VideosRecord(reference: ${reference.path}, data: $snapshotData)';
+
+  @override
+  int get hashCode => reference.path.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is VideosRecord &&
+      reference.path.hashCode == other.reference.path.hashCode;
 }
 
 Map<String, dynamic> createVideosRecordData({
@@ -104,4 +114,34 @@ Map<String, dynamic> createVideosRecordData({
   );
 
   return firestoreData;
+}
+
+class VideosRecordDocumentEquality implements Equality<VideosRecord> {
+  const VideosRecordDocumentEquality();
+
+  @override
+  bool equals(VideosRecord? e1, VideosRecord? e2) {
+    const listEquality = ListEquality();
+    return e1?.title == e2?.title &&
+        e1?.description == e2?.description &&
+        e1?.videoUrl == e2?.videoUrl &&
+        e1?.createdAt == e2?.createdAt &&
+        listEquality.equals(e1?.likesBy, e2?.likesBy) &&
+        e1?.isLive == e2?.isLive &&
+        e1?.language == e2?.language;
+  }
+
+  @override
+  int hash(VideosRecord? e) => const ListEquality().hash([
+        e?.title,
+        e?.description,
+        e?.videoUrl,
+        e?.createdAt,
+        e?.likesBy,
+        e?.isLive,
+        e?.language
+      ]);
+
+  @override
+  bool isValidKey(Object? o) => o is VideosRecord;
 }

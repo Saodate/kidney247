@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
 
@@ -37,8 +39,8 @@ class VitalRecord extends FirestoreRecord {
   DocumentReference get parentReference => reference.parent.parent!;
 
   void _initializeFields() {
-    _bloodPressureFrom = snapshotData['blood_pressure_from'] as int?;
-    _bloodPressureTo = snapshotData['blood_pressure_to'] as int?;
+    _bloodPressureFrom = castToType<int>(snapshotData['blood_pressure_from']);
+    _bloodPressureTo = castToType<int>(snapshotData['blood_pressure_to']);
     _bloodGlucose = castToType<double>(snapshotData['blood_glucose']);
     _fluidOutput = castToType<double>(snapshotData['fluid_output']);
   }
@@ -71,6 +73,14 @@ class VitalRecord extends FirestoreRecord {
   @override
   String toString() =>
       'VitalRecord(reference: ${reference.path}, data: $snapshotData)';
+
+  @override
+  int get hashCode => reference.path.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is VitalRecord &&
+      reference.path.hashCode == other.reference.path.hashCode;
 }
 
 Map<String, dynamic> createVitalRecordData({
@@ -89,4 +99,27 @@ Map<String, dynamic> createVitalRecordData({
   );
 
   return firestoreData;
+}
+
+class VitalRecordDocumentEquality implements Equality<VitalRecord> {
+  const VitalRecordDocumentEquality();
+
+  @override
+  bool equals(VitalRecord? e1, VitalRecord? e2) {
+    return e1?.bloodPressureFrom == e2?.bloodPressureFrom &&
+        e1?.bloodPressureTo == e2?.bloodPressureTo &&
+        e1?.bloodGlucose == e2?.bloodGlucose &&
+        e1?.fluidOutput == e2?.fluidOutput;
+  }
+
+  @override
+  int hash(VitalRecord? e) => const ListEquality().hash([
+        e?.bloodPressureFrom,
+        e?.bloodPressureTo,
+        e?.bloodGlucose,
+        e?.fluidOutput
+      ]);
+
+  @override
+  bool isValidKey(Object? o) => o is VitalRecord;
 }

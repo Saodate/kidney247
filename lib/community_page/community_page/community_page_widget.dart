@@ -1,6 +1,10 @@
 import '/auth/base_auth_user_provider.dart';
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/comment_component/comment_component_widget.dart';
+import '/components/create_new_post_component/create_new_post_component_widget.dart';
+import '/components/empty_list/empty_list_widget.dart';
+import '/components/post_option_popup/post_option_popup_widget.dart';
 import '/components/search_post_widget.dart';
 import '/flutter_flow/chat/index.dart';
 import '/flutter_flow/flutter_flow_expanded_image_view.dart';
@@ -9,10 +13,6 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_toggle_icon.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/home_page/components/comment_component/comment_component_widget.dart';
-import '/home_page/components/create_new_post_component/create_new_post_component_widget.dart';
-import '/home_page/components/empty_list/empty_list_widget.dart';
-import '/home_page/components/post_option_popup/post_option_popup_widget.dart';
 import 'package:aligned_dialog/aligned_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -35,7 +35,6 @@ class _CommunityPageWidgetState extends State<CommunityPageWidget> {
   late CommunityPageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
@@ -61,7 +60,6 @@ class _CommunityPageWidgetState extends State<CommunityPageWidget> {
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -71,9 +69,9 @@ class _CommunityPageWidgetState extends State<CommunityPageWidget> {
 
     return Title(
         title: 'Community',
-        color: FlutterFlowTheme.of(context).primary,
+        color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+          onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).primary,
@@ -189,16 +187,15 @@ class _CommunityPageWidgetState extends State<CommunityPageWidget> {
                                                           return GestureDetector(
                                                             onTap: () => FocusScope
                                                                     .of(context)
-                                                                .requestFocus(
-                                                                    _unfocusNode),
+                                                                .requestFocus(_model
+                                                                    .unfocusNode),
                                                             child: Padding(
                                                               padding: MediaQuery
-                                                                      .of(context)
-                                                                  .viewInsets,
+                                                                  .viewInsetsOf(
+                                                                      context),
                                                               child: Container(
-                                                                height: MediaQuery.of(
+                                                                height: MediaQuery.sizeOf(
                                                                             context)
-                                                                        .size
                                                                         .height *
                                                                     0.8,
                                                                 child:
@@ -313,8 +310,8 @@ class _CommunityPageWidgetState extends State<CommunityPageWidget> {
                                                               GestureDetector(
                                                             onTap: () => FocusScope
                                                                     .of(context)
-                                                                .requestFocus(
-                                                                    _unfocusNode),
+                                                                .requestFocus(_model
+                                                                    .unfocusNode),
                                                             child:
                                                                 SearchPostWidget(),
                                                           ),
@@ -475,17 +472,34 @@ class _CommunityPageWidgetState extends State<CommunityPageWidget> {
                                                                             onTap:
                                                                                 () async {
                                                                               logFirebaseEvent('COMMUNITY_CircleImage_4u8bk7n4_ON_TAP');
-                                                                              logFirebaseEvent('CircleImage_navigate_to');
+                                                                              if (containerPostsUsersRecord.email != null && containerPostsUsersRecord.email != '') {
+                                                                                logFirebaseEvent('CircleImage_navigate_to');
 
-                                                                              context.pushNamed(
-                                                                                'userProfile',
-                                                                                queryParameters: {
-                                                                                  'userRef': serializeParam(
-                                                                                    listViewPostsRecord.userRef,
-                                                                                    ParamType.DocumentReference,
+                                                                                context.pushNamed(
+                                                                                  'userProfile',
+                                                                                  queryParameters: {
+                                                                                    'userRef': serializeParam(
+                                                                                      listViewPostsRecord.userRef,
+                                                                                      ParamType.DocumentReference,
+                                                                                    ),
+                                                                                  }.withoutNulls,
+                                                                                );
+                                                                              } else {
+                                                                                logFirebaseEvent('CircleImage_show_snack_bar');
+                                                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                                                  SnackBar(
+                                                                                    content: Text(
+                                                                                      FFLocalizations.of(context).languageCode == 'en' ? 'You can\'t see a anonymous\'s profile!' : 'Bạn không thể xem hồ sơ của người dùng ẩn danh!',
+                                                                                      style: GoogleFonts.getFont(
+                                                                                        'Be Vietnam Pro',
+                                                                                        color: FlutterFlowTheme.of(context).primaryText,
+                                                                                      ),
+                                                                                    ),
+                                                                                    duration: Duration(milliseconds: 2000),
+                                                                                    backgroundColor: FlutterFlowTheme.of(context).secondary,
                                                                                   ),
-                                                                                }.withoutNulls,
-                                                                              );
+                                                                                );
+                                                                              }
                                                                             },
                                                                             child:
                                                                                 Container(
@@ -519,7 +533,7 @@ class _CommunityPageWidgetState extends State<CommunityPageWidget> {
                                                                                   mainAxisSize: MainAxisSize.max,
                                                                                   children: [
                                                                                     Text(
-                                                                                      containerPostsUsersRecord.displayName,
+                                                                                      containerPostsUsersRecord.displayName != null && containerPostsUsersRecord.displayName != '' ? containerPostsUsersRecord.displayName : (FFLocalizations.of(context).languageCode == 'en' ? 'Anonymous' : 'Ẩn danh'),
                                                                                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                                                             fontFamily: 'Be Vietnam Pro',
                                                                                             fontSize: 16.0,
@@ -587,9 +601,9 @@ class _CommunityPageWidgetState extends State<CommunityPageWidget> {
                                                                               context: context,
                                                                               builder: (context) {
                                                                                 return GestureDetector(
-                                                                                  onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+                                                                                  onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
                                                                                   child: Padding(
-                                                                                    padding: MediaQuery.of(context).viewInsets,
+                                                                                    padding: MediaQuery.viewInsetsOf(context),
                                                                                     child: Container(
                                                                                       height: 100.0,
                                                                                       child: PostOptionPopupWidget(
@@ -761,10 +775,9 @@ class _CommunityPageWidgetState extends State<CommunityPageWidget> {
                                                                                   onPressed: () async {
                                                                                     final likedByElement = currentUserReference;
                                                                                     final likedByUpdate = listViewPostsRecord.likedBy.contains(likedByElement) ? FieldValue.arrayRemove([likedByElement]) : FieldValue.arrayUnion([likedByElement]);
-                                                                                    final postsUpdateData = {
+                                                                                    await listViewPostsRecord.reference.update({
                                                                                       'likedBy': likedByUpdate,
-                                                                                    };
-                                                                                    await listViewPostsRecord.reference.update(postsUpdateData);
+                                                                                    });
                                                                                   },
                                                                                   value: listViewPostsRecord.likedBy.contains(currentUserReference),
                                                                                   onIcon: Icon(
@@ -807,9 +820,9 @@ class _CommunityPageWidgetState extends State<CommunityPageWidget> {
                                                                                         context: context,
                                                                                         builder: (context) {
                                                                                           return GestureDetector(
-                                                                                            onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+                                                                                            onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
                                                                                             child: Padding(
-                                                                                              padding: MediaQuery.of(context).viewInsets,
+                                                                                              padding: MediaQuery.viewInsetsOf(context),
                                                                                               child: Container(
                                                                                                 height: 710.0,
                                                                                                 child: CommentComponentWidget(
@@ -1039,6 +1052,11 @@ class _CommunityPageWidgetState extends State<CommunityPageWidget> {
                                                             ParamType
                                                                 .DocumentReference,
                                                           ),
+                                                          'isGroupChat':
+                                                              serializeParam(
+                                                            true,
+                                                            ParamType.bool,
+                                                          ),
                                                         }.withoutNulls,
                                                       );
 
@@ -1206,6 +1224,11 @@ class _CommunityPageWidgetState extends State<CommunityPageWidget> {
                                                             ParamType
                                                                 .DocumentReference,
                                                           ),
+                                                          'isGroupChat':
+                                                              serializeParam(
+                                                            true,
+                                                            ParamType.bool,
+                                                          ),
                                                         }.withoutNulls,
                                                       );
 
@@ -1355,6 +1378,11 @@ class _CommunityPageWidgetState extends State<CommunityPageWidget> {
                                                                 .groupChat2Ref,
                                                             ParamType
                                                                 .DocumentReference,
+                                                          ),
+                                                          'isGroupChat':
+                                                              serializeParam(
+                                                            true,
+                                                            ParamType.bool,
                                                           ),
                                                         }.withoutNulls,
                                                       );
@@ -1519,6 +1547,11 @@ class _CommunityPageWidgetState extends State<CommunityPageWidget> {
                                                                 .groupChatEnRef2,
                                                             ParamType
                                                                 .DocumentReference,
+                                                          ),
+                                                          'isGroupChat':
+                                                              serializeParam(
+                                                            true,
+                                                            ParamType.bool,
                                                           ),
                                                         }.withoutNulls,
                                                       );
@@ -1817,104 +1850,105 @@ class _CommunityPageWidgetState extends State<CommunityPageWidget> {
                                                                         ),
                                                                     ],
                                                                   ),
-                                                                  Stack(
-                                                                    children: [
-                                                                      if (listViewChatsRecord
-                                                                          .lastMessageSeenBy
-                                                                          .contains(
-                                                                              currentUserReference))
-                                                                        Row(
-                                                                          mainAxisSize:
-                                                                              MainAxisSize.max,
-                                                                          children: [
-                                                                            StreamBuilder<UsersRecord>(
-                                                                              stream: UsersRecord.getDocument(listViewChatsRecord.lastMessageSentBy!),
-                                                                              builder: (context, snapshot) {
-                                                                                // Customize what your widget looks like when it's loading.
-                                                                                if (!snapshot.hasData) {
-                                                                                  return Center(
-                                                                                    child: SizedBox(
-                                                                                      width: 40.0,
-                                                                                      height: 40.0,
-                                                                                      child: SpinKitCircle(
-                                                                                        color: FlutterFlowTheme.of(context).teal,
-                                                                                        size: 40.0,
+                                                                  if (listViewChatsRecord
+                                                                          .lastMessageSentBy !=
+                                                                      null)
+                                                                    Stack(
+                                                                      children: [
+                                                                        if (listViewChatsRecord
+                                                                            .lastMessageSeenBy
+                                                                            .contains(currentUserReference))
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              StreamBuilder<UsersRecord>(
+                                                                                stream: UsersRecord.getDocument(listViewChatsRecord.lastMessageSentBy!),
+                                                                                builder: (context, snapshot) {
+                                                                                  // Customize what your widget looks like when it's loading.
+                                                                                  if (!snapshot.hasData) {
+                                                                                    return Center(
+                                                                                      child: SizedBox(
+                                                                                        width: 40.0,
+                                                                                        height: 40.0,
+                                                                                        child: SpinKitCircle(
+                                                                                          color: FlutterFlowTheme.of(context).teal,
+                                                                                          size: 40.0,
+                                                                                        ),
                                                                                       ),
-                                                                                    ),
+                                                                                    );
+                                                                                  }
+                                                                                  final textUsersRecord = snapshot.data!;
+                                                                                  return Text(
+                                                                                    FFLocalizations.of(context).languageCode == 'en' ? (listViewChatsRecord.lastMessageSentBy == currentUserReference ? 'You: ' : '${textUsersRecord.displayName}: ') : (listViewChatsRecord.lastMessageSentBy == currentUserReference ? 'Bạn:' : '${textUsersRecord.displayName}:'),
+                                                                                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                          fontFamily: 'Be Vietnam Pro',
+                                                                                          useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
+                                                                                        ),
                                                                                   );
-                                                                                }
-                                                                                final textUsersRecord = snapshot.data!;
-                                                                                return Text(
-                                                                                  FFLocalizations.of(context).languageCode == 'en' ? (listViewChatsRecord.lastMessageSentBy == currentUserReference ? 'You: ' : '${textUsersRecord.displayName}: ') : (listViewChatsRecord.lastMessageSentBy == currentUserReference ? 'Bạn:' : '${textUsersRecord.displayName}:'),
-                                                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                        fontFamily: 'Be Vietnam Pro',
-                                                                                        useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
-                                                                                      ),
-                                                                                );
-                                                                              },
-                                                                            ),
-                                                                            Text(
-                                                                              listViewChatsRecord.lastMessage.maybeHandleOverflow(
-                                                                                maxChars: 40,
-                                                                                replacement: '…',
+                                                                                },
                                                                               ),
-                                                                              style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                    fontFamily: 'Be Vietnam Pro',
-                                                                                    useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
-                                                                                  ),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      if (!listViewChatsRecord
-                                                                          .lastMessageSeenBy
-                                                                          .contains(
-                                                                              currentUserReference))
-                                                                        Row(
-                                                                          mainAxisSize:
-                                                                              MainAxisSize.max,
-                                                                          children: [
-                                                                            StreamBuilder<UsersRecord>(
-                                                                              stream: UsersRecord.getDocument(listViewChatsRecord.lastMessageSentBy!),
-                                                                              builder: (context, snapshot) {
-                                                                                // Customize what your widget looks like when it's loading.
-                                                                                if (!snapshot.hasData) {
-                                                                                  return Center(
-                                                                                    child: SizedBox(
-                                                                                      width: 40.0,
-                                                                                      height: 40.0,
-                                                                                      child: SpinKitCircle(
-                                                                                        color: FlutterFlowTheme.of(context).teal,
-                                                                                        size: 40.0,
-                                                                                      ),
+                                                                              Text(
+                                                                                listViewChatsRecord.lastMessage.maybeHandleOverflow(
+                                                                                  maxChars: 40,
+                                                                                  replacement: '…',
+                                                                                ),
+                                                                                style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                      fontFamily: 'Be Vietnam Pro',
+                                                                                      useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
                                                                                     ),
-                                                                                  );
-                                                                                }
-                                                                                final textUsersRecord = snapshot.data!;
-                                                                                return Text(
-                                                                                  FFLocalizations.of(context).languageCode == 'en' ? (listViewChatsRecord.lastMessageSentBy == currentUserReference ? 'You: ' : '${textUsersRecord.displayName}: ') : (listViewChatsRecord.lastMessageSentBy == currentUserReference ? 'Bạn:' : '${textUsersRecord.displayName}:'),
-                                                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                        fontFamily: 'Be Vietnam Pro',
-                                                                                        fontWeight: FontWeight.bold,
-                                                                                        useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
-                                                                                      ),
-                                                                                );
-                                                                              },
-                                                                            ),
-                                                                            Text(
-                                                                              listViewChatsRecord.lastMessage.maybeHandleOverflow(
-                                                                                maxChars: 40,
-                                                                                replacement: '…',
                                                                               ),
-                                                                              style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                    fontFamily: 'Be Vietnam Pro',
-                                                                                    fontWeight: FontWeight.bold,
-                                                                                    useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
-                                                                                  ),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                    ],
-                                                                  ),
+                                                                            ],
+                                                                          ),
+                                                                        if (!listViewChatsRecord
+                                                                            .lastMessageSeenBy
+                                                                            .contains(currentUserReference))
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              StreamBuilder<UsersRecord>(
+                                                                                stream: UsersRecord.getDocument(listViewChatsRecord.lastMessageSentBy!),
+                                                                                builder: (context, snapshot) {
+                                                                                  // Customize what your widget looks like when it's loading.
+                                                                                  if (!snapshot.hasData) {
+                                                                                    return Center(
+                                                                                      child: SizedBox(
+                                                                                        width: 40.0,
+                                                                                        height: 40.0,
+                                                                                        child: SpinKitCircle(
+                                                                                          color: FlutterFlowTheme.of(context).teal,
+                                                                                          size: 40.0,
+                                                                                        ),
+                                                                                      ),
+                                                                                    );
+                                                                                  }
+                                                                                  final textUsersRecord = snapshot.data!;
+                                                                                  return Text(
+                                                                                    FFLocalizations.of(context).languageCode == 'en' ? (listViewChatsRecord.lastMessageSentBy == currentUserReference ? 'You: ' : '${textUsersRecord.displayName}: ') : (listViewChatsRecord.lastMessageSentBy == currentUserReference ? 'Bạn:' : '${textUsersRecord.displayName}:'),
+                                                                                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                          fontFamily: 'Be Vietnam Pro',
+                                                                                          fontWeight: FontWeight.bold,
+                                                                                          useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
+                                                                                        ),
+                                                                                  );
+                                                                                },
+                                                                              ),
+                                                                              Text(
+                                                                                listViewChatsRecord.lastMessage.maybeHandleOverflow(
+                                                                                  maxChars: 40,
+                                                                                  replacement: '…',
+                                                                                ),
+                                                                                style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                      fontFamily: 'Be Vietnam Pro',
+                                                                                      fontWeight: FontWeight.bold,
+                                                                                      useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
+                                                                                    ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                      ],
+                                                                    ),
                                                                 ],
                                                               ),
                                                             ),
@@ -2238,7 +2272,9 @@ class _CommunityPageWidgetState extends State<CommunityPageWidget> {
                                                                             .users
                                                                             .contains(currentUserReference))
                                                                           Text(
-                                                                            containerUsersRecord.displayName,
+                                                                            containerUsersRecord.displayName != null && containerUsersRecord.displayName != ''
+                                                                                ? containerUsersRecord.displayName
+                                                                                : (FFLocalizations.of(context).languageCode == 'en' ? 'Anonymous' : 'Ẩn danh'),
                                                                             style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                                                   fontFamily: 'Be Vietnam Pro',
                                                                                   useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
@@ -2248,7 +2284,9 @@ class _CommunityPageWidgetState extends State<CommunityPageWidget> {
                                                                             .users
                                                                             .contains(currentUserReference))
                                                                           Text(
-                                                                            containerUsersRecord.displayName,
+                                                                            containerUsersRecord.displayName != null && containerUsersRecord.displayName != ''
+                                                                                ? containerUsersRecord.displayName
+                                                                                : (FFLocalizations.of(context).languageCode == 'en' ? 'Anonymous' : 'Ẩn danh'),
                                                                             style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                                                   fontFamily: 'Be Vietnam Pro',
                                                                                   fontWeight: FontWeight.bold,

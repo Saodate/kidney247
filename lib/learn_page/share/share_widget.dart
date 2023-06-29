@@ -1,12 +1,12 @@
 import '/auth/base_auth_user_provider.dart';
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/comment_component/comment_component_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_toggle_icon.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_video_player.dart';
-import '/home_page/components/comment_component/comment_component_widget.dart';
+import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -33,7 +33,6 @@ class _ShareWidgetState extends State<ShareWidget> {
   late ShareModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
@@ -48,7 +47,6 @@ class _ShareWidgetState extends State<ShareWidget> {
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -58,9 +56,9 @@ class _ShareWidgetState extends State<ShareWidget> {
 
     return Title(
         title: 'Learn',
-        color: FlutterFlowTheme.of(context).primary,
+        color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+          onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -86,24 +84,15 @@ class _ShareWidgetState extends State<ShareWidget> {
                   return Stack(
                     children: [
                       Container(
-                        decoration: BoxDecoration(
-                          color: Color(0xFF1A1F24),
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            FlutterFlowVideoPlayer(
-                              path: stackVideosRecord.videoUrl,
-                              videoType: VideoType.network,
-                              aspectRatio: 0.56,
-                              autoPlay: true,
-                              looping: true,
-                              showControls: true,
-                              allowFullScreen: false,
-                              allowPlaybackSpeedMenu: false,
-                            ),
-                          ],
+                        decoration: BoxDecoration(),
+                        child: Container(
+                          width: double.infinity,
+                          height: double.infinity,
+                          child: custom_widgets.VideoLoader(
+                            width: double.infinity,
+                            height: double.infinity,
+                            videoUrl: stackVideosRecord.videoUrl,
+                          ),
                         ),
                       ),
                       Align(
@@ -184,11 +173,10 @@ class _ShareWidgetState extends State<ShareWidget> {
                                                         [likesByElement])
                                                     : FieldValue.arrayUnion(
                                                         [likesByElement]);
-                                            final videosUpdateData = {
-                                              'likes_by': likesByUpdate,
-                                            };
                                             await stackVideosRecord.reference
-                                                .update(videosUpdateData);
+                                                .update({
+                                              'likes_by': likesByUpdate,
+                                            });
                                             logFirebaseEvent(
                                                 'SHARE_PAGE_ToggleIcon_y1mwzkss_ON_TOGGLE');
                                             if (!loggedIn) {
@@ -281,14 +269,14 @@ class _ShareWidgetState extends State<ShareWidget> {
                                               context: context,
                                               builder: (context) {
                                                 return GestureDetector(
-                                                  onTap: () =>
-                                                      FocusScope.of(context)
-                                                          .requestFocus(
-                                                              _unfocusNode),
+                                                  onTap: () => FocusScope.of(
+                                                          context)
+                                                      .requestFocus(
+                                                          _model.unfocusNode),
                                                   child: Padding(
                                                     padding:
-                                                        MediaQuery.of(context)
-                                                            .viewInsets,
+                                                        MediaQuery.viewInsetsOf(
+                                                            context),
                                                     child:
                                                         CommentComponentWidget(
                                                       videoRef: widget.videoRef,

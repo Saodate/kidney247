@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
 
@@ -71,6 +73,14 @@ class VideoCommentsRecord extends FirestoreRecord {
   @override
   String toString() =>
       'VideoCommentsRecord(reference: ${reference.path}, data: $snapshotData)';
+
+  @override
+  int get hashCode => reference.path.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is VideoCommentsRecord &&
+      reference.path.hashCode == other.reference.path.hashCode;
 }
 
 Map<String, dynamic> createVideoCommentsRecordData({
@@ -89,4 +99,26 @@ Map<String, dynamic> createVideoCommentsRecordData({
   );
 
   return firestoreData;
+}
+
+class VideoCommentsRecordDocumentEquality
+    implements Equality<VideoCommentsRecord> {
+  const VideoCommentsRecordDocumentEquality();
+
+  @override
+  bool equals(VideoCommentsRecord? e1, VideoCommentsRecord? e2) {
+    const listEquality = ListEquality();
+    return e1?.userRef == e2?.userRef &&
+        e1?.createdAt == e2?.createdAt &&
+        e1?.comment == e2?.comment &&
+        e1?.videoRef == e2?.videoRef &&
+        listEquality.equals(e1?.likedBy, e2?.likedBy);
+  }
+
+  @override
+  int hash(VideoCommentsRecord? e) => const ListEquality()
+      .hash([e?.userRef, e?.createdAt, e?.comment, e?.videoRef, e?.likedBy]);
+
+  @override
+  bool isValidKey(Object? o) => o is VideoCommentsRecord;
 }

@@ -110,7 +110,11 @@ class ParameterData {
 final parametersBuilderMap =
     <String, Future<ParameterData> Function(Map<String, dynamic>)>{
   'loginPage': ParameterData.none(),
-  'completeProfile': ParameterData.none(),
+  'completeProfile': (data) async => ParameterData(
+        allParams: {
+          'isAnonymous': getParameter<bool>(data, 'isAnonymous'),
+        },
+      ),
   'homePage': ParameterData.none(),
   'profilePage': (data) async => ParameterData(
         allParams: {

@@ -25,7 +25,6 @@ class _UploadPhotoPageWidgetState extends State<UploadPhotoPageWidget> {
   late UploadPhotoPageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
@@ -41,7 +40,6 @@ class _UploadPhotoPageWidgetState extends State<UploadPhotoPageWidget> {
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -51,9 +49,9 @@ class _UploadPhotoPageWidgetState extends State<UploadPhotoPageWidget> {
 
     return Title(
         title: 'Kidney247',
-        color: FlutterFlowTheme.of(context).primary,
+        color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+          onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -118,6 +116,7 @@ class _UploadPhotoPageWidgetState extends State<UploadPhotoPageWidget> {
                                 validateFileFormat(m.storagePath, context))) {
                           setState(() => _model.isDataUploading = true);
                           var selectedUploadedFiles = <FFUploadedFile>[];
+
                           var downloadUrls = <String>[];
                           try {
                             showUploadMessage(
@@ -212,15 +211,13 @@ class _UploadPhotoPageWidgetState extends State<UploadPhotoPageWidget> {
                         if (!_model.isUploaded) {
                           logFirebaseEvent('Button_backend_call');
 
-                          final labTestPhotoCreateData =
-                              createLabTestPhotoRecordData(
-                            photoUrl: _model.uploadedFileUrl,
-                            userRef: currentUserReference,
-                            createdAt: getCurrentTimestamp,
-                          );
                           await LabTestPhotoRecord.collection
                               .doc()
-                              .set(labTestPhotoCreateData);
+                              .set(createLabTestPhotoRecordData(
+                                photoUrl: _model.uploadedFileUrl,
+                                userRef: currentUserReference,
+                                createdAt: getCurrentTimestamp,
+                              ));
                           logFirebaseEvent('Button_navigate_back');
                           context.safePop();
                         } else {

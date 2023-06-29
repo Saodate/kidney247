@@ -2,6 +2,9 @@ import '/auth/firebase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/backend/backend.dart';
 import '/backend/firebase_storage/storage.dart';
+import '/components/blank_meal/blank_meal_widget.dart';
+import '/components/empty_list/empty_list_widget.dart';
+import '/components/meal_unit_slider/meal_unit_slider_widget.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -9,9 +12,6 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import '/flutter_flow/upload_data.dart';
-import '/home_page/components/blank_meal/blank_meal_widget.dart';
-import '/home_page/components/empty_list/empty_list_widget.dart';
-import '/home_page/components/meal_unit_slider/meal_unit_slider_widget.dart';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -41,7 +41,6 @@ class _LogMealPageWidgetState extends State<LogMealPageWidget> {
   late LogMealPageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
@@ -92,7 +91,6 @@ class _LogMealPageWidgetState extends State<LogMealPageWidget> {
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -102,9 +100,9 @@ class _LogMealPageWidgetState extends State<LogMealPageWidget> {
 
     return Title(
         title: 'Kidney247',
-        color: FlutterFlowTheme.of(context).primary,
+        color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+          onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -828,11 +826,11 @@ class _LogMealPageWidgetState extends State<LogMealPageWidget> {
                                                                           (context) {
                                                                         return GestureDetector(
                                                                           onTap: () =>
-                                                                              FocusScope.of(context).requestFocus(_unfocusNode),
+                                                                              FocusScope.of(context).requestFocus(_model.unfocusNode),
                                                                           child:
                                                                               Padding(
                                                                             padding:
-                                                                                MediaQuery.of(context).viewInsets,
+                                                                                MediaQuery.viewInsetsOf(context),
                                                                             child:
                                                                                 Container(
                                                                               height: 350.0,
@@ -1151,9 +1149,9 @@ class _LogMealPageWidgetState extends State<LogMealPageWidget> {
                                                                           builder:
                                                                               (context) {
                                                                             return GestureDetector(
-                                                                              onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+                                                                              onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
                                                                               child: Padding(
-                                                                                padding: MediaQuery.of(context).viewInsets,
+                                                                                padding: MediaQuery.viewInsetsOf(context),
                                                                                 child: Container(
                                                                                   height: 350.0,
                                                                                   child: MealUnitSliderWidget(
@@ -1791,21 +1789,6 @@ class _LogMealPageWidgetState extends State<LogMealPageWidget> {
                                                                         val),
                                                             width: 180.0,
                                                             height: 50.0,
-                                                            searchHintTextStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyLarge
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Be Vietnam Pro',
-                                                                      color: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .secondaryText,
-                                                                      useGoogleFonts: GoogleFonts
-                                                                              .asMap()
-                                                                          .containsKey(
-                                                                              FlutterFlowTheme.of(context).bodyLargeFamily),
-                                                                    ),
                                                             textStyle:
                                                                 FlutterFlowTheme.of(
                                                                         context)
@@ -1823,12 +1806,6 @@ class _LogMealPageWidgetState extends State<LogMealPageWidget> {
                                                                         context)
                                                                     .getText(
                                                               'coeufvg9' /* Please select... */,
-                                                            ),
-                                                            searchHintText:
-                                                                FFLocalizations.of(
-                                                                        context)
-                                                                    .getText(
-                                                              '4qnzxz6j' /* Search for an item... */,
                                                             ),
                                                             fillColor: FlutterFlowTheme
                                                                     .of(context)
@@ -2087,21 +2064,6 @@ class _LogMealPageWidgetState extends State<LogMealPageWidget> {
                                                                         val),
                                                             width: 180.0,
                                                             height: 50.0,
-                                                            searchHintTextStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyLarge
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Be Vietnam Pro',
-                                                                      color: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .secondaryText,
-                                                                      useGoogleFonts: GoogleFonts
-                                                                              .asMap()
-                                                                          .containsKey(
-                                                                              FlutterFlowTheme.of(context).bodyLargeFamily),
-                                                                    ),
                                                             textStyle:
                                                                 FlutterFlowTheme.of(
                                                                         context)
@@ -2119,12 +2081,6 @@ class _LogMealPageWidgetState extends State<LogMealPageWidget> {
                                                                         context)
                                                                     .getText(
                                                               '0zwqidc2' /* Please select... */,
-                                                            ),
-                                                            searchHintText:
-                                                                FFLocalizations.of(
-                                                                        context)
-                                                                    .getText(
-                                                              '6lkjdd1s' /* Search for an item... */,
                                                             ),
                                                             fillColor: FlutterFlowTheme
                                                                     .of(context)
@@ -2242,7 +2198,7 @@ class _LogMealPageWidgetState extends State<LogMealPageWidget> {
                                                                   borderRadius:
                                                                       BorderRadius
                                                                           .circular(
-                                                                              5.0),
+                                                                              12.0),
                                                                 ),
                                                                 focusedBorder:
                                                                     OutlineInputBorder(
@@ -2256,7 +2212,7 @@ class _LogMealPageWidgetState extends State<LogMealPageWidget> {
                                                                   borderRadius:
                                                                       BorderRadius
                                                                           .circular(
-                                                                              5.0),
+                                                                              12.0),
                                                                 ),
                                                                 errorBorder:
                                                                     OutlineInputBorder(
@@ -2269,7 +2225,7 @@ class _LogMealPageWidgetState extends State<LogMealPageWidget> {
                                                                   borderRadius:
                                                                       BorderRadius
                                                                           .circular(
-                                                                              5.0),
+                                                                              12.0),
                                                                 ),
                                                                 focusedErrorBorder:
                                                                     OutlineInputBorder(
@@ -2282,7 +2238,7 @@ class _LogMealPageWidgetState extends State<LogMealPageWidget> {
                                                                   borderRadius:
                                                                       BorderRadius
                                                                           .circular(
-                                                                              5.0),
+                                                                              12.0),
                                                                 ),
                                                               ),
                                                               style: FlutterFlowTheme
@@ -2379,21 +2335,6 @@ class _LogMealPageWidgetState extends State<LogMealPageWidget> {
                                                                       val),
                                                           width: 180.0,
                                                           height: 50.0,
-                                                          searchHintTextStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyLarge
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Be Vietnam Pro',
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .secondaryText,
-                                                                    useGoogleFonts: GoogleFonts
-                                                                            .asMap()
-                                                                        .containsKey(
-                                                                            FlutterFlowTheme.of(context).bodyLargeFamily),
-                                                                  ),
                                                           textStyle:
                                                               FlutterFlowTheme.of(
                                                                       context)
@@ -2411,12 +2352,6 @@ class _LogMealPageWidgetState extends State<LogMealPageWidget> {
                                                                       context)
                                                                   .getText(
                                                             'dkkmkhaa' /* Please select... */,
-                                                          ),
-                                                          searchHintText:
-                                                              FFLocalizations.of(
-                                                                      context)
-                                                                  .getText(
-                                                            'cmb0f6xa' /* Search for an item... */,
                                                           ),
                                                           fillColor: FlutterFlowTheme
                                                                   .of(context)
@@ -2669,21 +2604,6 @@ class _LogMealPageWidgetState extends State<LogMealPageWidget> {
                                                                       val),
                                                           width: 180.0,
                                                           height: 50.0,
-                                                          searchHintTextStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyLarge
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Be Vietnam Pro',
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .secondaryText,
-                                                                    useGoogleFonts: GoogleFonts
-                                                                            .asMap()
-                                                                        .containsKey(
-                                                                            FlutterFlowTheme.of(context).bodyLargeFamily),
-                                                                  ),
                                                           textStyle:
                                                               FlutterFlowTheme.of(
                                                                       context)
@@ -2701,12 +2621,6 @@ class _LogMealPageWidgetState extends State<LogMealPageWidget> {
                                                                       context)
                                                                   .getText(
                                                             'cd9k3lr9' /* Please select... */,
-                                                          ),
-                                                          searchHintText:
-                                                              FFLocalizations.of(
-                                                                      context)
-                                                                  .getText(
-                                                            'y8xt1y8k' /* Search for an item... */,
                                                           ),
                                                           fillColor: FlutterFlowTheme
                                                                   .of(context)
@@ -2958,21 +2872,6 @@ class _LogMealPageWidgetState extends State<LogMealPageWidget> {
                                                                       val),
                                                           width: 180.0,
                                                           height: 50.0,
-                                                          searchHintTextStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyLarge
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Be Vietnam Pro',
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .secondaryText,
-                                                                    useGoogleFonts: GoogleFonts
-                                                                            .asMap()
-                                                                        .containsKey(
-                                                                            FlutterFlowTheme.of(context).bodyLargeFamily),
-                                                                  ),
                                                           textStyle:
                                                               FlutterFlowTheme.of(
                                                                       context)
@@ -2990,12 +2889,6 @@ class _LogMealPageWidgetState extends State<LogMealPageWidget> {
                                                                       context)
                                                                   .getText(
                                                             'ao8ooca5' /* Please select... */,
-                                                          ),
-                                                          searchHintText:
-                                                              FFLocalizations.of(
-                                                                      context)
-                                                                  .getText(
-                                                            'tccmeekm' /* Search for an item... */,
                                                           ),
                                                           fillColor: FlutterFlowTheme
                                                                   .of(context)
@@ -3231,21 +3124,6 @@ class _LogMealPageWidgetState extends State<LogMealPageWidget> {
                                                                       val),
                                                           width: 180.0,
                                                           height: 50.0,
-                                                          searchHintTextStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyLarge
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Be Vietnam Pro',
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .secondaryText,
-                                                                    useGoogleFonts: GoogleFonts
-                                                                            .asMap()
-                                                                        .containsKey(
-                                                                            FlutterFlowTheme.of(context).bodyLargeFamily),
-                                                                  ),
                                                           textStyle:
                                                               FlutterFlowTheme.of(
                                                                       context)
@@ -3263,12 +3141,6 @@ class _LogMealPageWidgetState extends State<LogMealPageWidget> {
                                                                       context)
                                                                   .getText(
                                                             'tkxqctza' /* Please select... */,
-                                                          ),
-                                                          searchHintText:
-                                                              FFLocalizations.of(
-                                                                      context)
-                                                                  .getText(
-                                                            '3q6psoif' /* Search for an item... */,
                                                           ),
                                                           fillColor: FlutterFlowTheme
                                                                   .of(context)
@@ -3520,21 +3392,6 @@ class _LogMealPageWidgetState extends State<LogMealPageWidget> {
                                                                       val),
                                                           width: 180.0,
                                                           height: 50.0,
-                                                          searchHintTextStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyLarge
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Be Vietnam Pro',
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .secondaryText,
-                                                                    useGoogleFonts: GoogleFonts
-                                                                            .asMap()
-                                                                        .containsKey(
-                                                                            FlutterFlowTheme.of(context).bodyLargeFamily),
-                                                                  ),
                                                           textStyle:
                                                               FlutterFlowTheme.of(
                                                                       context)
@@ -3552,12 +3409,6 @@ class _LogMealPageWidgetState extends State<LogMealPageWidget> {
                                                                       context)
                                                                   .getText(
                                                             '3c248qyl' /* Please select... */,
-                                                          ),
-                                                          searchHintText:
-                                                              FFLocalizations.of(
-                                                                      context)
-                                                                  .getText(
-                                                            '6lu1w9w7' /* Search for an item... */,
                                                           ),
                                                           fillColor: FlutterFlowTheme
                                                                   .of(context)
@@ -3666,6 +3517,7 @@ class _LogMealPageWidgetState extends State<LogMealPageWidget> {
                                                                       true);
                                                               var selectedUploadedFiles =
                                                                   <FFUploadedFile>[];
+
                                                               var downloadUrls =
                                                                   <String>[];
                                                               try {
@@ -3808,8 +3660,13 @@ class _LogMealPageWidgetState extends State<LogMealPageWidget> {
                                                     logFirebaseEvent(
                                                         'Button_backend_call');
 
-                                                    final customMealCreateData =
-                                                        createCustomMealRecordData(
+                                                    var customMealRecordReference =
+                                                        CustomMealRecord
+                                                            .collection
+                                                            .doc();
+                                                    await customMealRecordReference
+                                                        .set(
+                                                            createCustomMealRecordData(
                                                       name: _model
                                                           .nameController.text,
                                                       qty: double.tryParse(_model
@@ -3846,17 +3703,49 @@ class _LogMealPageWidgetState extends State<LogMealPageWidget> {
                                                           _model
                                                               .caloriesController
                                                               .text),
-                                                    );
-                                                    var customMealRecordReference =
-                                                        CustomMealRecord
-                                                            .collection
-                                                            .doc();
-                                                    await customMealRecordReference
-                                                        .set(
-                                                            customMealCreateData);
+                                                    ));
                                                     _model.created = CustomMealRecord
                                                         .getDocumentFromData(
-                                                            customMealCreateData,
+                                                            createCustomMealRecordData(
+                                                              name: _model
+                                                                  .nameController
+                                                                  .text,
+                                                              qty: double
+                                                                  .tryParse(_model
+                                                                      .quantityController
+                                                                      .text),
+                                                              unit: _model
+                                                                  .dropDownUnitValue,
+                                                              phosphorus: double
+                                                                  .tryParse(_model
+                                                                      .phosphorusController
+                                                                      .text),
+                                                              potassium: double
+                                                                  .tryParse(_model
+                                                                      .potassiumController
+                                                                      .text),
+                                                              sodium: double
+                                                                  .tryParse(_model
+                                                                      .sodiumController
+                                                                      .text),
+                                                              fluid: double.parse(
+                                                                  (int.parse(_model
+                                                                              .fluidController
+                                                                              .text) /
+                                                                          1000)
+                                                                      .toStringAsFixed(
+                                                                          2)),
+                                                              photo: _model
+                                                                  .uploadedFileUrl,
+                                                              protein: double
+                                                                  .tryParse(_model
+                                                                      .proteinController
+                                                                      .text),
+                                                              calories: double
+                                                                  .tryParse(_model
+                                                                      .caloriesController
+                                                                      .text),
+                                                            ),
                                                             customMealRecordReference);
                                                     if (_model.created !=
                                                         null) {

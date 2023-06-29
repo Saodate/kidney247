@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
 
@@ -79,6 +81,14 @@ class PostCommentReplyRecord extends FirestoreRecord {
   @override
   String toString() =>
       'PostCommentReplyRecord(reference: ${reference.path}, data: $snapshotData)';
+
+  @override
+  int get hashCode => reference.path.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is PostCommentReplyRecord &&
+      reference.path.hashCode == other.reference.path.hashCode;
 }
 
 Map<String, dynamic> createPostCommentReplyRecordData({
@@ -97,4 +107,26 @@ Map<String, dynamic> createPostCommentReplyRecordData({
   );
 
   return firestoreData;
+}
+
+class PostCommentReplyRecordDocumentEquality
+    implements Equality<PostCommentReplyRecord> {
+  const PostCommentReplyRecordDocumentEquality();
+
+  @override
+  bool equals(PostCommentReplyRecord? e1, PostCommentReplyRecord? e2) {
+    const listEquality = ListEquality();
+    return e1?.userRef == e2?.userRef &&
+        e1?.comment == e2?.comment &&
+        e1?.createdAt == e2?.createdAt &&
+        listEquality.equals(e1?.likeBy, e2?.likeBy) &&
+        e1?.postRef == e2?.postRef;
+  }
+
+  @override
+  int hash(PostCommentReplyRecord? e) => const ListEquality()
+      .hash([e?.userRef, e?.comment, e?.createdAt, e?.likeBy, e?.postRef]);
+
+  @override
+  bool isValidKey(Object? o) => o is PostCommentReplyRecord;
 }

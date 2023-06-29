@@ -1,10 +1,10 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/edit_member/edit_member_widget.dart';
+import '/components/empty_list/empty_list_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/home_page/components/edit_member/edit_member_widget.dart';
-import '/home_page/components/empty_list/empty_list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -24,7 +24,6 @@ class _ListCareTeamWidgetState extends State<ListCareTeamWidget> {
   late ListCareTeamModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
@@ -40,7 +39,6 @@ class _ListCareTeamWidgetState extends State<ListCareTeamWidget> {
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -50,9 +48,9 @@ class _ListCareTeamWidgetState extends State<ListCareTeamWidget> {
 
     return Title(
         title: 'Kidney247',
-        color: FlutterFlowTheme.of(context).primary,
+        color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+          onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -213,14 +211,14 @@ class _ListCareTeamWidgetState extends State<ListCareTeamWidget> {
                                                   context: context,
                                                   builder: (context) {
                                                     return GestureDetector(
-                                                      onTap: () =>
-                                                          FocusScope.of(context)
-                                                              .requestFocus(
-                                                                  _unfocusNode),
+                                                      onTap: () => FocusScope
+                                                              .of(context)
+                                                          .requestFocus(_model
+                                                              .unfocusNode),
                                                       child: Padding(
-                                                        padding: MediaQuery.of(
-                                                                context)
-                                                            .viewInsets,
+                                                        padding: MediaQuery
+                                                            .viewInsetsOf(
+                                                                context),
                                                         child: Container(
                                                           height: 350.0,
                                                           child:

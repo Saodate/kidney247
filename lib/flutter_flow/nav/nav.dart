@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:page_transition/page_transition.dart';
-import '/flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow_theme.dart';
 import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
@@ -56,10 +55,13 @@ class AppStateNotifier extends ChangeNotifier {
   void updateNotifyOnAuthChange(bool notify) => notifyOnAuthChange = notify;
 
   void update(BaseAuthUser newUser) {
+    final shouldUpdate =
+        user?.uid == null || newUser.uid == null || user?.uid != newUser.uid;
     initialUser ??= newUser;
     user = newUser;
     // Refresh the app on auth change unless explicitly marked otherwise.
-    if (notifyOnAuthChange) {
+    // No need to update unless the user has changed.
+    if (notifyOnAuthChange && shouldUpdate) {
       notifyListeners();
     }
     // Once again mark the notifier as needing to update on auth change
@@ -95,7 +97,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'completeProfile',
               path: 'completeProfile',
               requireAuth: true,
-              builder: (context, params) => CompleteProfileWidget(),
+              builder: (context, params) => CompleteProfileWidget(
+                isAnonymous: params.getParam('isAnonymous', ParamType.bool),
+              ),
             ),
             FFRoute(
               name: 'homePage',
@@ -390,7 +394,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ),
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
-      observers: [routeObserver],
     );
 
 extension NavParamExtensions on Map<String, String?> {

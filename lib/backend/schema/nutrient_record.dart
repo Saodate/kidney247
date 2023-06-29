@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
 
@@ -84,6 +86,14 @@ class NutrientRecord extends FirestoreRecord {
   @override
   String toString() =>
       'NutrientRecord(reference: ${reference.path}, data: $snapshotData)';
+
+  @override
+  int get hashCode => reference.path.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is NutrientRecord &&
+      reference.path.hashCode == other.reference.path.hashCode;
 }
 
 Map<String, dynamic> createNutrientRecordData({
@@ -106,4 +116,31 @@ Map<String, dynamic> createNutrientRecordData({
   );
 
   return firestoreData;
+}
+
+class NutrientRecordDocumentEquality implements Equality<NutrientRecord> {
+  const NutrientRecordDocumentEquality();
+
+  @override
+  bool equals(NutrientRecord? e1, NutrientRecord? e2) {
+    return e1?.phosphorus == e2?.phosphorus &&
+        e1?.protein == e2?.protein &&
+        e1?.potassium == e2?.potassium &&
+        e1?.sodium == e2?.sodium &&
+        e1?.fluidIntake == e2?.fluidIntake &&
+        e1?.calories == e2?.calories;
+  }
+
+  @override
+  int hash(NutrientRecord? e) => const ListEquality().hash([
+        e?.phosphorus,
+        e?.protein,
+        e?.potassium,
+        e?.sodium,
+        e?.fluidIntake,
+        e?.calories
+      ]);
+
+  @override
+  bool isValidKey(Object? o) => o is NutrientRecord;
 }

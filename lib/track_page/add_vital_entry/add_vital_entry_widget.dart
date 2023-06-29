@@ -26,7 +26,6 @@ class _AddVitalEntryWidgetState extends State<AddVitalEntryWidget> {
   late AddVitalEntryModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
@@ -42,7 +41,6 @@ class _AddVitalEntryWidgetState extends State<AddVitalEntryWidget> {
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -52,9 +50,9 @@ class _AddVitalEntryWidgetState extends State<AddVitalEntryWidget> {
 
     return Title(
         title: 'Kidney247',
-        color: FlutterFlowTheme.of(context).primary,
+        color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+          onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -146,7 +144,7 @@ class _AddVitalEntryWidgetState extends State<AddVitalEntryWidget> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
-                              width: MediaQuery.of(context).size.width * 0.4,
+                              width: MediaQuery.sizeOf(context).width * 0.4,
                               height: 50.0,
                               decoration: BoxDecoration(
                                 color: FlutterFlowTheme.of(context)
@@ -201,7 +199,7 @@ class _AddVitalEntryWidgetState extends State<AddVitalEntryWidget> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
-                              width: MediaQuery.of(context).size.width * 0.4,
+                              width: MediaQuery.sizeOf(context).width * 0.4,
                               height: 50.0,
                               decoration: BoxDecoration(
                                 color: FlutterFlowTheme.of(context)
@@ -251,7 +249,7 @@ class _AddVitalEntryWidgetState extends State<AddVitalEntryWidget> {
                               ),
                             ),
                             Container(
-                              width: MediaQuery.of(context).size.width * 0.4,
+                              width: MediaQuery.sizeOf(context).width * 0.4,
                               height: 50.0,
                               decoration: BoxDecoration(
                                 color: FlutterFlowTheme.of(context)
@@ -1414,8 +1412,10 @@ class _AddVitalEntryWidgetState extends State<AddVitalEntryWidget> {
                           }()) {
                             logFirebaseEvent('Button_backend_call');
 
-                            final vitalsResultCreateData =
-                                createVitalsResultRecordData(
+                            var vitalsResultRecordReference =
+                                VitalsResultRecord.collection.doc();
+                            await vitalsResultRecordReference
+                                .set(createVitalsResultRecordData(
                               userRef: currentUserReference,
                               bloodPressureFrom: valueOrDefault<double>(
                                 _model.sliderValue2,
@@ -1446,14 +1446,41 @@ class _AddVitalEntryWidgetState extends State<AddVitalEntryWidget> {
                                   _model.datePicked3?.toString() != null
                                       ? _model.datePicked3
                                       : getCurrentTimestamp,
-                            );
-                            var vitalsResultRecordReference =
-                                VitalsResultRecord.collection.doc();
-                            await vitalsResultRecordReference
-                                .set(vitalsResultCreateData);
+                            ));
                             _model.created =
                                 VitalsResultRecord.getDocumentFromData(
-                                    vitalsResultCreateData,
+                                    createVitalsResultRecordData(
+                                      userRef: currentUserReference,
+                                      bloodPressureFrom: valueOrDefault<double>(
+                                        _model.sliderValue2,
+                                        0.0,
+                                      ),
+                                      bloodPressureTo: valueOrDefault<double>(
+                                        _model.sliderValue3,
+                                        0.0,
+                                      ),
+                                      fluidOutput: valueOrDefault<double>(
+                                        _model.sliderValue1,
+                                        0.0,
+                                      ),
+                                      bloodGlucose: valueOrDefault<double>(
+                                        _model.sliderValue4,
+                                        0.0,
+                                      ),
+                                      createdTime: getCurrentTimestamp,
+                                      bloodPressureTime:
+                                          _model.datePicked2?.toString() != null
+                                              ? _model.datePicked2
+                                              : getCurrentTimestamp,
+                                      fluidOutputTime:
+                                          _model.datePicked1?.toString() != null
+                                              ? _model.datePicked1
+                                              : getCurrentTimestamp,
+                                      bloodGlucoseTime:
+                                          _model.datePicked3?.toString() != null
+                                              ? _model.datePicked3
+                                              : getCurrentTimestamp,
+                                    ),
                                     vitalsResultRecordReference);
                             if (_model.created != null) {
                               logFirebaseEvent('Button_show_snack_bar');

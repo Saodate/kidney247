@@ -1,6 +1,10 @@
 import '/auth/base_auth_user_provider.dart';
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/comment_component/comment_component_widget.dart';
+import '/components/create_new_post_component/create_new_post_component_widget.dart';
+import '/components/empty_list/empty_list_widget.dart';
+import '/components/post_option_popup/post_option_popup_widget.dart';
 import '/components/search_post_widget.dart';
 import '/flutter_flow/chat/index.dart';
 import '/flutter_flow/flutter_flow_expanded_image_view.dart';
@@ -9,10 +13,6 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_toggle_icon.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/home_page/components/comment_component/comment_component_widget.dart';
-import '/home_page/components/create_new_post_component/create_new_post_component_widget.dart';
-import '/home_page/components/empty_list/empty_list_widget.dart';
-import '/home_page/components/post_option_popup/post_option_popup_widget.dart';
 import '/flutter_flow/request_manager.dart';
 
 import 'package:aligned_dialog/aligned_dialog.dart';
@@ -27,6 +27,7 @@ import 'package:provider/provider.dart';
 class CommunityPageModel extends FlutterFlowModel {
   ///  State fields for stateful widgets in this page.
 
+  final unfocusNode = FocusNode();
   // Stores action output result for [Group Chat Action] action in ListTileVi widget.
   ChatsRecord? groupChat;
   // Stores action output result for [Group Chat Action] action in ListTileEn widget.
@@ -58,11 +59,14 @@ class CommunityPageModel extends FlutterFlowModel {
   void initState(BuildContext context) {}
 
   void dispose() {
+    unfocusNode.dispose();
+
     /// Dispose query cache managers for this widget.
 
     clearPostCacheCache();
   }
 
-  /// Additional helper methods are added here.
+  /// Action blocks are added here.
 
+  /// Additional helper methods are added here.
 }

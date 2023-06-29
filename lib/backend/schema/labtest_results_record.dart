@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
 
@@ -101,6 +103,14 @@ class LabtestResultsRecord extends FirestoreRecord {
   @override
   String toString() =>
       'LabtestResultsRecord(reference: ${reference.path}, data: $snapshotData)';
+
+  @override
+  int get hashCode => reference.path.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is LabtestResultsRecord &&
+      reference.path.hashCode == other.reference.path.hashCode;
 }
 
 Map<String, dynamic> createLabtestResultsRecordData({
@@ -131,4 +141,40 @@ Map<String, dynamic> createLabtestResultsRecordData({
   );
 
   return firestoreData;
+}
+
+class LabtestResultsRecordDocumentEquality
+    implements Equality<LabtestResultsRecord> {
+  const LabtestResultsRecordDocumentEquality();
+
+  @override
+  bool equals(LabtestResultsRecord? e1, LabtestResultsRecord? e2) {
+    return e1?.albumin == e2?.albumin &&
+        e1?.userRef == e2?.userRef &&
+        e1?.createdAt == e2?.createdAt &&
+        e1?.albuminTime == e2?.albuminTime &&
+        e1?.gFRTime == e2?.gFRTime &&
+        e1?.bUNTime == e2?.bUNTime &&
+        e1?.gfr == e2?.gfr &&
+        e1?.bun == e2?.bun &&
+        e1?.bloodGlucose == e2?.bloodGlucose &&
+        e1?.bloodGlucoseTime == e2?.bloodGlucoseTime;
+  }
+
+  @override
+  int hash(LabtestResultsRecord? e) => const ListEquality().hash([
+        e?.albumin,
+        e?.userRef,
+        e?.createdAt,
+        e?.albuminTime,
+        e?.gFRTime,
+        e?.bUNTime,
+        e?.gfr,
+        e?.bun,
+        e?.bloodGlucose,
+        e?.bloodGlucoseTime
+      ]);
+
+  @override
+  bool isValidKey(Object? o) => o is LabtestResultsRecord;
 }

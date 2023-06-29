@@ -25,7 +25,6 @@ class _AddLabTestResultWidgetState extends State<AddLabTestResultWidget> {
   late AddLabTestResultModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
@@ -41,7 +40,6 @@ class _AddLabTestResultWidgetState extends State<AddLabTestResultWidget> {
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -51,9 +49,9 @@ class _AddLabTestResultWidgetState extends State<AddLabTestResultWidget> {
 
     return Title(
         title: 'Kidney247',
-        color: FlutterFlowTheme.of(context).primary,
+        color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+          onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -142,7 +140,7 @@ class _AddLabTestResultWidgetState extends State<AddLabTestResultWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          width: MediaQuery.of(context).size.width * 0.4,
+                          width: MediaQuery.sizeOf(context).width * 0.4,
                           height: 50.0,
                           decoration: BoxDecoration(
                             color:
@@ -189,7 +187,7 @@ class _AddLabTestResultWidgetState extends State<AddLabTestResultWidget> {
                           ),
                         ),
                         Container(
-                          width: MediaQuery.of(context).size.width * 0.4,
+                          width: MediaQuery.sizeOf(context).width * 0.4,
                           height: 50.0,
                           decoration: BoxDecoration(
                             color:
@@ -245,7 +243,7 @@ class _AddLabTestResultWidgetState extends State<AddLabTestResultWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            width: MediaQuery.of(context).size.width * 0.4,
+                            width: MediaQuery.sizeOf(context).width * 0.4,
                             height: 50.0,
                             decoration: BoxDecoration(
                               color: FlutterFlowTheme.of(context)
@@ -295,7 +293,7 @@ class _AddLabTestResultWidgetState extends State<AddLabTestResultWidget> {
                             ),
                           ),
                           Container(
-                            width: MediaQuery.of(context).size.width * 0.4,
+                            width: MediaQuery.sizeOf(context).width * 0.4,
                             height: 50.0,
                             decoration: BoxDecoration(
                               color: FlutterFlowTheme.of(context)
@@ -1757,8 +1755,10 @@ class _AddLabTestResultWidgetState extends State<AddLabTestResultWidget> {
                           }()) {
                             logFirebaseEvent('Button_backend_call');
 
-                            final labtestResultsCreateData =
-                                createLabtestResultsRecordData(
+                            var labtestResultsRecordReference =
+                                LabtestResultsRecord.collection.doc();
+                            await labtestResultsRecordReference
+                                .set(createLabtestResultsRecordData(
                               albumin: valueOrDefault<double>(
                                 _model.sliderValue2,
                                 0.0,
@@ -1788,14 +1788,42 @@ class _AddLabTestResultWidgetState extends State<AddLabTestResultWidget> {
                                   _model.datePicked1?.toString() != null
                                       ? _model.datePicked1
                                       : getCurrentTimestamp,
-                            );
-                            var labtestResultsRecordReference =
-                                LabtestResultsRecord.collection.doc();
-                            await labtestResultsRecordReference
-                                .set(labtestResultsCreateData);
+                            ));
                             _model.created =
                                 LabtestResultsRecord.getDocumentFromData(
-                                    labtestResultsCreateData,
+                                    createLabtestResultsRecordData(
+                                      albumin: valueOrDefault<double>(
+                                        _model.sliderValue2,
+                                        0.0,
+                                      ),
+                                      userRef: currentUserReference,
+                                      createdAt: getCurrentTimestamp,
+                                      albuminTime:
+                                          _model.datePicked2?.toString() != null
+                                              ? _model.datePicked2
+                                              : getCurrentTimestamp,
+                                      gFRTime:
+                                          _model.datePicked3?.toString() != null
+                                              ? _model.datePicked3
+                                              : getCurrentTimestamp,
+                                      bUNTime:
+                                          _model.datePicked4?.toString() != null
+                                              ? _model.datePicked4
+                                              : getCurrentTimestamp,
+                                      gfr: valueOrDefault<double>(
+                                        _model.sliderValue3,
+                                        0.0,
+                                      ),
+                                      bun: valueOrDefault<double>(
+                                        _model.sliderValue4,
+                                        0.0,
+                                      ),
+                                      bloodGlucose: _model.sliderValue1,
+                                      bloodGlucoseTime:
+                                          _model.datePicked1?.toString() != null
+                                              ? _model.datePicked1
+                                              : getCurrentTimestamp,
+                                    ),
                                     labtestResultsRecordReference);
                             if (_model.created != null) {
                               logFirebaseEvent('Button_show_snack_bar');

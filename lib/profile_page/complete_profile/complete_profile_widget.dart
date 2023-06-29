@@ -25,7 +25,13 @@ import 'complete_profile_model.dart';
 export 'complete_profile_model.dart';
 
 class CompleteProfileWidget extends StatefulWidget {
-  const CompleteProfileWidget({Key? key}) : super(key: key);
+  const CompleteProfileWidget({
+    Key? key,
+    bool? isAnonymous,
+  })  : this.isAnonymous = isAnonymous ?? false,
+        super(key: key);
+
+  final bool isAnonymous;
 
   @override
   _CompleteProfileWidgetState createState() => _CompleteProfileWidgetState();
@@ -36,7 +42,6 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
   late CompleteProfileModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   final animationsMap = {
     'circleImageOnPageLoadAnimation': AnimationInfo(
@@ -458,7 +463,6 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -468,9 +472,9 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
 
     return Title(
         title: 'Kidney247',
-        color: FlutterFlowTheme.of(context).primary,
+        color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+          onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -512,8 +516,8 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  width: MediaQuery.of(context).size.width * 1.0,
-                  height: MediaQuery.of(context).size.height * 1.0,
+                  width: MediaQuery.sizeOf(context).width * 1.0,
+                  height: MediaQuery.sizeOf(context).height * 1.0,
                   constraints: BoxConstraints(
                     maxWidth: 770.0,
                   ),
@@ -559,6 +563,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                                         () => _model.isDataUploading1 = true);
                                     var selectedUploadedFiles =
                                         <FFUploadedFile>[];
+
                                     var downloadUrls = <String>[];
                                     try {
                                       selectedUploadedFiles = selectedMedia
@@ -603,11 +608,10 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
 
                                   logFirebaseEvent('userAvatar_backend_call');
 
-                                  final usersUpdateData = createUsersRecordData(
-                                    photoUrl: _model.uploadedFileUrl1,
-                                  );
                                   await currentUserReference!
-                                      .update(usersUpdateData);
+                                      .update(createUsersRecordData(
+                                    photoUrl: _model.uploadedFileUrl1,
+                                  ));
                                 },
                                 child: Container(
                                   width: 120.0,
@@ -642,87 +646,89 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                                   ),
                             ).animateOnPageLoad(
                                 animationsMap['textOnPageLoadAnimation1']!),
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  20.0, 20.0, 20.0, 0.0),
-                              child: TextFormField(
-                                controller: _model.yourNameController,
-                                obscureText: false,
-                                decoration: InputDecoration(
-                                  labelText:
-                                      FFLocalizations.of(context).getText(
-                                    'f45t5aiy' /* Your Name */,
+                            if (widget.isAnonymous == false)
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    20.0, 20.0, 20.0, 0.0),
+                                child: TextFormField(
+                                  controller: _model.yourNameController,
+                                  obscureText: false,
+                                  decoration: InputDecoration(
+                                    labelText:
+                                        FFLocalizations.of(context).getText(
+                                      'f45t5aiy' /* Your Name */,
+                                    ),
+                                    labelStyle: FlutterFlowTheme.of(context)
+                                        .bodySmall
+                                        .override(
+                                          fontFamily: 'Be Vietnam Pro',
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodySmallFamily),
+                                        ),
+                                    hintText:
+                                        FFLocalizations.of(context).getText(
+                                      'ounyhigo' /* i.e. Kyle John */,
+                                    ),
+                                    hintStyle: FlutterFlowTheme.of(context)
+                                        .bodySmall
+                                        .override(
+                                          fontFamily: 'Be Vietnam Pro',
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodySmallFamily),
+                                        ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0x00000000),
+                                        width: 1.0,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0x00000000),
+                                        width: 1.0,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0x00000000),
+                                        width: 1.0,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0x00000000),
+                                        width: 1.0,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                    contentPadding:
+                                        EdgeInsetsDirectional.fromSTEB(
+                                            20.0, 24.0, 20.0, 24.0),
                                   ),
-                                  labelStyle: FlutterFlowTheme.of(context)
-                                      .bodySmall
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyMedium
                                       .override(
                                         fontFamily: 'Be Vietnam Pro',
                                         useGoogleFonts: GoogleFonts.asMap()
                                             .containsKey(
                                                 FlutterFlowTheme.of(context)
-                                                    .bodySmallFamily),
+                                                    .bodyMediumFamily),
                                       ),
-                                  hintText: FFLocalizations.of(context).getText(
-                                    'ounyhigo' /* i.e. Kyle John */,
-                                  ),
-                                  hintStyle: FlutterFlowTheme.of(context)
-                                      .bodySmall
-                                      .override(
-                                        fontFamily: 'Be Vietnam Pro',
-                                        useGoogleFonts: GoogleFonts.asMap()
-                                            .containsKey(
-                                                FlutterFlowTheme.of(context)
-                                                    .bodySmallFamily),
-                                      ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0x00000000),
-                                      width: 1.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0x00000000),
-                                      width: 1.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0x00000000),
-                                      width: 1.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0x00000000),
-                                      width: 1.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  filled: true,
-                                  fillColor: FlutterFlowTheme.of(context)
-                                      .secondaryBackground,
-                                  contentPadding:
-                                      EdgeInsetsDirectional.fromSTEB(
-                                          20.0, 24.0, 20.0, 24.0),
-                                ),
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Be Vietnam Pro',
-                                      useGoogleFonts: GoogleFonts.asMap()
-                                          .containsKey(
-                                              FlutterFlowTheme.of(context)
-                                                  .bodyMediumFamily),
-                                    ),
-                                validator: _model.yourNameControllerValidator
-                                    .asValidator(context),
-                              ).animateOnPageLoad(animationsMap[
-                                  'textFieldOnPageLoadAnimation1']!),
-                            ),
+                                  validator: _model.yourNameControllerValidator
+                                      .asValidator(context),
+                                ).animateOnPageLoad(animationsMap[
+                                    'textFieldOnPageLoadAnimation1']!),
+                              ),
                             Padding(
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   20.0, 20.0, 20.0, 0.0),
@@ -1019,9 +1025,6 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                                             _model.dropDownAgeValue = val),
                                         width: 300.0,
                                         height: 50.0,
-                                        searchHintTextStyle:
-                                            FlutterFlowTheme.of(context)
-                                                .labelMedium,
                                         textStyle: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
@@ -1036,10 +1039,6 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                                         hintText:
                                             FFLocalizations.of(context).getText(
                                           'mr5hze9w' /* Please select... */,
-                                        ),
-                                        searchHintText:
-                                            FFLocalizations.of(context).getText(
-                                          'rvqwqcig' /* Search for an item... */,
                                         ),
                                         icon: Icon(
                                           Icons.keyboard_arrow_down_rounded,
@@ -1294,16 +1293,6 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                                     () => _model.dropDownStatusValue = val),
                                 width: double.infinity,
                                 height: 50.0,
-                                searchHintTextStyle:
-                                    FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .override(
-                                          fontFamily: 'Be Vietnam Pro',
-                                          useGoogleFonts: GoogleFonts.asMap()
-                                              .containsKey(
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMediumFamily),
-                                        ),
                                 textStyle: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
@@ -1315,10 +1304,6 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                                     ),
                                 hintText: FFLocalizations.of(context).getText(
                                   'tnt7geu3' /* Please select... */,
-                                ),
-                                searchHintText:
-                                    FFLocalizations.of(context).getText(
-                                  'mmoxeer0' /* Search for an item... */,
                                 ),
                                 fillColor: FlutterFlowTheme.of(context)
                                     .primaryBackground,
@@ -1401,16 +1386,6 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                                     () => _model.dropDownStageValue = val),
                                 width: double.infinity,
                                 height: 50.0,
-                                searchHintTextStyle:
-                                    FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .override(
-                                          fontFamily: 'Be Vietnam Pro',
-                                          useGoogleFonts: GoogleFonts.asMap()
-                                              .containsKey(
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMediumFamily),
-                                        ),
                                 textStyle: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
@@ -1422,10 +1397,6 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                                     ),
                                 hintText: FFLocalizations.of(context).getText(
                                   'k51r900d' /* Please select... */,
-                                ),
-                                searchHintText:
-                                    FFLocalizations.of(context).getText(
-                                  'esjtthk4' /* Search for an item... */,
                                 ),
                                 fillColor: FlutterFlowTheme.of(context)
                                     .primaryBackground,
@@ -1584,6 +1555,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                                               _model.isDataUploading2 = true);
                                           var selectedUploadedFiles =
                                               <FFUploadedFile>[];
+
                                           var downloadUrls = <String>[];
                                           try {
                                             showUploadMessage(
@@ -1787,8 +1759,8 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                                     logFirebaseEvent(
                                         'Button-Login_backend_call');
 
-                                    final usersUpdateData =
-                                        createUsersRecordData(
+                                    await currentUserReference!
+                                        .update(createUsersRecordData(
                                       displayName:
                                           _model.yourNameController.text,
                                       age: double.tryParse(
@@ -1808,80 +1780,71 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                                       creatinine: double.parse(
                                           _model.creatinineController.text),
                                       ageUnit: _model.dropDownAgeValue,
-                                    );
-                                    await currentUserReference!
-                                        .update(usersUpdateData);
+                                    ));
                                     logFirebaseEvent(
                                         'Button-Login_backend_call');
 
-                                    final targetsCreateData =
-                                        createTargetsRecordData(
-                                      createdAt: getCurrentTimestamp,
-                                      userRef: currentUserReference,
-                                    );
                                     var targetsRecordReference =
                                         TargetsRecord.collection.doc();
                                     await targetsRecordReference
-                                        .set(targetsCreateData);
+                                        .set(createTargetsRecordData(
+                                      createdAt: getCurrentTimestamp,
+                                      userRef: currentUserReference,
+                                    ));
                                     _model.createdTarget =
                                         TargetsRecord.getDocumentFromData(
-                                            targetsCreateData,
+                                            createTargetsRecordData(
+                                              createdAt: getCurrentTimestamp,
+                                              userRef: currentUserReference,
+                                            ),
                                             targetsRecordReference);
                                     logFirebaseEvent(
                                         'Button-Login_backend_call');
 
-                                    final nutrientCreateData =
-                                        createNutrientRecordData(
+                                    await NutrientRecord.createDoc(
+                                            _model.createdTarget!.reference)
+                                        .set(createNutrientRecordData(
                                       phosphorus: 0.0,
                                       protein: 0.0,
                                       sodium: 0.0,
                                       fluidIntake: 0.0,
                                       potassium: 0.0,
                                       calories: 0.0,
-                                    );
-                                    await NutrientRecord.createDoc(
-                                            _model.createdTarget!.reference)
-                                        .set(nutrientCreateData);
+                                    ));
                                     logFirebaseEvent(
                                         'Button-Login_backend_call');
 
-                                    final vitalCreateData =
-                                        createVitalRecordData(
+                                    await VitalRecord.createDoc(
+                                            _model.createdTarget!.reference)
+                                        .set(createVitalRecordData(
                                       bloodPressureFrom: 0,
                                       bloodPressureTo: 0,
                                       bloodGlucose: 0.0,
                                       fluidOutput: 0.0,
-                                    );
-                                    await VitalRecord.createDoc(
-                                            _model.createdTarget!.reference)
-                                        .set(vitalCreateData);
+                                    ));
                                     logFirebaseEvent(
                                         'Button-Login_backend_call');
 
-                                    final labtestCreateData =
-                                        createLabtestRecordData(
+                                    await LabtestRecord.createDoc(
+                                            _model.createdTarget!.reference)
+                                        .set(createLabtestRecordData(
                                       eGFR: 0.0,
                                       albumin: 0.0,
                                       bloodUN: 0.0,
                                       bloodGlucose: 0.0,
-                                    );
-                                    await LabtestRecord.createDoc(
-                                            _model.createdTarget!.reference)
-                                        .set(labtestCreateData);
+                                    ));
                                     if (_model.uploadedFileUrl2 != null &&
                                         _model.uploadedFileUrl2 != '') {
                                       logFirebaseEvent(
                                           'Button-Login_backend_call');
 
-                                      final labTestPhotoCreateData =
-                                          createLabTestPhotoRecordData(
-                                        photoUrl: _model.uploadedFileUrl2,
-                                        userRef: currentUserReference,
-                                        createdAt: getCurrentTimestamp,
-                                      );
                                       await LabTestPhotoRecord.collection
                                           .doc()
-                                          .set(labTestPhotoCreateData);
+                                          .set(createLabTestPhotoRecordData(
+                                            photoUrl: _model.uploadedFileUrl2,
+                                            userRef: currentUserReference,
+                                            createdAt: getCurrentTimestamp,
+                                          ));
                                     }
                                     logFirebaseEvent(
                                         'Button-Login_navigate_to');
@@ -2047,8 +2010,9 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                                                     logFirebaseEvent(
                                                         'Button-Login_backend_call');
 
-                                                    final usersUpdateData =
-                                                        createUsersRecordData(
+                                                    await currentUserReference!
+                                                        .update(
+                                                            createUsersRecordData(
                                                       displayName: _model
                                                           .yourNameController
                                                           .text,
@@ -2083,27 +2047,24 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                                                               .text),
                                                       ageUnit: _model
                                                           .dropDownAgeValue,
-                                                    );
-                                                    await currentUserReference!
-                                                        .update(
-                                                            usersUpdateData);
+                                                    ));
                                                     logFirebaseEvent(
                                                         'Button-Login_backend_call');
 
-                                                    final targetsUpdateData =
-                                                        createTargetsRecordData(
-                                                      createdAt:
-                                                          getCurrentTimestamp,
-                                                    );
                                                     await containerTargetsRecord!
                                                         .reference
                                                         .update(
-                                                            targetsUpdateData);
+                                                            createTargetsRecordData(
+                                                      createdAt:
+                                                          getCurrentTimestamp,
+                                                    ));
                                                     logFirebaseEvent(
                                                         'Button-Login_backend_call');
 
-                                                    final nutrientUpdateData =
-                                                        createNutrientRecordData(
+                                                    await containerNutrientRecord!
+                                                        .reference
+                                                        .update(
+                                                            createNutrientRecordData(
                                                       protein: double.parse((1.4 *
                                                               valueOrDefault(
                                                                   currentUserDocument
@@ -2161,16 +2122,14 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                                                                   currentUserDocument
                                                                       ?.todayfluidOutput,
                                                                   0.0))),
-                                                    );
-                                                    await containerNutrientRecord!
-                                                        .reference
-                                                        .update(
-                                                            nutrientUpdateData);
+                                                    ));
                                                     logFirebaseEvent(
                                                         'Button-Login_backend_call');
 
-                                                    final labtestUpdateData =
-                                                        createLabtestRecordData(
+                                                    await buttonLoginLabtestRecord!
+                                                        .reference
+                                                        .update(
+                                                            createLabtestRecordData(
                                                       eGFR:
                                                           valueOrDefault(
                                                                       currentUserDocument
@@ -2194,7 +2153,8 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                                                                           : (double.parse((0.0205 * 0.85 * (140 - valueOrDefault(currentUserDocument?.age, 0.0)) * valueOrDefault(currentUserDocument?.weight, 0.0) / valueOrDefault(currentUserDocument?.creatinine, 0.0)).toStringAsFixed(2)))))
                                                                   : () {
                                                                       if (valueOrDefault(
-                                                                              currentUserDocument?.age,
+                                                                              currentUserDocument
+                                                                                  ?.age,
                                                                               0.0) >
                                                                           13.0) {
                                                                         return (FFLocalizations.of(context).languageCode ==
@@ -2436,11 +2396,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                                                                         0.0));
                                                               }
                                                             }(),
-                                                    );
-                                                    await buttonLoginLabtestRecord!
-                                                        .reference
-                                                        .update(
-                                                            labtestUpdateData);
+                                                    ));
                                                     if (_model.uploadedFileUrl2 !=
                                                             null &&
                                                         _model.uploadedFileUrl2 !=
@@ -2448,20 +2404,18 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                                                       logFirebaseEvent(
                                                           'Button-Login_backend_call');
 
-                                                      final labTestPhotoCreateData =
-                                                          createLabTestPhotoRecordData(
-                                                        photoUrl: _model
-                                                            .uploadedFileUrl2,
-                                                        userRef:
-                                                            currentUserReference,
-                                                        createdAt:
-                                                            getCurrentTimestamp,
-                                                      );
                                                       await LabTestPhotoRecord
                                                           .collection
                                                           .doc()
                                                           .set(
-                                                              labTestPhotoCreateData);
+                                                              createLabTestPhotoRecordData(
+                                                            photoUrl: _model
+                                                                .uploadedFileUrl2,
+                                                            userRef:
+                                                                currentUserReference,
+                                                            createdAt:
+                                                                getCurrentTimestamp,
+                                                          ));
                                                     }
                                                     logFirebaseEvent(
                                                         'Button-Login_navigate_to');

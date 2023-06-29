@@ -1,10 +1,10 @@
 import '/auth/base_auth_user_provider.dart';
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/comment_component/comment_component_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_toggle_icon.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/home_page/components/comment_component/comment_component_widget.dart';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -26,12 +26,6 @@ class _LearnPageWidgetState extends State<LearnPageWidget> {
   late LearnPageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
-  int get pageViewCurrentIndex => _model.pageViewController != null &&
-          _model.pageViewController!.hasClients &&
-          _model.pageViewController!.page != null
-      ? _model.pageViewController!.page!.round()
-      : 0;
 
   @override
   void initState() {
@@ -46,7 +40,6 @@ class _LearnPageWidgetState extends State<LearnPageWidget> {
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -56,9 +49,9 @@ class _LearnPageWidgetState extends State<LearnPageWidget> {
 
     return Title(
         title: 'Kidney247',
-        color: FlutterFlowTheme.of(context).primary,
+        color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+          onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -89,7 +82,7 @@ class _LearnPageWidgetState extends State<LearnPageWidget> {
                   List<VideosRecord> pageViewVideosRecordList = snapshot.data!;
                   return Container(
                     width: double.infinity,
-                    height: MediaQuery.of(context).size.height * 1.0,
+                    height: MediaQuery.sizeOf(context).height * 1.0,
                     child: PageView.builder(
                       controller: _model.pageViewController ??= PageController(
                           initialPage:
@@ -202,12 +195,11 @@ class _LearnPageWidgetState extends State<LearnPageWidget> {
                                                               .arrayUnion([
                                                               likesByElement
                                                             ]);
-                                                  final videosUpdateData = {
-                                                    'likes_by': likesByUpdate,
-                                                  };
                                                   await pageViewVideosRecord
                                                       .reference
-                                                      .update(videosUpdateData);
+                                                      .update({
+                                                    'likes_by': likesByUpdate,
+                                                  });
                                                   logFirebaseEvent(
                                                       'LEARN_ToggleIcon_44db670t_ON_TOGGLE');
                                                   if (!loggedIn) {
@@ -318,13 +310,12 @@ class _LearnPageWidgetState extends State<LearnPageWidget> {
                                                       return GestureDetector(
                                                         onTap: () => FocusScope
                                                                 .of(context)
-                                                            .requestFocus(
-                                                                _unfocusNode),
+                                                            .requestFocus(_model
+                                                                .unfocusNode),
                                                         child: Padding(
-                                                          padding:
-                                                              MediaQuery.of(
-                                                                      context)
-                                                                  .viewInsets,
+                                                          padding: MediaQuery
+                                                              .viewInsetsOf(
+                                                                  context),
                                                           child:
                                                               CommentComponentWidget(
                                                             videoRef:

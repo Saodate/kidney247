@@ -1,9 +1,9 @@
 import '/auth/base_auth_user_provider.dart';
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/book_appointment/book_appointment_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/home_page/components/book_appointment/book_appointment_widget.dart';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -58,7 +58,7 @@ class _CarePageWidgetState extends State<CarePageWidget> {
 
     return Title(
         title: 'Kidney247',
-        color: FlutterFlowTheme.of(context).primary,
+        color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
         child: Scaffold(
           key: scaffoldKey,
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -485,7 +485,7 @@ class _CarePageWidgetState extends State<CarePageWidget> {
                                     builder: (context) {
                                       return Padding(
                                         padding:
-                                            MediaQuery.of(context).viewInsets,
+                                            MediaQuery.viewInsetsOf(context),
                                         child: Container(
                                           height: 710.0,
                                           child: BookAppointmentWidget(

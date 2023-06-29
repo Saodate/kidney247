@@ -73,6 +73,8 @@ class EditProfileModel extends FlutterFlowModel {
     fluidOutput24hController?.dispose();
   }
 
+  /// Action blocks are added here.
+
   /// Additional helper methods are added here.
 
   String? get radioButtonValue => radioButtonValueController?.value;

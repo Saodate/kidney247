@@ -17,6 +17,7 @@ import 'email_auth.dart';
 import 'firebase_user_provider.dart';
 import 'google_auth.dart';
 import 'jwt_token_auth.dart';
+import 'github_auth.dart';
 
 export '../base_auth_user_provider.dart';
 
@@ -141,6 +142,10 @@ class FirebaseAuthManager extends AuthManager
   @override
   Future<BaseAuthUser?> signInWithGoogle(BuildContext context) =>
       _signInOrCreateAccount(context, googleSignInFunc, 'GOOGLE');
+
+  @override
+  Future<BaseAuthUser?> signInWithGithub(BuildContext context) =>
+      _signInOrCreateAccount(context, githubSignInFunc, 'GITHUB');
 
   @override
   Future<BaseAuthUser?> signInWithJwtToken(

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
 
@@ -78,6 +80,14 @@ class MedicationRemindRecord extends FirestoreRecord {
   @override
   String toString() =>
       'MedicationRemindRecord(reference: ${reference.path}, data: $snapshotData)';
+
+  @override
+  int get hashCode => reference.path.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is MedicationRemindRecord &&
+      reference.path.hashCode == other.reference.path.hashCode;
 }
 
 Map<String, dynamic> createMedicationRemindRecordData({
@@ -96,4 +106,33 @@ Map<String, dynamic> createMedicationRemindRecordData({
   );
 
   return firestoreData;
+}
+
+class MedicationRemindRecordDocumentEquality
+    implements Equality<MedicationRemindRecord> {
+  const MedicationRemindRecordDocumentEquality();
+
+  @override
+  bool equals(MedicationRemindRecord? e1, MedicationRemindRecord? e2) {
+    const listEquality = ListEquality();
+    return e1?.medicationRef == e2?.medicationRef &&
+        e1?.userRef == e2?.userRef &&
+        e1?.note == e2?.note &&
+        e1?.createdAt == e2?.createdAt &&
+        listEquality.equals(e1?.session, e2?.session) &&
+        listEquality.equals(e1?.remindTime, e2?.remindTime);
+  }
+
+  @override
+  int hash(MedicationRemindRecord? e) => const ListEquality().hash([
+        e?.medicationRef,
+        e?.userRef,
+        e?.note,
+        e?.createdAt,
+        e?.session,
+        e?.remindTime
+      ]);
+
+  @override
+  bool isValidKey(Object? o) => o is MedicationRemindRecord;
 }

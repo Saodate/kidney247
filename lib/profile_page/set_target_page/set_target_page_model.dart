@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 class SetTargetPageModel extends FlutterFlowModel {
   ///  State fields for stateful widgets in this page.
 
+  final unfocusNode = FocusNode();
   // State field(s) for phosphorusRecom widget.
   TextEditingController? phosphorusRecomController;
   String? Function(BuildContext, String?)? phosphorusRecomControllerValidator;
@@ -111,6 +112,7 @@ class SetTargetPageModel extends FlutterFlowModel {
   void initState(BuildContext context) {}
 
   void dispose() {
+    unfocusNode.dispose();
     phosphorusRecomController?.dispose();
     phosphorusTextController?.dispose();
     proteinRecomController?.dispose();
@@ -141,6 +143,7 @@ class SetTargetPageModel extends FlutterFlowModel {
     bloodUNTextController?.dispose();
   }
 
-  /// Additional helper methods are added here.
+  /// Action blocks are added here.
 
+  /// Additional helper methods are added here.
 }

@@ -139,9 +139,17 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'en': 'Forgot Password',
       'vi': 'Quên mật khẩu',
     },
+    '2yrdwqsm': {
+      'en': 'Login as Guest',
+      'vi': 'Đăng nhập với tư cách là Khách',
+    },
     'zo2675du': {
       'en': 'Or use a social account to login',
       'vi': 'Hoặc sử dụng tài khoản xã hội để đăng nhập',
+    },
+    'vi56ehqf': {
+      'en': 'Sign in with Apple',
+      'vi': '',
     },
     'khvxmays': {
       'en': 'Language',
@@ -573,15 +581,15 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'en': 'Albumin',
       'vi': 'Albumin',
     },
-    'xn2tkucy': {
+    'n6hwazdo': {
       'en': 'Blood Urea Nitrogen',
       'vi': 'Ni tơ u rê máu (BUN)',
     },
-    'e2olchym': {
+    '6f3bgvnd': {
       'en': 'mg/dL',
       'vi': 'mg/dL',
     },
-    '3vc4j5kf': {
+    '71b89udf': {
       'en': 'Blood Urea Nitrogen',
       'vi': 'Ni tơ u rê trong máu',
     },
@@ -618,7 +626,7 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
     },
     '0s3klvx9': {
       'en': 'Change Language',
-      'vi': 'Chọn ngôn ngữ (Language)',
+      'vi': 'Chọn ngôn ngữ',
     },
     '0itygpq5': {
       'en': 'Edit Profile',
@@ -980,12 +988,12 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'vi': 'Khuyến nghị',
     },
     'qsti0aew': {
-      'en': '...',
-      'vi': '...',
+      'en': '',
+      'vi': '',
     },
     'wxg98q25': {
       'en': '700',
-      'vi': '',
+      'vi': '700',
     },
     '4q59179e': {
       'en': 'Target',
@@ -1044,12 +1052,12 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'vi': 'Khuyến nghị',
     },
     'cua4o0bf': {
-      'en': '...',
-      'vi': '...',
+      'en': '',
+      'vi': '',
     },
     'yjblcvio': {
       'en': '2000',
-      'vi': '',
+      'vi': '2000',
     },
     'iyhjsuza': {
       'en': 'Target',
@@ -1068,12 +1076,12 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'vi': 'Khuyến nghị',
     },
     'jisuntx6': {
-      'en': '...',
-      'vi': '...',
+      'en': '',
+      'vi': '',
     },
     'z2zemime': {
       'en': '2000',
-      'vi': '',
+      'vi': '2000',
     },
     'vpmdksov': {
       'en': 'Target',
@@ -1116,12 +1124,12 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'vi': 'Khuyến nghị',
     },
     '18tdua4d': {
-      'en': '...',
-      'vi': '...',
+      'en': '',
+      'vi': '',
     },
     'g4p4i7nk': {
       'en': '120',
-      'vi': '',
+      'vi': '120',
     },
     'uh8bdxwj': {
       'en': 'Target',
@@ -1136,12 +1144,12 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'vi': 'Khuyến nghị',
     },
     'miywlur5': {
-      'en': '...',
-      'vi': '...',
+      'en': '',
+      'vi': '',
     },
     'h1dzv5qk': {
       'en': '80',
-      'vi': '',
+      'vi': '80',
     },
     'jqo5djlw': {
       'en': 'Target',
@@ -1160,12 +1168,12 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'vi': 'Khuyến nghị',
     },
     'z2onwto5': {
-      'en': '...',
-      'vi': '...',
+      'en': '',
+      'vi': '',
     },
     'uenbjkdt': {
       'en': '80',
-      'vi': '',
+      'vi': '80',
     },
     '9ngeg3te': {
       'en': 'Target',
@@ -1221,7 +1229,7 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
     },
     'm6ptix4j': {
       'en': 'eGFR (mL/minute)',
-      'vi': 'eGFR (mL/phút(',
+      'vi': 'eGFR (mL/phút)',
     },
     'nj6b00ml': {
       'en': 'Recommended',
@@ -2646,6 +2654,10 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'en': 'Leave group',
       'vi': 'Rời nhóm',
     },
+    '4r2nqzvl': {
+      'en': 'Delete group',
+      'vi': 'Xóa nhóm',
+    },
   },
   // share
   {
@@ -3165,6 +3177,13 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
     'tht17cno': {
       'en': 'Delete',
       'vi': 'Xoá',
+    },
+  },
+  // apple
+  {
+    'dagu4yqt': {
+      'en': 'Sign in with Apple',
+      'vi': '',
     },
   },
   // Miscellaneous

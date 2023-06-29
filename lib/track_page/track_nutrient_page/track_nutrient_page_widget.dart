@@ -1,9 +1,9 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/empty_tracking/empty_tracking_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/home_page/components/empty_tracking/empty_tracking_widget.dart';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -29,7 +29,6 @@ class _TrackNutrientPageWidgetState extends State<TrackNutrientPageWidget> {
   late TrackNutrientPageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
@@ -45,7 +44,6 @@ class _TrackNutrientPageWidgetState extends State<TrackNutrientPageWidget> {
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -79,9 +77,10 @@ class _TrackNutrientPageWidgetState extends State<TrackNutrientPageWidget> {
         List<MealsRecord> trackNutrientPageMealsRecordList = snapshot.data!;
         return Title(
             title: 'Kidney247',
-            color: FlutterFlowTheme.of(context).primary,
+            color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
             child: GestureDetector(
-              onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+              onTap: () =>
+                  FocusScope.of(context).requestFocus(_model.unfocusNode),
               child: Scaffold(
                 key: scaffoldKey,
                 backgroundColor: FlutterFlowTheme.of(context).primaryBackground,

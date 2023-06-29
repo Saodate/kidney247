@@ -26,6 +26,7 @@ class AddVitalEntryModel extends FlutterFlowModel {
 
   ///  State fields for stateful widgets in this page.
 
+  final unfocusNode = FocusNode();
   // State field(s) for Switch widget.
   bool? switchValue1;
   // State field(s) for Switch widget.
@@ -50,8 +51,11 @@ class AddVitalEntryModel extends FlutterFlowModel {
 
   void initState(BuildContext context) {}
 
-  void dispose() {}
+  void dispose() {
+    unfocusNode.dispose();
+  }
+
+  /// Action blocks are added here.
 
   /// Additional helper methods are added here.
-
 }

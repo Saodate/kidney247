@@ -20,7 +20,6 @@ class _DoneProfileWidgetState extends State<DoneProfileWidget> {
   late DoneProfileModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
@@ -35,7 +34,6 @@ class _DoneProfileWidgetState extends State<DoneProfileWidget> {
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -45,9 +43,9 @@ class _DoneProfileWidgetState extends State<DoneProfileWidget> {
 
     return Title(
         title: 'doneProfile',
-        color: FlutterFlowTheme.of(context).primary,
+        color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+          onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -90,7 +88,7 @@ class _DoneProfileWidgetState extends State<DoneProfileWidget> {
                         ),
                         Lottie.network(
                           'https://assets2.lottiefiles.com/packages/lf20_oUGnCsAuf0.json',
-                          width: MediaQuery.of(context).size.width * 1.0,
+                          width: MediaQuery.sizeOf(context).width * 1.0,
                           height: 200.0,
                           fit: BoxFit.contain,
                           repeat: false,

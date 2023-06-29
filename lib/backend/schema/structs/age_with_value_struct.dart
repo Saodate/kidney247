@@ -32,7 +32,7 @@ class AgeWithValueStruct extends FFFirebaseStruct {
 
   static AgeWithValueStruct fromMap(Map<String, dynamic> data) =>
       AgeWithValueStruct(
-        age: data['age'] as int?,
+        age: castToType<int>(data['age']),
         value: castToType<double>(data['value']),
       );
 
@@ -72,6 +72,16 @@ class AgeWithValueStruct extends FFFirebaseStruct {
 
   @override
   String toString() => 'AgeWithValueStruct(${toMap()})';
+
+  @override
+  bool operator ==(Object other) {
+    return other is AgeWithValueStruct &&
+        age == other.age &&
+        value == other.value;
+  }
+
+  @override
+  int get hashCode => const ListEquality().hash([age, value]);
 }
 
 AgeWithValueStruct createAgeWithValueStruct({
@@ -96,10 +106,13 @@ AgeWithValueStruct createAgeWithValueStruct({
 AgeWithValueStruct? updateAgeWithValueStruct(
   AgeWithValueStruct? ageWithValue, {
   bool clearUnsetFields = true,
+  bool create = false,
 }) =>
     ageWithValue
-      ?..firestoreUtilData =
-          FirestoreUtilData(clearUnsetFields: clearUnsetFields);
+      ?..firestoreUtilData = FirestoreUtilData(
+        clearUnsetFields: clearUnsetFields,
+        create: create,
+      );
 
 void addAgeWithValueStructData(
   Map<String, dynamic> firestoreData,

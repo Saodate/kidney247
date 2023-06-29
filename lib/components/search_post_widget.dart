@@ -1,13 +1,13 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/comment_component/comment_component_widget.dart';
+import '/components/empty_list/empty_list_widget.dart';
+import '/components/post_option_popup/post_option_popup_widget.dart';
 import '/flutter_flow/flutter_flow_expanded_image_view.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_toggle_icon.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/home_page/components/comment_component/comment_component_widget.dart';
-import '/home_page/components/empty_list/empty_list_widget.dart';
-import '/home_page/components/post_option_popup/post_option_popup_widget.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -56,7 +56,7 @@ class _SearchPostWidgetState extends State<SearchPostWidget> {
 
     return Container(
       width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.6,
+      height: MediaQuery.sizeOf(context).height * 0.6,
       decoration: BoxDecoration(
         color: FlutterFlowTheme.of(context).secondaryBackground,
         borderRadius: BorderRadius.circular(16.0),
@@ -83,19 +83,6 @@ class _SearchPostWidgetState extends State<SearchPostWidget> {
                           Duration(milliseconds: 1000),
                           () => setState(() {}),
                         ),
-                        onFieldSubmitted: (_) async {
-                          logFirebaseEvent(
-                              'SEARCH_POST_TextField_rt8e5ydv_ON_TEXTFI');
-                          logFirebaseEvent('TextField_algolia_search');
-                          setState(() => _model.algoliaSearchResults = null);
-                          await PostsRecord.search(
-                            term: _model.textController.text,
-                          )
-                              .then((r) => _model.algoliaSearchResults = r)
-                              .onError(
-                                  (_, __) => _model.algoliaSearchResults = [])
-                              .whenComplete(() => setState(() {}));
-                        },
                         obscureText: false,
                         decoration: InputDecoration(
                           labelText: FFLocalizations.of(context).getText(
@@ -170,9 +157,13 @@ class _SearchPostWidgetState extends State<SearchPostWidget> {
               ),
             ),
             Expanded(
-              child: Builder(
-                builder: (context) {
-                  if (_model.algoliaSearchResults == null) {
+              child: FutureBuilder<List<PostsRecord>>(
+                future: PostsRecord.search(
+                  term: _model.textController.text,
+                ),
+                builder: (context, snapshot) {
+                  // Customize what your widget looks like when it's loading.
+                  if (!snapshot.hasData) {
                     return Center(
                       child: SizedBox(
                         width: 40.0,
@@ -184,8 +175,8 @@ class _SearchPostWidgetState extends State<SearchPostWidget> {
                       ),
                     );
                   }
-                  final list = _model.algoliaSearchResults?.toList() ?? [];
-                  if (list.isEmpty) {
+                  List<PostsRecord> listViewPostsRecordList = snapshot.data!;
+                  if (listViewPostsRecordList.isEmpty) {
                     return EmptyListWidget(
                       name: FFLocalizations.of(context).getText(
                         'c2rtqa7s' /* No post found! */,
@@ -197,14 +188,16 @@ class _SearchPostWidgetState extends State<SearchPostWidget> {
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
-                    itemCount: list.length,
-                    itemBuilder: (context, listIndex) {
-                      final listItem = list[listIndex];
+                    itemCount: listViewPostsRecordList.length,
+                    itemBuilder: (context, listViewIndex) {
+                      final listViewPostsRecord =
+                          listViewPostsRecordList[listViewIndex];
                       return Padding(
                         padding:
                             EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
                         child: StreamBuilder<UsersRecord>(
-                          stream: UsersRecord.getDocument(listItem.userRef!),
+                          stream: UsersRecord.getDocument(
+                              listViewPostsRecord.userRef!),
                           builder: (context, snapshot) {
                             // Customize what your widget looks like when it's loading.
                             if (!snapshot.hasData) {
@@ -259,7 +252,8 @@ class _SearchPostWidgetState extends State<SearchPostWidget> {
                                                     'userProfile',
                                                     queryParameters: {
                                                       'userRef': serializeParam(
-                                                        listItem.userRef,
+                                                        listViewPostsRecord
+                                                            .userRef,
                                                         ParamType
                                                             .DocumentReference,
                                                       ),
@@ -383,7 +377,7 @@ class _SearchPostWidgetState extends State<SearchPostWidget> {
                                               ),
                                             ],
                                           ),
-                                          if (listItem.userRef ==
+                                          if (listViewPostsRecord.userRef ==
                                               currentUserReference)
                                             InkWell(
                                               splashColor: Colors.transparent,
@@ -404,15 +398,16 @@ class _SearchPostWidgetState extends State<SearchPostWidget> {
                                                   context: context,
                                                   builder: (context) {
                                                     return Padding(
-                                                      padding:
-                                                          MediaQuery.of(context)
-                                                              .viewInsets,
+                                                      padding: MediaQuery
+                                                          .viewInsetsOf(
+                                                              context),
                                                       child: Container(
                                                         height: 100.0,
                                                         child:
                                                             PostOptionPopupWidget(
-                                                          postRef: listItem
-                                                              .reference,
+                                                          postRef:
+                                                              listViewPostsRecord
+                                                                  .reference,
                                                         ),
                                                       ),
                                                     );
@@ -448,7 +443,7 @@ class _SearchPostWidgetState extends State<SearchPostWidget> {
                                                     .fromSTEB(
                                                         0.0, 0.0, 0.0, 5.0),
                                                 child: Text(
-                                                  listItem.content,
+                                                  listViewPostsRecord.content,
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .bodyMedium
@@ -468,7 +463,7 @@ class _SearchPostWidgetState extends State<SearchPostWidget> {
                                                 ),
                                               ),
                                             ),
-                                            if (listItem.image != '')
+                                            if (listViewPostsRecord.image != '')
                                               Expanded(
                                                 child: InkWell(
                                                   splashColor:
@@ -492,11 +487,14 @@ class _SearchPostWidgetState extends State<SearchPostWidget> {
                                                         child:
                                                             FlutterFlowExpandedImageView(
                                                           image: Image.network(
-                                                            listItem.image,
+                                                            listViewPostsRecord
+                                                                .image,
                                                             fit: BoxFit.contain,
                                                           ),
                                                           allowRotation: true,
-                                                          tag: listItem.image,
+                                                          tag:
+                                                              listViewPostsRecord
+                                                                  .image,
                                                           useHeroAnimation:
                                                               true,
                                                         ),
@@ -504,11 +502,12 @@ class _SearchPostWidgetState extends State<SearchPostWidget> {
                                                     );
                                                   },
                                                   child: Hero(
-                                                    tag: listItem.image,
+                                                    tag: listViewPostsRecord
+                                                        .image,
                                                     transitionOnUserGestures:
                                                         true,
                                                     child: Image.network(
-                                                      listItem.image,
+                                                      listViewPostsRecord.image,
                                                       width: 500.0,
                                                       height: 200.0,
                                                       fit: BoxFit.cover,
@@ -524,7 +523,8 @@ class _SearchPostWidgetState extends State<SearchPostWidget> {
                                       stream: queryPostCommentsRecord(
                                         queryBuilder: (postCommentsRecord) =>
                                             postCommentsRecord.where('postRef',
-                                                isEqualTo: listItem.reference),
+                                                isEqualTo: listViewPostsRecord
+                                                    .reference),
                                       ),
                                       builder: (context, snapshot) {
                                         // Customize what your widget looks like when it's loading.
@@ -564,8 +564,9 @@ class _SearchPostWidgetState extends State<SearchPostWidget> {
                                                   children: [
                                                     StreamBuilder<PostsRecord>(
                                                       stream: PostsRecord
-                                                          .getDocument(listItem
-                                                              .reference),
+                                                          .getDocument(
+                                                              listViewPostsRecord
+                                                                  .reference),
                                                       builder:
                                                           (context, snapshot) {
                                                         // Customize what your widget looks like when it's loading.
@@ -603,15 +604,12 @@ class _SearchPostWidgetState extends State<SearchPostWidget> {
                                                                         .arrayUnion([
                                                                         likedByElement
                                                                       ]);
-                                                            final postsUpdateData =
-                                                                {
-                                                              'likedBy':
-                                                                  likedByUpdate,
-                                                            };
                                                             await toggleIconPostsRecord
                                                                 .reference
-                                                                .update(
-                                                                    postsUpdateData);
+                                                                .update({
+                                                              'likedBy':
+                                                                  likedByUpdate,
+                                                            });
                                                           },
                                                           value: toggleIconPostsRecord
                                                               .likedBy
@@ -693,16 +691,16 @@ class _SearchPostWidgetState extends State<SearchPostWidget> {
                                                             context: context,
                                                             builder: (context) {
                                                               return Padding(
-                                                                padding: MediaQuery.of(
-                                                                        context)
-                                                                    .viewInsets,
+                                                                padding: MediaQuery
+                                                                    .viewInsetsOf(
+                                                                        context),
                                                                 child:
                                                                     Container(
                                                                   height: 710.0,
                                                                   child:
                                                                       CommentComponentWidget(
                                                                     postRef:
-                                                                        listItem
+                                                                        listViewPostsRecord
                                                                             .reference,
                                                                   ),
                                                                 ),
@@ -735,12 +733,11 @@ class _SearchPostWidgetState extends State<SearchPostWidget> {
                                                         stream:
                                                             queryPostCommentReplyRecord(
                                                           queryBuilder: (postCommentReplyRecord) =>
-                                                              postCommentReplyRecord
-                                                                  .where(
-                                                                      'postRef',
-                                                                      isEqualTo:
-                                                                          listItem
-                                                                              .reference),
+                                                              postCommentReplyRecord.where(
+                                                                  'postRef',
+                                                                  isEqualTo:
+                                                                      listViewPostsRecord
+                                                                          .reference),
                                                         ),
                                                         builder: (context,
                                                             snapshot) {
@@ -796,7 +793,8 @@ class _SearchPostWidgetState extends State<SearchPostWidget> {
                                                 Text(
                                                   dateTimeFormat(
                                                     'relative',
-                                                    listItem.createdAt!,
+                                                    listViewPostsRecord
+                                                        .createdAt!,
                                                     locale: FFLocalizations.of(
                                                             context)
                                                         .languageCode,

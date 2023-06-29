@@ -1,14 +1,14 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/comment_component/comment_component_widget.dart';
+import '/components/empty_list/empty_list_widget.dart';
+import '/components/post_option_popup/post_option_popup_widget.dart';
 import '/flutter_flow/chat/index.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_toggle_icon.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/home_page/components/comment_component/comment_component_widget.dart';
-import '/home_page/components/empty_list/empty_list_widget.dart';
-import '/home_page/components/post_option_popup/post_option_popup_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +35,6 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
   late UserProfileModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
@@ -50,7 +49,6 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -80,9 +78,10 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
         final userProfileUsersRecord = snapshot.data!;
         return Title(
             title: 'userProfile',
-            color: FlutterFlowTheme.of(context).primary,
+            color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
             child: GestureDetector(
-              onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+              onTap: () =>
+                  FocusScope.of(context).requestFocus(_model.unfocusNode),
               child: Scaffold(
                 key: scaffoldKey,
                 backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -183,44 +182,47 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: FFLocalizations.of(context).getText(
-                                      '0ua76loh' /* Join Kidney247 from  */,
+                            Expanded(
+                              child: RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: FFLocalizations.of(context).getText(
+                                        '0ua76loh' /* Join Kidney247 from  */,
+                                      ),
+                                      style: GoogleFonts.getFont(
+                                        'Be Vietnam Pro',
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryText,
+                                        fontSize: 18.0,
+                                      ),
                                     ),
-                                    style: GoogleFonts.getFont(
-                                      'Be Vietnam Pro',
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryText,
-                                      fontSize: 18.0,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: dateTimeFormat(
-                                      'relative',
-                                      userProfileUsersRecord.createdTime!,
-                                      locale: FFLocalizations.of(context)
-                                          .languageCode,
-                                    ),
-                                    style: GoogleFonts.getFont(
-                                      'Be Vietnam Pro',
-                                      color:
-                                          FlutterFlowTheme.of(context).primary,
-                                      fontSize: 18.0,
-                                    ),
-                                  )
-                                ],
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Be Vietnam Pro',
-                                      useGoogleFonts: GoogleFonts.asMap()
-                                          .containsKey(
-                                              FlutterFlowTheme.of(context)
-                                                  .bodyMediumFamily),
-                                    ),
+                                    TextSpan(
+                                      text: dateTimeFormat(
+                                        'relative',
+                                        userProfileUsersRecord.createdTime!,
+                                        locale: FFLocalizations.of(context)
+                                            .languageCode,
+                                      ),
+                                      style: GoogleFonts.getFont(
+                                        'Be Vietnam Pro',
+                                        color: FlutterFlowTheme.of(context)
+                                            .primary,
+                                        fontSize: 18.0,
+                                      ),
+                                    )
+                                  ],
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .override(
+                                        fontFamily: 'Be Vietnam Pro',
+                                        useGoogleFonts: GoogleFonts.asMap()
+                                            .containsKey(
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyMediumFamily),
+                                      ),
+                                ),
+                                textAlign: TextAlign.center,
                               ),
                             ),
                           ],
@@ -301,22 +303,25 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
                                     });
                                     logFirebaseEvent('Button_backend_call');
 
-                                    final chatsCreateData = {
+                                    var chatsRecordReference =
+                                        ChatsRecord.collection.doc();
+                                    await chatsRecordReference.set({
                                       ...createChatsRecordData(
                                         userA: currentUserReference,
                                         userB: widget.userRef,
                                         isPrivate: true,
                                       ),
                                       'users': _model.listUser,
-                                    };
-                                    var chatsRecordReference =
-                                        ChatsRecord.collection.doc();
-                                    await chatsRecordReference
-                                        .set(chatsCreateData);
+                                    });
                                     _model.chat =
-                                        ChatsRecord.getDocumentFromData(
-                                            chatsCreateData,
-                                            chatsRecordReference);
+                                        ChatsRecord.getDocumentFromData({
+                                      ...createChatsRecordData(
+                                        userA: currentUserReference,
+                                        userB: widget.userRef,
+                                        isPrivate: true,
+                                      ),
+                                      'users': _model.listUser,
+                                    }, chatsRecordReference);
                                     logFirebaseEvent(
                                         'Button_group_chat_action');
                                     _model.groupChat = await FFChatManager
@@ -681,11 +686,12 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
                                                                 onTap: () => FocusScope.of(
                                                                         context)
                                                                     .requestFocus(
-                                                                        _unfocusNode),
+                                                                        _model
+                                                                            .unfocusNode),
                                                                 child: Padding(
-                                                                  padding: MediaQuery.of(
-                                                                          context)
-                                                                      .viewInsets,
+                                                                  padding: MediaQuery
+                                                                      .viewInsetsOf(
+                                                                          context),
                                                                   child:
                                                                       Container(
                                                                     height:
@@ -852,11 +858,11 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
                                                                       onTap: () => FocusScope.of(
                                                                               context)
                                                                           .requestFocus(
-                                                                              _unfocusNode),
+                                                                              _model.unfocusNode),
                                                                       child:
                                                                           Padding(
                                                                         padding:
-                                                                            MediaQuery.of(context).viewInsets,
+                                                                            MediaQuery.viewInsetsOf(context),
                                                                         child:
                                                                             Container(
                                                                           height:
@@ -934,15 +940,12 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
                                                                         .arrayUnion([
                                                                         likedByElement
                                                                       ]);
-                                                                final postsUpdateData =
-                                                                    {
-                                                                  'likedBy':
-                                                                      likedByUpdate,
-                                                                };
                                                                 await listViewPostsRecord
                                                                     .reference
-                                                                    .update(
-                                                                        postsUpdateData);
+                                                                    .update({
+                                                                  'likedBy':
+                                                                      likedByUpdate,
+                                                                });
                                                               },
                                                               value: listViewPostsRecord
                                                                   .likedBy

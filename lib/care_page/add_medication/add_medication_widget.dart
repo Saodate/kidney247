@@ -1,5 +1,6 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/add_medication_reminder/add_medication_reminder_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -7,7 +8,6 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
-import '/home_page/components/add_medication_reminder/add_medication_reminder_widget.dart';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_debounce/easy_debounce.dart';
@@ -39,7 +39,6 @@ class _AddMedicationWidgetState extends State<AddMedicationWidget>
   late AddMedicationModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   final animationsMap = {
     'containerOnPageLoadAnimation': AnimationInfo(
@@ -245,7 +244,6 @@ class _AddMedicationWidgetState extends State<AddMedicationWidget>
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -255,9 +253,9 @@ class _AddMedicationWidgetState extends State<AddMedicationWidget>
 
     return Title(
         title: 'Kidney247',
-        color: FlutterFlowTheme.of(context).primary,
+        color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+          onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -815,12 +813,12 @@ class _AddMedicationWidgetState extends State<AddMedicationWidget>
                                                                     onTap: () => FocusScope.of(
                                                                             context)
                                                                         .requestFocus(
-                                                                            _unfocusNode),
+                                                                            _model.unfocusNode),
                                                                     child:
                                                                         Padding(
-                                                                      padding: MediaQuery.of(
-                                                                              context)
-                                                                          .viewInsets,
+                                                                      padding: MediaQuery
+                                                                          .viewInsetsOf(
+                                                                              context),
                                                                       child:
                                                                           Container(
                                                                         height:
@@ -1126,24 +1124,6 @@ Acetaminophen */
                                                         _model.formValue = val),
                                                 width: double.infinity,
                                                 height: 50.0,
-                                                searchHintTextStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyLarge
-                                                        .override(
-                                                          fontFamily:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyLargeFamily,
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .secondaryText,
-                                                          useGoogleFonts: GoogleFonts
-                                                                  .asMap()
-                                                              .containsKey(
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyLargeFamily),
-                                                        ),
                                                 textStyle:
                                                     FlutterFlowTheme.of(context)
                                                         .bodyMedium
@@ -1161,11 +1141,6 @@ Acetaminophen */
                                                     FFLocalizations.of(context)
                                                         .getText(
                                                   'e40d9y5s' /* Please select... */,
-                                                ),
-                                                searchHintText:
-                                                    FFLocalizations.of(context)
-                                                        .getText(
-                                                  'fed8xls2' /* Search for an item... */,
                                                 ),
                                                 fillColor:
                                                     FlutterFlowTheme.of(context)
@@ -1231,24 +1206,6 @@ Acetaminophen */
                                                         val),
                                                 width: double.infinity,
                                                 height: 50.0,
-                                                searchHintTextStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyLarge
-                                                        .override(
-                                                          fontFamily:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyLargeFamily,
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .secondaryText,
-                                                          useGoogleFonts: GoogleFonts
-                                                                  .asMap()
-                                                              .containsKey(
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyLargeFamily),
-                                                        ),
                                                 textStyle:
                                                     FlutterFlowTheme.of(context)
                                                         .bodyMedium
@@ -1266,11 +1223,6 @@ Acetaminophen */
                                                     FFLocalizations.of(context)
                                                         .getText(
                                                   'bdcidt5b' /* Please select... */,
-                                                ),
-                                                searchHintText:
-                                                    FFLocalizations.of(context)
-                                                        .getText(
-                                                  'i79vy7le' /* Search for an item... */,
                                                 ),
                                                 fillColor:
                                                     FlutterFlowTheme.of(context)
@@ -1414,24 +1366,24 @@ Acetaminophen */
                                                   logFirebaseEvent(
                                                       'Button_backend_call');
 
-                                                  final medicationCreateData =
-                                                      createMedicationRecordData(
-                                                    name: _model
-                                                        .nameController.text,
-                                                    ingredients: _model
-                                                        .ingredientController
-                                                        .text,
-                                                    shape: _model.formValue,
-                                                    dissolutionRate:
-                                                        _model.dissolutionValue,
-                                                    dosage: _model
-                                                        .dosageController.text,
-                                                  );
                                                   await MedicationRecord
                                                       .collection
                                                       .doc()
                                                       .set(
-                                                          medicationCreateData);
+                                                          createMedicationRecordData(
+                                                        name: _model
+                                                            .nameController
+                                                            .text,
+                                                        ingredients: _model
+                                                            .ingredientController
+                                                            .text,
+                                                        shape: _model.formValue,
+                                                        dissolutionRate: _model
+                                                            .dissolutionValue,
+                                                        dosage: _model
+                                                            .dosageController
+                                                            .text,
+                                                      ));
                                                   logFirebaseEvent(
                                                       'Button_show_snack_bar');
                                                   ScaffoldMessenger.of(context)

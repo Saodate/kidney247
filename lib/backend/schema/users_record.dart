@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
 
@@ -107,7 +109,7 @@ class UsersRecord extends FirestoreRecord {
     _todayfluidOutput = castToType<double>(snapshotData['todayfluidOutput']);
     _weight = castToType<double>(snapshotData['weight']);
     _status = snapshotData['status'] as String?;
-    _height = snapshotData['height'] as int?;
+    _height = castToType<int>(snapshotData['height']);
     _creatinine = castToType<double>(snapshotData['creatinine']);
     _age = castToType<double>(snapshotData['age']);
     _ageUnit = snapshotData['ageUnit'] as String?;
@@ -136,6 +138,14 @@ class UsersRecord extends FirestoreRecord {
   @override
   String toString() =>
       'UsersRecord(reference: ${reference.path}, data: $snapshotData)';
+
+  @override
+  int get hashCode => reference.path.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is UsersRecord &&
+      reference.path.hashCode == other.reference.path.hashCode;
 }
 
 Map<String, dynamic> createUsersRecordData({
@@ -178,4 +188,51 @@ Map<String, dynamic> createUsersRecordData({
   );
 
   return firestoreData;
+}
+
+class UsersRecordDocumentEquality implements Equality<UsersRecord> {
+  const UsersRecordDocumentEquality();
+
+  @override
+  bool equals(UsersRecord? e1, UsersRecord? e2) {
+    return e1?.displayName == e2?.displayName &&
+        e1?.email == e2?.email &&
+        e1?.password == e2?.password &&
+        e1?.uid == e2?.uid &&
+        e1?.phoneNumber == e2?.phoneNumber &&
+        e1?.photoUrl == e2?.photoUrl &&
+        e1?.createdTime == e2?.createdTime &&
+        e1?.userSex == e2?.userSex &&
+        e1?.stage == e2?.stage &&
+        e1?.todayfluidOutput == e2?.todayfluidOutput &&
+        e1?.weight == e2?.weight &&
+        e1?.status == e2?.status &&
+        e1?.height == e2?.height &&
+        e1?.creatinine == e2?.creatinine &&
+        e1?.age == e2?.age &&
+        e1?.ageUnit == e2?.ageUnit;
+  }
+
+  @override
+  int hash(UsersRecord? e) => const ListEquality().hash([
+        e?.displayName,
+        e?.email,
+        e?.password,
+        e?.uid,
+        e?.phoneNumber,
+        e?.photoUrl,
+        e?.createdTime,
+        e?.userSex,
+        e?.stage,
+        e?.todayfluidOutput,
+        e?.weight,
+        e?.status,
+        e?.height,
+        e?.creatinine,
+        e?.age,
+        e?.ageUnit
+      ]);
+
+  @override
+  bool isValidKey(Object? o) => o is UsersRecord;
 }

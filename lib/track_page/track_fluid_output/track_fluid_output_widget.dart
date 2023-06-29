@@ -1,10 +1,10 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/edit_fluid_output/edit_fluid_output_widget.dart';
+import '/components/empty_tracking/empty_tracking_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/home_page/components/edit_fluid_output/edit_fluid_output_widget.dart';
-import '/home_page/components/empty_tracking/empty_tracking_widget.dart';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -29,7 +29,6 @@ class _TrackFluidOutputWidgetState extends State<TrackFluidOutputWidget> {
   late TrackFluidOutputModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
@@ -45,7 +44,6 @@ class _TrackFluidOutputWidgetState extends State<TrackFluidOutputWidget> {
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -79,9 +77,10 @@ class _TrackFluidOutputWidgetState extends State<TrackFluidOutputWidget> {
             snapshot.data!;
         return Title(
             title: 'Kidney247',
-            color: FlutterFlowTheme.of(context).primary,
+            color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
             child: GestureDetector(
-              onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+              onTap: () =>
+                  FocusScope.of(context).requestFocus(_model.unfocusNode),
               child: Scaffold(
                 key: scaffoldKey,
                 backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -168,10 +167,9 @@ class _TrackFluidOutputWidgetState extends State<TrackFluidOutputWidget> {
                                 builder: (context) {
                                   return GestureDetector(
                                     onTap: () => FocusScope.of(context)
-                                        .requestFocus(_unfocusNode),
+                                        .requestFocus(_model.unfocusNode),
                                     child: Padding(
-                                      padding:
-                                          MediaQuery.of(context).viewInsets,
+                                      padding: MediaQuery.viewInsetsOf(context),
                                       child: EditFluidOutputWidget(),
                                     ),
                                   );

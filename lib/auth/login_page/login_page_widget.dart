@@ -29,7 +29,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
   late LoginPageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
   var hasContainerTriggered1 = false;
   var hasContainerTriggered2 = false;
   var hasContainerTriggered3 = false;
@@ -166,6 +165,32 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
         ),
       ],
     ),
+    'buttonOnPageLoadAnimation3': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      effects: [
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 100.ms,
+          duration: 600.ms,
+          begin: 0.0,
+          end: 1.0,
+        ),
+        MoveEffect(
+          curve: Curves.easeInOut,
+          delay: 100.ms,
+          duration: 600.ms,
+          begin: Offset(0.0, 20.0),
+          end: Offset(0.0, 0.0),
+        ),
+        ScaleEffect(
+          curve: Curves.easeInOut,
+          delay: 400.ms,
+          duration: 600.ms,
+          begin: Offset(1.0, 1.0),
+          end: Offset(1.0, 1.0),
+        ),
+      ],
+    ),
     'containerOnActionTriggerAnimation1': AnimationInfo(
       trigger: AnimationTrigger.onActionTrigger,
       applyInitialState: false,
@@ -270,7 +295,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
         ),
       ],
     ),
-    'buttonOnPageLoadAnimation3': AnimationInfo(
+    'buttonOnPageLoadAnimation4': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       effects: [
         FadeEffect(
@@ -349,7 +374,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -359,9 +383,9 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
 
     return Title(
         title: 'Kidney247.com',
-        color: FlutterFlowTheme.of(context).primary,
+        color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+          onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: Color(0xFFFDECE8),
@@ -375,8 +399,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        width: MediaQuery.of(context).size.width * 1.0,
-                        height: MediaQuery.of(context).size.height * 1.0,
+                        width: MediaQuery.sizeOf(context).width * 1.0,
+                        height: MediaQuery.sizeOf(context).height * 1.0,
                         constraints: BoxConstraints(
                           maxWidth: 600.0,
                         ),
@@ -870,7 +894,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                   0.0,
                                                                   20.0,
                                                                   0.0,
-                                                                  24.0),
+                                                                  0.0),
                                                       child: FFButtonWidget(
                                                         onPressed: () async {
                                                           logFirebaseEvent(
@@ -938,6 +962,101 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                       ).animateOnPageLoad(
                                                           animationsMap[
                                                               'buttonOnPageLoadAnimation2']!),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  0.0,
+                                                                  20.0,
+                                                                  0.0,
+                                                                  24.0),
+                                                      child: FFButtonWidget(
+                                                        onPressed: () async {
+                                                          logFirebaseEvent(
+                                                              'LOGIN_PAGE_PAGE_Anonymous_ON_TAP');
+                                                          logFirebaseEvent(
+                                                              'Anonymous_auth');
+                                                          GoRouter.of(context)
+                                                              .prepareAuthEvent();
+                                                          final user =
+                                                              await authManager
+                                                                  .signInAnonymously(
+                                                                      context);
+                                                          if (user == null) {
+                                                            return;
+                                                          }
+                                                          logFirebaseEvent(
+                                                              'Anonymous_navigate_to');
+
+                                                          context.pushNamedAuth(
+                                                            'completeProfile',
+                                                            context.mounted,
+                                                            queryParameters: {
+                                                              'isAnonymous':
+                                                                  serializeParam(
+                                                                true,
+                                                                ParamType.bool,
+                                                              ),
+                                                            }.withoutNulls,
+                                                          );
+                                                        },
+                                                        text:
+                                                            FFLocalizations.of(
+                                                                    context)
+                                                                .getText(
+                                                          '2yrdwqsm' /* Login as Guest */,
+                                                        ),
+                                                        options:
+                                                            FFButtonOptions(
+                                                          height: 50.0,
+                                                          padding:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      20.0,
+                                                                      0.0,
+                                                                      20.0,
+                                                                      0.0),
+                                                          iconPadding:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      0.0,
+                                                                      0.0,
+                                                                      0.0,
+                                                                      0.0),
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryBackground,
+                                                          textStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .titleSmall
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Be Vietnam Pro',
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primaryText,
+                                                                    useGoogleFonts: GoogleFonts
+                                                                            .asMap()
+                                                                        .containsKey(
+                                                                            FlutterFlowTheme.of(context).titleSmallFamily),
+                                                                  ),
+                                                          elevation: 0.0,
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: Colors
+                                                                .transparent,
+                                                            width: 1.0,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      40.0),
+                                                        ),
+                                                      ).animateOnPageLoad(
+                                                          animationsMap[
+                                                              'buttonOnPageLoadAnimation3']!),
                                                     ),
                                                     Column(
                                                       mainAxisSize:
@@ -1045,6 +1164,77 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                   },
                                                                 ),
                                                               ),
+                                                              isAndroid
+                                                                  ? Container()
+                                                                  : FFButtonWidget(
+                                                                      onPressed:
+                                                                          () async {
+                                                                        logFirebaseEvent(
+                                                                            'LOGIN_SIGN_IN_WITH_APPLE_BTN_ON_TAP');
+                                                                        logFirebaseEvent(
+                                                                            'Button_auth');
+                                                                        GoRouter.of(context)
+                                                                            .prepareAuthEvent();
+                                                                        final user =
+                                                                            await authManager.signInWithApple(context);
+                                                                        if (user ==
+                                                                            null) {
+                                                                          return;
+                                                                        }
+
+                                                                        context.goNamedAuth(
+                                                                            'homePage',
+                                                                            context.mounted);
+                                                                      },
+                                                                      text: FFLocalizations.of(
+                                                                              context)
+                                                                          .getText(
+                                                                        'vi56ehqf' /* Sign in with Apple */,
+                                                                      ),
+                                                                      icon:
+                                                                          FaIcon(
+                                                                        FontAwesomeIcons
+                                                                            .apple,
+                                                                        size:
+                                                                            20.0,
+                                                                      ),
+                                                                      options:
+                                                                          FFButtonOptions(
+                                                                        width:
+                                                                            230.0,
+                                                                        height:
+                                                                            44.0,
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0),
+                                                                        iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                                                            0.0,
+                                                                            0.0,
+                                                                            10.0,
+                                                                            1.0),
+                                                                        color: Colors
+                                                                            .white,
+                                                                        textStyle:
+                                                                            GoogleFonts.getFont(
+                                                                          'Roboto',
+                                                                          color:
+                                                                              Colors.black,
+                                                                          fontSize:
+                                                                              17.0,
+                                                                        ),
+                                                                        elevation:
+                                                                            4.0,
+                                                                        borderSide:
+                                                                            BorderSide(
+                                                                          color:
+                                                                              Colors.transparent,
+                                                                          width:
+                                                                              0.0,
+                                                                        ),
+                                                                      ),
+                                                                    ),
                                                             ],
                                                           ),
                                                         ),
@@ -1184,9 +1374,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                         180.0,
                                                                     height:
                                                                         24.0,
-                                                                    searchHintTextStyle:
-                                                                        FlutterFlowTheme.of(context)
-                                                                            .headlineSmall,
                                                                     textStyle: FlutterFlowTheme.of(
                                                                             context)
                                                                         .bodyMedium
@@ -1198,11 +1385,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                           useGoogleFonts:
                                                                               GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
                                                                         ),
-                                                                    searchHintText:
-                                                                        FFLocalizations.of(context)
-                                                                            .getText(
-                                                                      '5hovp62b' /* Search for an item... */,
-                                                                    ),
                                                                     icon: Icon(
                                                                       Icons
                                                                           .language,
@@ -2073,7 +2255,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                         ),
                                                       ).animateOnPageLoad(
                                                           animationsMap[
-                                                              'buttonOnPageLoadAnimation3']!),
+                                                              'buttonOnPageLoadAnimation4']!),
                                                     ),
                                                     Column(
                                                       mainAxisSize:
@@ -2320,9 +2502,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                         180.0,
                                                                     height:
                                                                         24.0,
-                                                                    searchHintTextStyle:
-                                                                        FlutterFlowTheme.of(context)
-                                                                            .headlineSmall,
                                                                     textStyle: FlutterFlowTheme.of(
                                                                             context)
                                                                         .bodyMedium
@@ -2334,11 +2513,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                           useGoogleFonts:
                                                                               GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
                                                                         ),
-                                                                    searchHintText:
-                                                                        FFLocalizations.of(context)
-                                                                            .getText(
-                                                                      'utlsfrz1' /* Search for an item... */,
-                                                                    ),
                                                                     icon: Icon(
                                                                       Icons
                                                                           .language,

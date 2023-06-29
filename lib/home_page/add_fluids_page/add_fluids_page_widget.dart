@@ -1,11 +1,11 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/backend/push_notifications/push_notifications_util.dart';
+import '/components/empty_list/empty_list_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/home_page/components/empty_list/empty_list_widget.dart';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -28,7 +28,6 @@ class _AddFluidsPageWidgetState extends State<AddFluidsPageWidget> {
   late AddFluidsPageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
@@ -45,7 +44,6 @@ class _AddFluidsPageWidgetState extends State<AddFluidsPageWidget> {
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -78,9 +76,10 @@ class _AddFluidsPageWidgetState extends State<AddFluidsPageWidget> {
         List<FluidsRecord> addFluidsPageFluidsRecordList = snapshot.data!;
         return Title(
             title: 'Kidney247',
-            color: FlutterFlowTheme.of(context).primary,
+            color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
             child: GestureDetector(
-              onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+              onTap: () =>
+                  FocusScope.of(context).requestFocus(_model.unfocusNode),
               child: Scaffold(
                 key: scaffoldKey,
                 backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -169,7 +168,7 @@ class _AddFluidsPageWidgetState extends State<AddFluidsPageWidget> {
                         Expanded(
                           child: Lottie.network(
                             'https://assets10.lottiefiles.com/packages/lf20_fjwc7dtd.json',
-                            width: MediaQuery.of(context).size.width * 1.0,
+                            width: MediaQuery.sizeOf(context).width * 1.0,
                             height: 130.0,
                             fit: BoxFit.contain,
                             animate: true,
@@ -182,7 +181,7 @@ class _AddFluidsPageWidgetState extends State<AddFluidsPageWidget> {
                             padding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 0.0, 10.0),
                             child: Container(
-                              width: MediaQuery.of(context).size.width * 0.5,
+                              width: MediaQuery.sizeOf(context).width * 0.5,
                               child: TextFormField(
                                 controller: _model.textController,
                                 autofocus: true,
@@ -323,18 +322,17 @@ class _AddFluidsPageWidgetState extends State<AddFluidsPageWidget> {
                                         }
                                         logFirebaseEvent('Button_backend_call');
 
-                                        final fluidsCreateData =
-                                            createFluidsRecordData(
-                                          createdAt: getCurrentTimestamp,
-                                          userRef: currentUserReference,
-                                          amount: double.parse((int.parse(_model
-                                                      .textController.text) /
-                                                  1000)
-                                              .toStringAsFixed(2)),
-                                        );
                                         await FluidsRecord.collection
                                             .doc()
-                                            .set(fluidsCreateData);
+                                            .set(createFluidsRecordData(
+                                              createdAt: getCurrentTimestamp,
+                                              userRef: currentUserReference,
+                                              amount: double.parse((int.parse(
+                                                          _model.textController
+                                                              .text) /
+                                                      1000)
+                                                  .toStringAsFixed(2)),
+                                            ));
                                         if (valueOrDefault<bool>(
                                           (double totalFluid, double target) {
                                             return (double.parse((totalFluid *

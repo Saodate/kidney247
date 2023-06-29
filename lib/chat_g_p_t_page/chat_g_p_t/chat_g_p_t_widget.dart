@@ -1,10 +1,10 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/blank_chat_g_p_t/blank_chat_g_p_t_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/home_page/components/blank_chat_g_p_t/blank_chat_g_p_t_widget.dart';
 import '/custom_code/actions/index.dart' as actions;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -32,7 +32,6 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
   late ChatGPTModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   final animationsMap = {
     'containerOnPageLoadAnimation': AnimationInfo(
@@ -77,7 +76,6 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -116,9 +114,10 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                 : null;
         return Title(
             title: 'Kidney247',
-            color: FlutterFlowTheme.of(context).primary,
+            color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
             child: GestureDetector(
-              onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+              onTap: () =>
+                  FocusScope.of(context).requestFocus(_model.unfocusNode),
               child: Scaffold(
                 key: scaffoldKey,
                 backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -311,10 +310,10 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                                         BoxConstraints(
                                                                       maxWidth:
                                                                           () {
-                                                                        if (MediaQuery.of(context).size.width >=
+                                                                        if (MediaQuery.sizeOf(context).width >=
                                                                             1170.0) {
                                                                           return 700.0;
-                                                                        } else if (MediaQuery.of(context).size.width <=
+                                                                        } else if (MediaQuery.sizeOf(context).width <=
                                                                             470.0) {
                                                                           return 330.0;
                                                                         } else {
@@ -483,15 +482,13 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                               constraints:
                                                                   BoxConstraints(
                                                                 maxWidth: () {
-                                                                  if (MediaQuery.of(
+                                                                  if (MediaQuery.sizeOf(
                                                                               context)
-                                                                          .size
                                                                           .width >=
                                                                       1170.0) {
                                                                     return 700.0;
-                                                                  } else if (MediaQuery.of(
+                                                                  } else if (MediaQuery.sizeOf(
                                                                               context)
-                                                                          .size
                                                                           .width <=
                                                                       470.0) {
                                                                     return 330.0;
@@ -672,8 +669,9 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                       logFirebaseEvent(
                                                           'Container_backend_call');
 
-                                                      final chatGPTHistoryUpdateData1 =
-                                                          {
+                                                      await chatGPTChatGPTHistoryRecord!
+                                                          .reference
+                                                          .update({
                                                         'history': FieldValue
                                                             .arrayUnion([
                                                           FFLocalizations.of(
@@ -683,11 +681,7 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                               ? 'What can I do to improve my quality of life while living with kidney disease?'
                                                               : 'Tôi có thể làm gì để cải thiện chất lượng cuộc sống khi sống chung với bệnh thận?'
                                                         ]),
-                                                      };
-                                                      await chatGPTChatGPTHistoryRecord!
-                                                          .reference
-                                                          .update(
-                                                              chatGPTHistoryUpdateData1);
+                                                      });
                                                       logFirebaseEvent(
                                                           'Container_update_widget_state');
                                                       setState(() {
@@ -698,8 +692,9 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                       logFirebaseEvent(
                                                           'Container_backend_call');
 
-                                                      final chatGPTHistoryUpdateData2 =
-                                                          {
+                                                      await chatGPTChatGPTHistoryRecord!
+                                                          .reference
+                                                          .update({
                                                         'history': FieldValue
                                                             .arrayUnion([
                                                           FFLocalizations.of(
@@ -709,11 +704,7 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                               ? 'I am thinking...'
                                                               : 'Tôi đang suy nghĩ...'
                                                         ]),
-                                                      };
-                                                      await chatGPTChatGPTHistoryRecord!
-                                                          .reference
-                                                          .update(
-                                                              chatGPTHistoryUpdateData2);
+                                                      });
                                                       logFirebaseEvent(
                                                           'Container_custom_action');
                                                       _model.chatGPTResponse1 =
@@ -738,8 +729,9 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                         logFirebaseEvent(
                                                             'Container_backend_call');
 
-                                                        final chatGPTHistoryUpdateData3 =
-                                                            {
+                                                        await chatGPTChatGPTHistoryRecord!
+                                                            .reference
+                                                            .update({
                                                           'history': FieldValue
                                                               .arrayRemove([
                                                             FFLocalizations.of(
@@ -749,26 +741,19 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                                 ? 'I am thinking...'
                                                                 : 'Tôi đang suy nghĩ...'
                                                           ]),
-                                                        };
-                                                        await chatGPTChatGPTHistoryRecord!
-                                                            .reference
-                                                            .update(
-                                                                chatGPTHistoryUpdateData3);
+                                                        });
                                                         logFirebaseEvent(
                                                             'Container_backend_call');
 
-                                                        final chatGPTHistoryUpdateData4 =
-                                                            {
+                                                        await chatGPTChatGPTHistoryRecord!
+                                                            .reference
+                                                            .update({
                                                           'history': FieldValue
                                                               .arrayUnion([
                                                             _model
                                                                 .chatGPTResponse1
                                                           ]),
-                                                        };
-                                                        await chatGPTChatGPTHistoryRecord!
-                                                            .reference
-                                                            .update(
-                                                                chatGPTHistoryUpdateData4);
+                                                        });
                                                       } else {
                                                         logFirebaseEvent(
                                                             'Container_show_snack_bar');
@@ -803,16 +788,13 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                         logFirebaseEvent(
                                                             'Container_backend_call');
 
-                                                        final chatGPTHistoryUpdateData5 =
-                                                            {
+                                                        await chatGPTChatGPTHistoryRecord!
+                                                            .reference
+                                                            .update({
                                                           'history': FieldValue
                                                               .arrayRemove(
                                                                   [' ']),
-                                                        };
-                                                        await chatGPTChatGPTHistoryRecord!
-                                                            .reference
-                                                            .update(
-                                                                chatGPTHistoryUpdateData5);
+                                                        });
                                                       }
 
                                                       logFirebaseEvent(
@@ -917,8 +899,9 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                       logFirebaseEvent(
                                                           'Container_backend_call');
 
-                                                      final chatGPTHistoryUpdateData1 =
-                                                          {
+                                                      await chatGPTChatGPTHistoryRecord!
+                                                          .reference
+                                                          .update({
                                                         'history': FieldValue
                                                             .arrayUnion([
                                                           FFLocalizations.of(
@@ -928,11 +911,7 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                               ? 'How to stay positive while living with kidney disease?'
                                                               : 'Làm thế nào để sống tích cực khi sống chung với bệnh thận?'
                                                         ]),
-                                                      };
-                                                      await chatGPTChatGPTHistoryRecord!
-                                                          .reference
-                                                          .update(
-                                                              chatGPTHistoryUpdateData1);
+                                                      });
                                                       logFirebaseEvent(
                                                           'Container_update_widget_state');
                                                       setState(() {
@@ -943,8 +922,9 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                       logFirebaseEvent(
                                                           'Container_backend_call');
 
-                                                      final chatGPTHistoryUpdateData2 =
-                                                          {
+                                                      await chatGPTChatGPTHistoryRecord!
+                                                          .reference
+                                                          .update({
                                                         'history': FieldValue
                                                             .arrayUnion([
                                                           FFLocalizations.of(
@@ -954,11 +934,7 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                               ? 'I am thinking...'
                                                               : 'Tôi đang suy nghĩ...'
                                                         ]),
-                                                      };
-                                                      await chatGPTChatGPTHistoryRecord!
-                                                          .reference
-                                                          .update(
-                                                              chatGPTHistoryUpdateData2);
+                                                      });
                                                       logFirebaseEvent(
                                                           'Container_custom_action');
                                                       _model.chatGPTResponse2 =
@@ -983,8 +959,9 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                         logFirebaseEvent(
                                                             'Container_backend_call');
 
-                                                        final chatGPTHistoryUpdateData3 =
-                                                            {
+                                                        await chatGPTChatGPTHistoryRecord!
+                                                            .reference
+                                                            .update({
                                                           'history': FieldValue
                                                               .arrayRemove([
                                                             FFLocalizations.of(
@@ -994,26 +971,19 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                                 ? 'I am thinking...'
                                                                 : 'Tôi đang suy nghĩ...'
                                                           ]),
-                                                        };
-                                                        await chatGPTChatGPTHistoryRecord!
-                                                            .reference
-                                                            .update(
-                                                                chatGPTHistoryUpdateData3);
+                                                        });
                                                         logFirebaseEvent(
                                                             'Container_backend_call');
 
-                                                        final chatGPTHistoryUpdateData4 =
-                                                            {
+                                                        await chatGPTChatGPTHistoryRecord!
+                                                            .reference
+                                                            .update({
                                                           'history': FieldValue
                                                               .arrayUnion([
                                                             _model
                                                                 .chatGPTResponse2
                                                           ]),
-                                                        };
-                                                        await chatGPTChatGPTHistoryRecord!
-                                                            .reference
-                                                            .update(
-                                                                chatGPTHistoryUpdateData4);
+                                                        });
                                                       } else {
                                                         logFirebaseEvent(
                                                             'Container_show_snack_bar');
@@ -1048,16 +1018,13 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                         logFirebaseEvent(
                                                             'Container_backend_call');
 
-                                                        final chatGPTHistoryUpdateData5 =
-                                                            {
+                                                        await chatGPTChatGPTHistoryRecord!
+                                                            .reference
+                                                            .update({
                                                           'history': FieldValue
                                                               .arrayRemove(
                                                                   [' ']),
-                                                        };
-                                                        await chatGPTChatGPTHistoryRecord!
-                                                            .reference
-                                                            .update(
-                                                                chatGPTHistoryUpdateData5);
+                                                        });
                                                       }
 
                                                       logFirebaseEvent(
@@ -1162,8 +1129,9 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                       logFirebaseEvent(
                                                           'Container_backend_call');
 
-                                                      final chatGPTHistoryUpdateData1 =
-                                                          {
+                                                      await chatGPTChatGPTHistoryRecord!
+                                                          .reference
+                                                          .update({
                                                         'history': FieldValue
                                                             .arrayUnion([
                                                           FFLocalizations.of(
@@ -1173,11 +1141,7 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                               ? 'How is kidney disease diagnosed - what tests will I need?'
                                                               : 'Bệnh thận được chẩn đoán như thế nào - tôi sẽ cần những xét nghiệm nào?'
                                                         ]),
-                                                      };
-                                                      await chatGPTChatGPTHistoryRecord!
-                                                          .reference
-                                                          .update(
-                                                              chatGPTHistoryUpdateData1);
+                                                      });
                                                       logFirebaseEvent(
                                                           'Container_update_widget_state');
                                                       setState(() {
@@ -1188,8 +1152,9 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                       logFirebaseEvent(
                                                           'Container_backend_call');
 
-                                                      final chatGPTHistoryUpdateData2 =
-                                                          {
+                                                      await chatGPTChatGPTHistoryRecord!
+                                                          .reference
+                                                          .update({
                                                         'history': FieldValue
                                                             .arrayUnion([
                                                           FFLocalizations.of(
@@ -1199,11 +1164,7 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                               ? 'I am thinking...'
                                                               : 'Tôi đang suy nghĩ...'
                                                         ]),
-                                                      };
-                                                      await chatGPTChatGPTHistoryRecord!
-                                                          .reference
-                                                          .update(
-                                                              chatGPTHistoryUpdateData2);
+                                                      });
                                                       logFirebaseEvent(
                                                           'Container_custom_action');
                                                       _model.chatGPTResponse3 =
@@ -1228,8 +1189,9 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                         logFirebaseEvent(
                                                             'Container_backend_call');
 
-                                                        final chatGPTHistoryUpdateData3 =
-                                                            {
+                                                        await chatGPTChatGPTHistoryRecord!
+                                                            .reference
+                                                            .update({
                                                           'history': FieldValue
                                                               .arrayRemove([
                                                             FFLocalizations.of(
@@ -1239,26 +1201,19 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                                 ? 'I am thinking...'
                                                                 : 'Tôi đang suy nghĩ...'
                                                           ]),
-                                                        };
-                                                        await chatGPTChatGPTHistoryRecord!
-                                                            .reference
-                                                            .update(
-                                                                chatGPTHistoryUpdateData3);
+                                                        });
                                                         logFirebaseEvent(
                                                             'Container_backend_call');
 
-                                                        final chatGPTHistoryUpdateData4 =
-                                                            {
+                                                        await chatGPTChatGPTHistoryRecord!
+                                                            .reference
+                                                            .update({
                                                           'history': FieldValue
                                                               .arrayUnion([
                                                             _model
                                                                 .chatGPTResponse3
                                                           ]),
-                                                        };
-                                                        await chatGPTChatGPTHistoryRecord!
-                                                            .reference
-                                                            .update(
-                                                                chatGPTHistoryUpdateData4);
+                                                        });
                                                       } else {
                                                         logFirebaseEvent(
                                                             'Container_show_snack_bar');
@@ -1293,16 +1248,13 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                         logFirebaseEvent(
                                                             'Container_backend_call');
 
-                                                        final chatGPTHistoryUpdateData5 =
-                                                            {
+                                                        await chatGPTChatGPTHistoryRecord!
+                                                            .reference
+                                                            .update({
                                                           'history': FieldValue
                                                               .arrayRemove(
                                                                   [' ']),
-                                                        };
-                                                        await chatGPTChatGPTHistoryRecord!
-                                                            .reference
-                                                            .update(
-                                                                chatGPTHistoryUpdateData5);
+                                                        });
                                                       }
 
                                                       logFirebaseEvent(
@@ -1407,8 +1359,9 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                       logFirebaseEvent(
                                                           'Container_backend_call');
 
-                                                      final chatGPTHistoryUpdateData1 =
-                                                          {
+                                                      await chatGPTChatGPTHistoryRecord!
+                                                          .reference
+                                                          .update({
                                                         'history': FieldValue
                                                             .arrayUnion([
                                                           FFLocalizations.of(
@@ -1418,11 +1371,7 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                               ? 'Will I need dialysis or a kidney transplant?'
                                                               : 'Tôi có cần lọc máu hoặc ghép thận không?'
                                                         ]),
-                                                      };
-                                                      await chatGPTChatGPTHistoryRecord!
-                                                          .reference
-                                                          .update(
-                                                              chatGPTHistoryUpdateData1);
+                                                      });
                                                       logFirebaseEvent(
                                                           'Container_update_widget_state');
                                                       setState(() {
@@ -1433,8 +1382,9 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                       logFirebaseEvent(
                                                           'Container_backend_call');
 
-                                                      final chatGPTHistoryUpdateData2 =
-                                                          {
+                                                      await chatGPTChatGPTHistoryRecord!
+                                                          .reference
+                                                          .update({
                                                         'history': FieldValue
                                                             .arrayUnion([
                                                           FFLocalizations.of(
@@ -1444,11 +1394,7 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                               ? 'I am thinking...'
                                                               : 'Tôi đang suy nghĩ...'
                                                         ]),
-                                                      };
-                                                      await chatGPTChatGPTHistoryRecord!
-                                                          .reference
-                                                          .update(
-                                                              chatGPTHistoryUpdateData2);
+                                                      });
                                                       logFirebaseEvent(
                                                           'Container_custom_action');
                                                       _model.chatGPTResponse4 =
@@ -1473,8 +1419,9 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                         logFirebaseEvent(
                                                             'Container_backend_call');
 
-                                                        final chatGPTHistoryUpdateData3 =
-                                                            {
+                                                        await chatGPTChatGPTHistoryRecord!
+                                                            .reference
+                                                            .update({
                                                           'history': FieldValue
                                                               .arrayRemove([
                                                             FFLocalizations.of(
@@ -1484,26 +1431,19 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                                 ? 'I am thinking...'
                                                                 : 'Tôi đang suy nghĩ...'
                                                           ]),
-                                                        };
-                                                        await chatGPTChatGPTHistoryRecord!
-                                                            .reference
-                                                            .update(
-                                                                chatGPTHistoryUpdateData3);
+                                                        });
                                                         logFirebaseEvent(
                                                             'Container_backend_call');
 
-                                                        final chatGPTHistoryUpdateData4 =
-                                                            {
+                                                        await chatGPTChatGPTHistoryRecord!
+                                                            .reference
+                                                            .update({
                                                           'history': FieldValue
                                                               .arrayUnion([
                                                             _model
                                                                 .chatGPTResponse4
                                                           ]),
-                                                        };
-                                                        await chatGPTChatGPTHistoryRecord!
-                                                            .reference
-                                                            .update(
-                                                                chatGPTHistoryUpdateData4);
+                                                        });
                                                       } else {
                                                         logFirebaseEvent(
                                                             'Container_show_snack_bar');
@@ -1538,16 +1478,13 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                         logFirebaseEvent(
                                                             'Container_backend_call');
 
-                                                        final chatGPTHistoryUpdateData5 =
-                                                            {
+                                                        await chatGPTChatGPTHistoryRecord!
+                                                            .reference
+                                                            .update({
                                                           'history': FieldValue
                                                               .arrayRemove(
                                                                   [' ']),
-                                                        };
-                                                        await chatGPTChatGPTHistoryRecord!
-                                                            .reference
-                                                            .update(
-                                                                chatGPTHistoryUpdateData5);
+                                                        });
                                                       }
 
                                                       logFirebaseEvent(
@@ -1652,8 +1589,9 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                       logFirebaseEvent(
                                                           'Container_backend_call');
 
-                                                      final chatGPTHistoryUpdateData1 =
-                                                          {
+                                                      await chatGPTChatGPTHistoryRecord!
+                                                          .reference
+                                                          .update({
                                                         'history': FieldValue
                                                             .arrayUnion([
                                                           FFLocalizations.of(
@@ -1663,11 +1601,7 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                               ? '5 recipes for renal diet'
                                                               : '5 công thức chế độ ăn uống cho thận'
                                                         ]),
-                                                      };
-                                                      await chatGPTChatGPTHistoryRecord!
-                                                          .reference
-                                                          .update(
-                                                              chatGPTHistoryUpdateData1);
+                                                      });
                                                       logFirebaseEvent(
                                                           'Container_update_widget_state');
                                                       setState(() {
@@ -1678,8 +1612,9 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                       logFirebaseEvent(
                                                           'Container_backend_call');
 
-                                                      final chatGPTHistoryUpdateData2 =
-                                                          {
+                                                      await chatGPTChatGPTHistoryRecord!
+                                                          .reference
+                                                          .update({
                                                         'history': FieldValue
                                                             .arrayUnion([
                                                           FFLocalizations.of(
@@ -1689,11 +1624,7 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                               ? 'I am thinking...'
                                                               : 'Tôi đang suy nghĩ...'
                                                         ]),
-                                                      };
-                                                      await chatGPTChatGPTHistoryRecord!
-                                                          .reference
-                                                          .update(
-                                                              chatGPTHistoryUpdateData2);
+                                                      });
                                                       logFirebaseEvent(
                                                           'Container_custom_action');
                                                       _model.chatGPTResponse5 =
@@ -1718,8 +1649,9 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                         logFirebaseEvent(
                                                             'Container_backend_call');
 
-                                                        final chatGPTHistoryUpdateData3 =
-                                                            {
+                                                        await chatGPTChatGPTHistoryRecord!
+                                                            .reference
+                                                            .update({
                                                           'history': FieldValue
                                                               .arrayRemove([
                                                             FFLocalizations.of(
@@ -1729,26 +1661,19 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                                 ? 'I am thinking...'
                                                                 : 'Tôi đang suy nghĩ...'
                                                           ]),
-                                                        };
-                                                        await chatGPTChatGPTHistoryRecord!
-                                                            .reference
-                                                            .update(
-                                                                chatGPTHistoryUpdateData3);
+                                                        });
                                                         logFirebaseEvent(
                                                             'Container_backend_call');
 
-                                                        final chatGPTHistoryUpdateData4 =
-                                                            {
+                                                        await chatGPTChatGPTHistoryRecord!
+                                                            .reference
+                                                            .update({
                                                           'history': FieldValue
                                                               .arrayUnion([
                                                             _model
                                                                 .chatGPTResponse5
                                                           ]),
-                                                        };
-                                                        await chatGPTChatGPTHistoryRecord!
-                                                            .reference
-                                                            .update(
-                                                                chatGPTHistoryUpdateData4);
+                                                        });
                                                       } else {
                                                         logFirebaseEvent(
                                                             'Container_show_snack_bar');
@@ -1783,16 +1708,13 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                         logFirebaseEvent(
                                                             'Container_backend_call');
 
-                                                        final chatGPTHistoryUpdateData5 =
-                                                            {
+                                                        await chatGPTChatGPTHistoryRecord!
+                                                            .reference
+                                                            .update({
                                                           'history': FieldValue
                                                               .arrayRemove(
                                                                   [' ']),
-                                                        };
-                                                        await chatGPTChatGPTHistoryRecord!
-                                                            .reference
-                                                            .update(
-                                                                chatGPTHistoryUpdateData5);
+                                                        });
                                                       }
 
                                                       logFirebaseEvent(
@@ -2046,17 +1968,14 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                               logFirebaseEvent(
                                                   'IconButton_backend_call');
 
-                                              final chatGPTHistoryUpdateData1 =
-                                                  {
+                                              await chatGPTChatGPTHistoryRecord!
+                                                  .reference
+                                                  .update({
                                                 'history':
                                                     FieldValue.arrayUnion([
                                                   _model.textController.text
                                                 ]),
-                                              };
-                                              await chatGPTChatGPTHistoryRecord!
-                                                  .reference
-                                                  .update(
-                                                      chatGPTHistoryUpdateData1);
+                                              });
                                               logFirebaseEvent(
                                                   'IconButton_update_widget_state');
                                               setState(() {
@@ -2065,8 +1984,9 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                               logFirebaseEvent(
                                                   'IconButton_backend_call');
 
-                                              final chatGPTHistoryUpdateData2 =
-                                                  {
+                                              await chatGPTChatGPTHistoryRecord!
+                                                  .reference
+                                                  .update({
                                                 'history':
                                                     FieldValue.arrayUnion([
                                                   FFLocalizations.of(context)
@@ -2075,11 +1995,7 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                       ? 'I am thinking...'
                                                       : 'Tôi đang suy nghĩ...'
                                                 ]),
-                                              };
-                                              await chatGPTChatGPTHistoryRecord!
-                                                  .reference
-                                                  .update(
-                                                      chatGPTHistoryUpdateData2);
+                                              });
                                               logFirebaseEvent(
                                                   'IconButton_custom_action');
                                               _model.chatGPTResponse =
@@ -2098,8 +2014,9 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                 logFirebaseEvent(
                                                     'IconButton_backend_call');
 
-                                                final chatGPTHistoryUpdateData3 =
-                                                    {
+                                                await chatGPTChatGPTHistoryRecord!
+                                                    .reference
+                                                    .update({
                                                   'history':
                                                       FieldValue.arrayRemove([
                                                     FFLocalizations.of(context)
@@ -2108,25 +2025,18 @@ class _ChatGPTWidgetState extends State<ChatGPTWidget>
                                                         ? 'I am thinking...'
                                                         : 'Tôi đang suy nghĩ...'
                                                   ]),
-                                                };
-                                                await chatGPTChatGPTHistoryRecord!
-                                                    .reference
-                                                    .update(
-                                                        chatGPTHistoryUpdateData3);
+                                                });
                                                 logFirebaseEvent(
                                                     'IconButton_backend_call');
 
-                                                final chatGPTHistoryUpdateData4 =
-                                                    {
+                                                await chatGPTChatGPTHistoryRecord!
+                                                    .reference
+                                                    .update({
                                                   'history':
                                                       FieldValue.arrayUnion([
                                                     _model.chatGPTResponse
                                                   ]),
-                                                };
-                                                await chatGPTChatGPTHistoryRecord!
-                                                    .reference
-                                                    .update(
-                                                        chatGPTHistoryUpdateData4);
+                                                });
                                               } else {
                                                 logFirebaseEvent(
                                                     'IconButton_show_snack_bar');
